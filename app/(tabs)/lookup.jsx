@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { getMenh } from "../../components/MenhCalculator"
+import { getMenh, suggestionsByMenh } from "../../components/MenhCalculator"
 
-export const Lookup = () => {
+export default function Lookup() {
     const [year, setYear] = useState('');
-    const [menh, setMenh] = useState('');
+    const [suggestion, setSuggestion] = useState('');
 
-    const handleCalculate = () => {
-        const calculatedMenh = getMenh(parseInt(year));
-        setMenh(calculatedMenh);
+    const handleSuggest = () => {
+        const menh = getMenh(parseInt(year));
+        const suggestion = suggestionsByMenh[menh];
+        if (suggestion) {
+            setSuggestion(
+                `Mệnh của bạn là ${menh}.\n` +
+                `Gợi ý cá: ${suggestion.fish}\n` +
+                `Số lượng cá: ${suggestion.number}\n` +
+                `Hình dáng hồ: ${suggestion.shape}\n` +
+                `Vị trí đặt hồ: ${suggestion.direction}`
+            );
+        } else {
+            setSuggestion('Không tìm thấy gợi ý cho mệnh này.');
+        }
     };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Xác định mệnh theo năm sinh</Text>
+            <Text style={styles.header}>Tư vấn cá Koi theo mệnh</Text>
             <TextInput
                 style={styles.input}
                 keyboardType="numeric"
@@ -21,10 +32,10 @@ export const Lookup = () => {
                 value={year}
                 onChangeText={setYear}
             />
-            <Button title="Xác định mệnh" onPress={handleCalculate} />
-            {menh ? (
-                <Text style={styles.result}>Mệnh của bạn: {menh}</Text>
-            ) : null}
+            <Button title="Tư vấn" onPress={handleSuggest} />
+            <View>
+                <Text style={styles.suggestion}>{suggestion}</Text>
+            </View>
         </View>
     );
 };
@@ -54,5 +65,10 @@ const styles = StyleSheet.create({
         marginTop: 20,
         color: 'green',
     },
+    suggestion: {
+        marginTop: 20,
+        fontSize: 16,
+        textAlign: 'center'
+    }
 });
 

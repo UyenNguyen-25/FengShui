@@ -2,30 +2,56 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { suggestionsByMenh, getMenh } from "../../components/MenhCalculator"
 
-export const CheckSuitability = () => {
+export default function CheckSuitability() {
     const [year, setYear] = useState('');
-    const [suggestion, setSuggestion] = useState('');
+    const [fishColor, setFishColor] = useState('');
+    const [pondShape, setPondShape] = useState('');
+    const [pondDirection, setPondDirection] = useState('');
+    const [numberOfFish, setNumberOfFish] = useState('');
+    const [pondLocation, setPondLocation] = useState('');
+    const [result, setResult] = useState('');
 
-    // Hàm xử lý khi người dùng bấm nút "Tư vấn"
-    const handleSuggest = () => {
-        const menh = getMenh(parseInt(year));
+    const calculateCompatibility = (menh) => {
         const suggestion = suggestionsByMenh[menh];
-        if (suggestion) {
-            setSuggestion(
-                `Mệnh của bạn là ${menh}.\n` +
-                `Gợi ý cá: ${suggestion.fish}\n` +
-                `Số lượng cá: ${suggestion.number}\n` +
-                `Hình dáng hồ: ${suggestion.shape}\n` +
-                `Vị trí đặt hồ: ${suggestion.direction}`
-            );
-        } else {
-            setSuggestion('Không tìm thấy gợi ý cho mệnh này.');
+        let score = 0;
+
+        // So sánh màu sắc cá
+        if (suggestion?.fish?.includes(fishColor.toLowerCase())) {
+            score += 20;
         }
+
+        // So sánh số lượng cá
+        if (suggestion?.number?.includes(numberOfFish)) {
+            score += 20;
+        }
+
+        // So sánh hình dáng hồ
+        if (suggestion?.pondShape?.includes(pondShape.toLowerCase())) {
+            score += 20;
+        }
+
+        // So sánh hướng đặt hồ
+        if (suggestion?.pondDirection?.includes(pondDirection.toLowerCase())) {
+            score += 20;
+        }
+
+        // So sánh vị trí đặt hồ
+        if (suggestion?.location?.includes(pondLocation.toLowerCase())) {
+            score += 20;
+        }
+
+        return score;
+    };
+
+    const handleCheckCompatibility = () => {
+        const menh = getMenh(parseInt(year));
+        const score = calculateCompatibility(menh);
+        setResult(`Mệnh của bạn là ${menh}.\nĐiểm đánh giá độ phù hợp: ${score}/100`);
     };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Tư vấn cá Koi theo mệnh</Text>
+            <Text style={styles.title}>Tra cứu độ phù hợp</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Nhập năm sinh của bạn"
@@ -33,8 +59,38 @@ export const CheckSuitability = () => {
                 value={year}
                 onChangeText={setYear}
             />
-            <Button title="Tư vấn" onPress={handleSuggest} />
-            <Text style={styles.suggestion}>{suggestion}</Text>
+            <TextInput
+                style={styles.input}
+                placeholder="Màu sắc cá Koi (trắng, đỏ, đen,...)"
+                value={fishColor}
+                onChangeText={setFishColor}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Số lượng cá (ví dụ: 1, 3, 4,...)"
+                value={numberOfFish}
+                onChangeText={setNumberOfFish}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Hình dáng hồ (hình tròn, chữ nhật,...)"
+                value={pondShape}
+                onChangeText={setPondShape}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Hướng đặt hồ (Bắc, Nam,...)"
+                value={pondDirection}
+                onChangeText={setPondDirection}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Vị trí đặt hồ (trung tâm, hướng Đông,...)"
+                value={pondLocation}
+                onChangeText={setPondLocation}
+            />
+            <Button title="Tra cứu" onPress={handleCheckCompatibility} />
+            <Text style={styles.result}>{result}</Text>
         </View>
     );
 };
@@ -60,7 +116,7 @@ const styles = StyleSheet.create({
         width: '80%',
         paddingHorizontal: 10
     },
-    suggestion: {
+    result: {
         marginTop: 20,
         fontSize: 16,
         textAlign: 'center'

@@ -1,9 +1,16 @@
-import { Stack } from "expo-router";
+import { Stack, Tabs } from "expo-router";
 
 export default function TabsLayout() {
     return (
-        <Stack>
-            <Stack.Screen name="lookup" />
-        </Stack>
+        <Tabs screenOptions={{
+            headerShown: false
+        }}>
+            <Tabs.Screen name="lookup" options={{
+                tabBarLabel: "Tư vấn",
+            }} />
+            <Tabs.Screen name="check-suitability" options={{
+                tabBarLabel: "Tra cứu",
+            }} />
+        </Tabs>
     );
 }

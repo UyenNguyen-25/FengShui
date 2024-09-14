@@ -1,63 +1,75 @@
 // Bảng mệnh ngũ hành theo Can Chi
 export const canChiMenh = {
     Can: ['Canh', 'Tân', 'Nhâm', 'Quý', 'Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', 'Kỷ'],
-    Chi: ['Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi'],
+    Chi: ['Thân', 'Dậu', 'Tuất', 'Hợi', 'Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', 'Ngọ', 'Mùi'],
     Menh: {
-        'Canh-Tý': 'Thổ', 'Tân-Sửu': 'Thổ', 'Nhâm-Dần': 'Kim', 'Quý-Mão': 'Kim',
-        'Giáp-Thìn': 'Hỏa', 'Ất-Tỵ': 'Hỏa', 'Bính-Ngọ': 'Thủy', 'Đinh-Mùi': 'Thủy',
-        'Mậu-Thân': 'Mộc', 'Kỷ-Dậu': 'Mộc', 'Canh-Tuất': 'Kim', 'Tân-Hợi': 'Kim',
-        'Nhâm-Tý': 'Mộc', 'Quý-Sửu': 'Mộc', 'Giáp-Dần': 'Thủy', 'Ất-Mão': 'Thủy',
-        'Bính-Thìn': 'Thổ', 'Đinh-Tỵ': 'Thổ', 'Mậu-Ngọ': 'Hỏa', 'Kỷ-Mùi': 'Hỏa',
-        'Canh-Thân': 'Mộc', 'Tân-Dậu': 'Mộc', 'Nhâm-Tuất': 'Thủy', 'Quý-Hợi': 'Thủy',
-        'Giáp-Tý': 'Kim', 'Ất-Sửu': 'Kim', 'Bính-Dần': 'Hỏa', 'Đinh-Mão': 'Hỏa',
-        'Mậu-Thìn': 'Thổ', 'Kỷ-Tỵ': 'Thổ', 'Canh-Ngọ': 'Kim', 'Tân-Mùi': 'Kim',
-        'Nhâm-Thân': 'Kim', 'Quý-Dậu': 'Kim', 'Giáp-Tuất': 'Hỏa', 'Ất-Hợi': 'Hỏa'
-        // Bổ sung thêm các năm khác nếu cần
+        "Giáp Tý": "Kim", "Ất Sửu": "Kim", "Bính Dần": "Hỏa", "Đinh Mão": "Hỏa", "Mậu Thìn": "Mộc",
+        "Kỷ Tỵ": "Mộc", "Canh Ngọ": "Thổ", "Tân Mùi": "Thổ", "Nhâm Thân": "Kim", "Quý Dậu": "Kim",
+        "Giáp Tuất": "Hỏa", "Ất Hợi": "Hỏa", "Bính Tý": "Thủy", "Đinh Sửu": "Thủy", "Mậu Dần": "Thổ",
+        "Kỷ Mão": "Thổ", "Canh Thìn": "Kim", "Tân Tỵ": "Kim", "Nhâm Ngọ": "Mộc", "Quý Mùi": "Mộc",
+        "Giáp Thân": "Thủy", "Ất Dậu": "Thủy", "Bính Tuất": "Thổ", "Đinh Hợi": "Thổ", "Mậu Tý": "Hỏa",
+        "Kỷ Sửu": "Hỏa", "Canh Dần": "Mộc", "Tân Mão": "Mộc", "Nhâm Thìn": "Thủy", "Quý Tỵ": "Thủy",
+        "Giáp Ngọ": "Kim", "Ất Mùi": "Kim", "Bính Thân": "Hỏa", "Đinh Dậu": "Hỏa", "Mậu Tuất": "Mộc",
+        "Kỷ Hợi": "Mộc", "Canh Tý": "Thổ", "Tân Sửu": "Thổ", "Nhâm Dần": "Kim", "Quý Mão": "Kim",
+        "Giáp Thìn": "Hỏa", "Ất Tỵ": "Hỏa", "Bính Ngọ": "Thủy", "Đinh Mùi": "Thủy", "Mậu Thân": "Thổ",
+        "Kỷ Dậu": "Thổ", "Canh Tuất": "Kim", "Tân Hợi": "Kim", "Nhâm Tý": "Mộc", "Quý Sửu": "Mộc",
+        "Giáp Dần": "Thủy", "Ất Mão": "Thủy", "Bính Thìn": "Thổ", "Đinh Tỵ": "Thổ", "Mậu Ngọ": "Hỏa",
+        "Kỷ Mùi": "Hỏa", "Canh Thân": "Mộc", "Tân Dậu": "Mộc", "Nhâm Tuất": "Thủy", "Quý Hợi": "Thủy",
     }
 };
 
 // Gợi ý cá Koi và hồ theo mệnh
 export const suggestionsByMenh = {
     'Kim': {
-        fish: 'Cá Koi màu trắng, bạc, vàng kim',
-        number: '4 hoặc 9 con',
-        shape: 'Hình tròn hoặc bầu dục',
-        direction: 'Hướng Tây hoặc Tây Bắc'
+        fish: ['trắng', 'bạc', 'vàng kim'],
+        pondShape: ['hình tròn', 'bầu dục'],
+        pondDirection: ['Tây', 'Tây Bắc'],
+        number: ['4', '9'],
+        location: ['trung tâm', 'hướng Tây Bắc'],
     },
     'Mộc': {
-        fish: 'Cá Koi màu xanh lá cây hoặc đen',
-        number: '3 hoặc 8 con',
-        shape: 'Hình chữ nhật hoặc dài',
-        direction: 'Hướng Đông hoặc Đông Nam'
+        fish: ['xanh lá cây', 'đen'],
+        pondShape: ['hình chữ nhật', 'dài'],
+        pondDirection: ['Đông', 'Đông Nam'],
+        number: ['3', '8'],
+        location: ['hướng Đông', 'Đông Nam'],
     },
     'Thủy': {
-        fish: 'Cá Koi màu đen, xanh dương',
-        number: '1 hoặc 6 con',
-        shape: 'Hình tròn hoặc cong uốn lượn',
-        direction: 'Hướng Bắc'
+        fish: ['đen', 'xanh dương'],
+        pondShape: ['hình tròn', 'cong uốn lượn'],
+        pondDirection: ['Bắc'],
+        number: ['1', '6'],
+        location: ['hướng Bắc'],
     },
     'Hỏa': {
-        fish: 'Cá Koi màu đỏ, cam',
-        number: '2 hoặc 7 con',
-        shape: 'Hình tam giác',
-        direction: 'Hướng Nam'
+        fish: ['đỏ', 'cam'],
+        pondShape: ['hình tam giác'],
+        pondDirection: ['Nam'],
+        number: ['2', '7'],
+        location: ['hướng Nam'],
     },
     'Thổ': {
-        fish: 'Cá Koi màu vàng, nâu, cam đất',
-        number: '5 hoặc 10 con',
-        shape: 'Hình vuông',
-        direction: 'Hướng Tây Nam hoặc Đông Bắc'
+        fish: ['vàng', 'nâu', 'cam đất'],
+        pondShape: ['hình vuông'],
+        pondDirection: ['Tây Nam', 'Đông Bắc'],
+        number: ['5', '10'],
+        location: ['Tây Nam', 'Đông Bắc'],
     }
 };
 
 // Hàm tính Thiên Can, Địa Chi và mệnh ngũ hành
 export const getMenh = (year) => {
+    if (!year || isNaN(year)) return "Năm sinh không hợp lệ";
     const canIndex = year % 10;
     const chiIndex = year % 12;
 
     const can = canChiMenh.Can[canIndex];
     const chi = canChiMenh.Chi[chiIndex];
-    const menh = canChiMenh.Menh[`${can}-${chi}`];
+
+    const menh = canChiMenh.Menh[`${can} ${chi}`];
+
+    console.log(can + "  " + chi);
+
 
     return menh || 'Không xác định';
 };
