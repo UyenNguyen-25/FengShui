@@ -12,7 +12,7 @@ import { StatusBar } from "expo-status-bar";
 import BottomNavigation from "../../components/BottomNavigation";
 import MenuIcons from "../../components/MenuIcons";
 
-const HomeScreen = ({ navigation }) => {
+const PondScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
@@ -23,24 +23,29 @@ const HomeScreen = ({ navigation }) => {
       {/* Blog Posts */}
       <ScrollView style={styles.blogContainer}>
         <BlogPost
-          title="Cá Koi đem lại may mắn"
-          subtitle="Tìm hiểu về ý nghĩa phong thủy của từng loại cá Koi"
-          category="Phong thủy"
-        />
-        <BlogPost
           title="Cách bố trí hồ cá hợp phong thủy"
           subtitle="Hướng dẫn chi tiết cách đặt hồ cá trong nhà và sân vườn"
           category="Hồ cá"
         />
         <BlogPost
-          title="Top 10 giống cá Koi đẹp nhất"
-          subtitle="Khám phá những giống cá Koi được ưa chuộng nhất"
-          category="Giống cá"
+          title="Ý nghĩa phong thủy của hồ cá"
+          subtitle="Tìm hiểu về ý nghĩa phong thủy khi đặt hồ cá trong nhà"
+          category="Phong thủy"
         />
         <BlogPost
-          title="Chăm sóc cá Koi hiệu quả"
-          subtitle="Những mẹo chăm sóc cá Koi để chúng luôn khỏe mạnh"
-          category="Chăm sóc"
+          title="Hướng dẫn chọn cá phong thủy"
+          subtitle="Những loại cá mang lại may mắn và tài lộc"
+          category="Phong thủy"
+        />
+        <BlogPost
+          title="Vị trí đặt hồ cá theo phong thủy"
+          subtitle="Các vị trí tốt nhất để đặt hồ cá trong nhà"
+          category="Phong thủy"
+        />
+        <BlogPost
+          title="Phong thủy nước trong hồ cá"
+          subtitle="Tầm quan trọng của nước trong phong thủy hồ cá"
+          category="Phong thủy"
         />
       </ScrollView>
       <BottomNavigation />
@@ -72,7 +77,7 @@ const BlogPost = ({ title, subtitle, category }) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white", 
+    backgroundColor: "white",
   },
   menuContainer: {
     flexDirection: "row",
@@ -90,8 +95,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 8,
-    borderWidth: 2, 
-    borderColor: "red", 
+    borderWidth: 2,
+    borderColor: "red",
   },
   menuText: {
     color: "#2C3542",
@@ -99,8 +104,8 @@ const styles = StyleSheet.create({
   },
   blogContainer: {
     paddingHorizontal: 16,
-    paddingVertical: 8, 
-    backgroundColor: "#F5F7FA", 
+    paddingVertical: 8,
+    backgroundColor: "#F5F7FA",
   },
   blogPost: {
     backgroundColor: "white",
@@ -167,9 +172,9 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   menuImage: {
-    width: 40, 
-    height: 40, 
+    width: 40,
+    height: 40,
   },
 });
 
-export default HomeScreen;
+export default PondScreen;
