@@ -3,7 +3,6 @@ import { ScrollView } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 function ScreenWrapper({ children, bg }) {
-
     const { top } = useSafeAreaInsets()
     const paddingTop = top > 0 ? top + 5 : 30
 

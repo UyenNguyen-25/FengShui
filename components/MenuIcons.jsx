@@ -1,17 +1,56 @@
-import React from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import * as React from "react";
+import {
+  Dimensions,
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import Carousel from "react-native-reanimated-carousel";
+
+const { width: viewportWidth } = Dimensions.get("window");
+
+const images = [
+  require("../assets/images/carousel_1.jpg"),
+  require("../assets/images/carousel_2.jpg"),
+  require("../assets/images/carousel_3.jpg"),
+  require("../assets/images/carousel_4.jpg"),
+  require("../assets/images/carousel_5.jpg"),
+];
 
 const MenuIcons = ({ navigation }) => {
-    console.log(navigation); 
   return (
     <View>
       <Text style={styles.welcome}>Chào bạn, Nguyen Van An</Text>
       <Text style={styles.subWelcome}>Hôm nay bạn muốn xem gì?</Text>
 
+      <View style={styles.carouselContainer}>
+        <Carousel
+          loop
+          width={viewportWidth}
+          height={viewportWidth / 2}
+          autoPlay={true}
+          data={images} 
+          scrollAnimationDuration={1000}
+          onSnapToItem={(index) => console.log("current index:", index)}
+          renderItem={({ item }) => (
+            <View style={styles.articleItem}>
+              <Image
+                source={item} 
+                style={styles.articleImage}
+                resizeMode="cover"
+              />
+            </View>
+          )}
+        />
+      </View>
+
+      {/* Các nút điều hướng */}
       <View style={styles.menuContainer}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigation.navigate('Home')} 
+          onPress={() => navigation.navigate("Home")}
         >
           <View style={styles.menuIcon}>
             <Image
@@ -25,7 +64,7 @@ const MenuIcons = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigation.navigate('Pond')}
+          onPress={() => navigation.navigate("Pond")}
         >
           <View style={styles.menuIcon}>
             <Image
@@ -75,17 +114,35 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     paddingHorizontal: 16,
-    marginTop: 16,
+    marginTop: 20,
   },
   subWelcome: {
     color: "#8B95A1",
     paddingHorizontal: 16,
     marginTop: 4,
   },
+  carouselContainer: {
+    marginVertical: 16,
+  },
+  articleItem: {
+    width: viewportWidth * 0.8,
+    marginHorizontal: viewportWidth * 0.1,
+    backgroundColor: "white",
+    borderRadius: 8,
+    padding: 16,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  articleImage: {
+    width: "100%",
+    height: 120,
+    borderRadius: 8,
+  },
   menuContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
     paddingVertical: 24,
+    marginTop: 130,
   },
   menuItem: {
     alignItems: "center",

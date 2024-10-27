@@ -17,10 +17,10 @@ const PondScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
 
-      {/* Menu Icons */}
+      {/* Menu Icons - đã bao gồm Carousel và các nút */}
       <MenuIcons navigation={navigation} />
 
-      {/* Blog Posts */}
+      Blog Posts
       <ScrollView style={styles.blogContainer}>
         <BlogPost
           title="Cách bố trí hồ cá hợp phong thủy"
@@ -78,29 +78,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
-  },
-  menuContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    paddingVertical: 24,
-  },
-  menuItem: {
-    alignItems: "center",
-  },
-  menuIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
-    backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 8,
-    borderWidth: 2,
-    borderColor: "red",
-  },
-  menuText: {
-    color: "#2C3542",
-    fontSize: 12,
   },
   blogContainer: {
     paddingHorizontal: 16,
@@ -170,10 +147,6 @@ const styles = StyleSheet.create({
   thumbnail: {
     width: "100%",
     height: "100%",
-  },
-  menuImage: {
-    width: 40,
-    height: 40,
   },
 });
 
