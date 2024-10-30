@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../(main)/home";
 import PondScreen from "../screen/pond";
 import EditProfileScreen from "../(main)/profile/EditProfileScreen";
+import { BottomNavigation } from "../(main)/_layout";
 
 const Stack = createStackNavigator();
 
@@ -16,6 +17,8 @@ const AppNavigator = () => {
         component={EditProfileScreen}
         options={{ title: "Chỉnh sửa hồ sơ" }}
       />
+      <Stack.Screen name="Main" component={BottomNavigation} />
+      <Stack.Screen name="Details" component={DetailsScreen} />
     </Stack.Navigator>
   );
 };

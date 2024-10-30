@@ -10,9 +10,19 @@ import CheckSuitability from './lookup/check-suitability';
 import Profile from './profile';  
 import { FontAwesome } from '@expo/vector-icons';  
 import { Tabs } from 'expo-router';  
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; 
+import Social from '../social'; 
 
 // Tạo Drawer  
 const Drawer = createDrawerNavigator();  
+
+// Định nghĩa styles
+const styles = StyleSheet.create({
+    logoImage: {
+        width: 100,  // Thay đổi kích thước theo nhu cầu
+        height: 100, // Thay đổi kích thước theo nhu cầu
+    },
+});
 
 export default function AppNavigator() {  
     async function signOut() {  
@@ -90,53 +100,59 @@ export default function AppNavigator() {
 }  
 
 // Tạo BottomNavigation  
+const Tab = createBottomTabNavigator();  
+
 const BottomNavigation = () => {  
     return (  
-        <Tabs  
+        <Tab.Navigator  
             screenOptions={{  
-                tabBarActiveTintColor: '#3AA6B9'  
+                tabBarActiveTintColor: '#3AA6B9',  
+                tabBarShowLabel: false,  
+                tabBarHideOnKeyboard: true,  
+                headerShown: false,  
+                tabBarStyle: {  
+                    position: "absolute",  
+                    right: 0,  
+                    left: 0,  
+                    elevation: 0,  
+                    height: 70,  
+                },  
             }}  
         >  
-            <Tabs.Screen  
-                name='home'  
+            <Tab.Screen  
+                name="Home"  
+                component={HomeScreen}  
                 options={{  
                     title: 'Trang Chủ',  
-                    tabBarIcon: ({ color }) => <FontAwesome size={30} name='home' color={color} />  
+                    tabBarIcon: ({ color }) => <FontAwesome size={30} name='home' color={color} />,  
                 }}  
             />  
-            <Tabs.Screen  
+            <Tab.Screen  
                 name={SCREEN.LOOKUP}  
+                component={Lookup}  
                 options={{  
                     title: 'Tra Cứu',  
-                    tabBarIcon: ({ color }) => <FontAwesome size={30} name='search' color={color} />  
+                    tabBarIcon: ({ color }) => <FontAwesome size={30} name='search' color={color} />,  
                 }}  
             />  
-            <Tabs.Screen  
-                name="social"  
+            <Tab.Screen  
+                name="Social"  
+                component={Social}  
                 options={{  
                     title: 'Xã Hội',  
                     tabBarIcon: ({ color }) => <FontAwesome size={30} name='ellipsis-h' color={color} />,  
                 }}  
             />  
-            <Tabs.Screen  
+            <Tab.Screen  
                 name={SCREEN.PROFILE}  
+                component={Profile}  
                 options={{  
                     title: 'Hồ Sơ',  
                     tabBarIcon: ({ color }) => <FontAwesome size={30} name='user' color={color} />,  
                 }}  
             />  
-        </Tabs>  
+        </Tab.Navigator>  
     );  
 };  
 
-// Thêm dòng này để sử dụng BottomNavigation
-export { BottomNavigation };
-
-const styles = StyleSheet.create({  
-    logoImage: {  
-        height: hp(10),  
-        width: wp(20),  
-        justifyContent: "center",  
-        alignContent: "center"  
-    },  
-});
+export { BottomNavigation };  
