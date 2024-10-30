@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
+import { useRouter } from "expo-router";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -20,6 +21,11 @@ const images = [
 ];
 
 const MenuIcons = ({ navigation }) => {
+  console.log(navigation);
+  const router = useRouter();
+  const goToPond = () => {
+    router.push("screen/pond");
+  };
   return (
     <View>
       <Text style={styles.welcome}>Chào bạn, Nguyen Van An</Text>
@@ -50,7 +56,7 @@ const MenuIcons = ({ navigation }) => {
       <View style={styles.menuContainer}>
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => router.push("/home")}
         >
           <View style={styles.menuIcon}>
             <Image
@@ -64,7 +70,7 @@ const MenuIcons = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigation.navigate("Pond")}
+          onPress={goToPond}
         >
           <View style={styles.menuIcon}>
             <Image

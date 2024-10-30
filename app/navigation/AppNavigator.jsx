@@ -2,7 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../(main)/home";
 import PondScreen from "../screen/pond";
-import EditProfileScreen from "../(main)/profile/EditProfileScreen";;
+import EditProfileScreen from "../(main)/profile/EditProfileScreen";
 
 const Stack = createStackNavigator();
 

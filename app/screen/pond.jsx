@@ -18,9 +18,9 @@ const PondScreen = ({ navigation }) => {
       <StatusBar style="light" />
 
       {/* Menu Icons - đã bao gồm Carousel và các nút */}
-      <MenuIcons navigation={navigation} />
+      {/* <MenuIcons navigation={navigation} /> */}
 
-      Blog Posts
+      {/* <Text style={styles.blogHeader}>Blog Posts</Text> */}
       <ScrollView style={styles.blogContainer}>
         <BlogPost
           title="Cách bố trí hồ cá hợp phong thủy"
@@ -30,22 +30,22 @@ const PondScreen = ({ navigation }) => {
         <BlogPost
           title="Ý nghĩa phong thủy của hồ cá"
           subtitle="Tìm hiểu về ý nghĩa phong thủy khi đặt hồ cá trong nhà"
-          category="Phong thủy"
+          category="Hồ cá"
         />
         <BlogPost
           title="Hướng dẫn chọn cá phong thủy"
           subtitle="Những loại cá mang lại may mắn và tài lộc"
-          category="Phong thủy"
+          category="Hồ cá"
         />
         <BlogPost
           title="Vị trí đặt hồ cá theo phong thủy"
           subtitle="Các vị trí tốt nhất để đặt hồ cá trong nhà"
-          category="Phong thủy"
+          category="Hồ cá"
         />
         <BlogPost
           title="Phong thủy nước trong hồ cá"
           subtitle="Tầm quan trọng của nước trong phong thủy hồ cá"
-          category="Phong thủy"
+          category="Hồ cá"
         />
       </ScrollView>
       <BottomNavigation />
@@ -147,6 +147,12 @@ const styles = StyleSheet.create({
   thumbnail: {
     width: "100%",
     height: "100%",
+  },
+  blogHeader: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginVertical: 10,
+    textAlign: "center",
   },
 });
 
