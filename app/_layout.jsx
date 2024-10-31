@@ -5,9 +5,11 @@ import 'react-native-gesture-handler'
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <Stack screenOptions={{ headerShown: false }} >
+      <Stack initialRouteName="index" screenOptions={{ headerShown: false }} >
         <Stack.Screen name="index" />
-        <Stack.Screen name="not-found" />
+        <Stack.Screen name="(main)" />
+        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(admin)" />
       </Stack>
     </AuthProvider>
   );

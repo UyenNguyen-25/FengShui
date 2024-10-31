@@ -1,4 +1,4 @@
-import { canChiMenh } from "../constants/Menh";
+import { canChiMenh } from "../constants/elements";
 
 // Hàm tính Thiên Can, Địa Chi và mệnh ngũ hành
 export const getMenh = (year) => {

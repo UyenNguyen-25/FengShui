@@ -8,7 +8,7 @@ import { Redirect, router } from 'expo-router'
 import { useAuth } from '@/hooks/useAuth'
 import Loading from '@/components/Loading'
 
-const Index = () => {
+const Welcome = () => {
     const { session, mounting } = useAuth()
 
     const handlePress = (action) => {
@@ -16,41 +16,46 @@ const Index = () => {
     }
 
     return (
-        <ScreenWrapper bg={'white'}>
+        <ScreenWrapper>
             <StatusBar style='dark' />
             <View style={styles.container}>
                 <Image style={styles.logoImage} resizeMode='contain' source={require('../assets/images/logo-ca-Koi.png')} />
                 <View style={styles.footer}>
-                    {mounting ? <Loading color='red' /> :
-                        !session ?
-                            <>
-                                <Button title='Khám Phá Ngay !' buttonStyle={styles.btn} textStyle={styles.title} onPress={() => handlePress('signUp')} />
+                    {mounting ? <Loading color='red' /> : !session ?
+                        <>
+                            <Button title='Khám Phá Ngay !' buttonStyle={styles.btn} textStyle={styles.title} onPress={() => handlePress('signUp')} />
+                            <View style={{ alignItems: "center", gap: 2 }}>
                                 <View style={styles.bottomTextFooter}>
                                     <Text style={styles.txt}>Đã có tài khoản!</Text>
                                     <Pressable onPress={() => handlePress('login')}><Text style={[styles.txt, styles.loginText]}>Đăng nhập</Text></Pressable>
                                 </View>
-                            </> :
-                            <Redirect href={"/(main)/home"} />}
+                                <Text style={styles.txt}>hoặc</Text>
+                                <View style={styles.bottomTextFooter}>
+                                    <Pressable onPress={() => handlePress('/(main)')}><Text style={[styles.txt, { color: theme.colors.textLight, textDecorationLine: "underline" }]}>Tham gia mà không cần tài khoản</Text></Pressable>
+                                </View>
+                            </View>
+                        </> :
+                        <Redirect href={"/(main)"} />}
                 </View>
             </View>
         </ScreenWrapper>
     )
 }
 
-export default Index
+export default Welcome
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignContent: "center",
-        justifyContent: "space-between",
         backgroundColor: "white",
         marginHorizontal: wp(4)
     },
     logoImage: {
-        height: hp(50),
-        width: wp(200),
+        height: hp(40),
+        width: wp(100),
         alignSelf: "center",
+        marginVertical: hp(5),
     },
     title: {
         color: "white",
@@ -65,7 +70,6 @@ const styles = StyleSheet.create({
     },
     footer: {
         gap: 30,
-        marginBottom: hp(15),
         width: "100%"
     },
     bottomTextFooter: {

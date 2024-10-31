@@ -9,8 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import BottomNavigation from "../../components/BottomNavigation";
-import MenuIcons from "../../components/MenuIcons";
+import BottomNavigation from "@/components/BottomNavigation";
 
 const PondScreen = ({ navigation }) => {
   return (
@@ -67,7 +66,7 @@ const BlogPost = ({ title, subtitle, category }) => (
     </View>
     <View style={styles.blogImage}>
       <Image
-        source={require("../../assets/images/koi-thumbnail.png")}
+        source={require("@/assets/images/koi-thumbnail.png")}
         style={styles.thumbnail}
       />
     </View>

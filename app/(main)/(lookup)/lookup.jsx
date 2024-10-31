@@ -4,7 +4,7 @@ import ScreenWrapper from '@/components/ScreenWrapper';
 import Button from '@/components/Button';
 import { wp } from '@/helper/common';
 import { theme } from '@/constants/theme';
-import { suggestionsByMenh } from '@/constants/Menh';
+import { suggestionsByMenh } from '@/constants/elements';
 import { getMenh } from '@/components/MenhCalculator';
 
 export default function Lookup() {

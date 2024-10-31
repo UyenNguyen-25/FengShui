@@ -1,10 +1,13 @@
 export const theme = {
   colors: {
     primary: "red",
-    primaryDark: "#00AC62",
+
     text: "#494949",
     textLight: "#7C7C7C",
     textDark: "#1D1D1D",
+
+    rose: "#ef4444",
+    roseLight: "#fee2e2",
   },
   fonts: {
     medium: "500",
