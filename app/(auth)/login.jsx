@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native'
 import { hp, wp } from '@/helper/common';
 import { useRef, useState } from 'react'
 import { StatusBar } from 'expo-status-bar';
@@ -26,14 +26,18 @@ const Login = () => {
     async function signInWithEmail(email, password) {
         setIsLoading(true)
         const { data: { session }, error } = await supabase.auth.signInWithPassword({
-            email: email,
-            password: password,
+            email,
+            password,
 
         })
 
-        if (error) Alert.alert(error.message)
+        if (error) { console.log(error.message) }
         setIsLoading(false)
-        router.push('index')
+        if (session) {
+            console.log(session);
+
+            router.push('/(main)')
+        }
     }
 
     const handlePress = (action) => {
@@ -51,7 +55,7 @@ const Login = () => {
         }
     }
     return (
-        <ScreenWrapper bg={'white'}>
+        <ScreenWrapper>
             <StatusBar style='dark' />
             <View style={styles.container}>
                 <BackButton size={35} />
@@ -81,7 +85,7 @@ const Login = () => {
                         <Text style={[styles.message, { display: !message.password ? "none" : "" }]}>{message.password}</Text>
                     </View>
 
-                    <Pressable style={{ alignItems: "flex-end" }} onPress={() => handlePress("forgot-pass")}>
+                    <Pressable style={{ alignItems: "flex-end" }} onPress={() => handlePress("forgot_pass")}>
                         <Text style={styles.forgotPassText}>
                             Quên mật khẩu?
                         </Text>
@@ -151,7 +155,8 @@ const styles = StyleSheet.create({
         color: theme.colors.primary,
         fontWeight: theme.fonts.bold,
         textDecorationLine: "underline"
-    }, message: {
+    },
+    message: {
         color: "red",
         marginLeft: 10,
         marginTop: 5

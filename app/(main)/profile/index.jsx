@@ -1,156 +1,171 @@
-import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native"; // Import useNavigation
+import { Alert, Image, Pressable, StyleSheet, Text, View } from 'react-native'
+import { hp } from '@/helper/common'
+import { theme } from '@/constants/theme'
+import { useAuth } from '@/hooks/useAuth'
+import { signOut } from '@/services/auth/authService'
+import ScreenWrapper from '@/components/ScreenWrapper'
+import BackButton from '@/components/BackButton'
+import AntDesign from '@expo/vector-icons/AntDesign'
+import Fontisto from '@expo/vector-icons/Fontisto';
+import Entypo from '@expo/vector-icons/Entypo';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import Feather from '@expo/vector-icons/Feather';
+import { router, useNavigation } from 'expo-router'
 
 const Profile = () => {
-  const navigation = useNavigation(); // Sử dụng hook để lấy đối tượng navigation
+  const navigation = useNavigation()
+  const { user } = useAuth()
+
+  const alertButtons = [
+    {
+      text: 'Hủy',
+      onPress: () => console.log('modal cancel'),
+      style: 'cancel',
+    },
+    {
+      text: 'Đăng xuất',
+      onPress: async () => {
+        const result = await signOut()
+        if (result.success) {
+          router.push("/(auth)/login")
+        } else {
+          console.log(result.error);
+
+          Alert.alert("Đã xảy ra lỗi trong quá trình xử lý")
+        }
+      },
+      style: 'destructive'
+    }
+  ]
+
+  const handleLogout = async () => Alert.alert('Xác nhận', 'Bạn chắc chắn muốn đăng xuất?', alertButtons)
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.header}>
-        <Image
-          source={require("../../../assets/images/profile-avatar.png")}
-          style={styles.avatar}
-        />
-        <Text style={styles.name}>Nguyễn Văn An</Text>
-        <Text style={styles.email}>an.nguyen@example.com</Text>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Thông tin cá nhân</Text>
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>Tên:</Text>
-          <Text style={styles.value}>Nguyễn Văn An</Text>
+    <ScreenWrapper>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.backBtn}>
+            <BackButton size={hp(4)} />
+          </View>
+          <View>
+            <Text style={[styles.title]}>Thông tin tài khoản</Text>
+          </View>
+          <Pressable style={styles.logoutBtn} onPress={handleLogout}>
+            <AntDesign name="logout" size={hp(2.5)} color={theme.colors.rose} />
+          </Pressable>
         </View>
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>Số điện thoại:</Text>
-          <Text style={styles.value}>0988900330</Text>
-        </View>
-        <View style={styles.infoRow}>
-          <Text style={styles.label}>Địa chỉ:</Text>
-          <Text style={styles.value}>
-            12B2 Đường Lê Quang Định, Phường 9, Thành Phố Vũng Tàu
-          </Text>
+        {/* User Information */}
+        <View style={styles.infoContainer}>
+
+          {/* Avatar */}
+          <View >
+            <View style={{ borderWidth: 1, borderRadius: theme.radius.xl, borderColor: theme.colors.textLight, marginHorizontal: 6, marginBottom: 6 }}>
+              <Image style={styles.avatar} source={require('@/assets/images/avatar.png')} />
+            </View>
+            <Pressable
+              style={[styles.shadowStyle, { position: 'absolute', right: 0, bottom: 0, backgroundColor: 'white', borderRadius: 50, padding: 3 }]}
+              onPress={() => navigation.navigate('edit-profile')}
+            >
+              <Feather name="edit-3" size={18} color="black" />
+            </Pressable>
+          </View>
+          {/* username, email */}
+          <View style={{ alignItems: "center", gap: 2 }}>
+            <Text style={styles.username}>{user?.name}</Text>
+            <Text style={styles.email}>{user?.email}</Text>
+          </View>
+
+          {/* phone */}
+          {user && user.phone &&
+            <View style={styles.info}>
+              <AntDesign name="phone" size={24} color={theme.colors.textLight} />
+              <Text style={styles.infoTxt}>{user.phone}</Text>
+            </View>}
+
+          {/* date of birth*/}
+          {user && user.date_of_birth &&
+            <View style={styles.info}>
+              <AntDesign name="calendar" size={24} color={theme.colors.textLight} />
+              <Text style={styles.infoTxt}>{user.phone}</Text>
+            </View>}
+
+          {/* element*/}
+          {user && user.element &&
+            <View style={styles.info}>
+              {user.element === "Hỏa" ? <Fontisto name="fire" size={24} color={theme.colors.textLight} />
+                : user.element === "Thủy" ? <Entypo name="water" size={24} color={theme.colors.textLight} />
+                  : user.element === 'Thổ' ? <FontAwesome5 name="mountain" size={24} color={theme.colors.textLight} />
+                    : user.element === "Mộc" ? <Entypo name="tree" size={24} color={theme.colors.textLight} />
+                      : <MaterialCommunityIcons name="gold" size={24} color={theme.colors.textLight} />}
+              <Text style={styles.infoTxt}>{user.menh}</Text>
+            </View>}
         </View>
       </View>
+    </ScreenWrapper >
+  )
+}
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Tùy chọn</Text>
-        <TouchableOpacity
-          style={styles.optionButton}
-          onPress={() => navigation.navigate("EditProfile")} // Điều hướng tới EditProfile
-        >
-          <Text style={styles.optionText}>Chỉnh sửa hồ sơ</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.optionButton}>
-          <Text style={styles.optionText}>Cài đặt tài khoản</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.optionButton, styles.logoutButton]}>
-          <Text style={styles.logoutText}>Đăng xuất</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
-  );
-};
+export default Profile
 
-export default Profile;
-
-// Các style không thay đổi
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    backgroundColor: "#F5F7FA",
-    padding: 16,
+    flex: 1,
+    paddingHorizontal: hp(3),
   },
   header: {
+    height: hp(5),
+    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
-    marginBottom: 24,
-    backgroundColor: "white",
-    padding: 16,
-    borderRadius: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+  },
+  backBtn: {
+    position: "absolute",
+    left: 0
+  },
+  title: {
+    color: theme.colors.text,
+    fontSize: hp(3),
+    textAlign: 'center',
+    fontWeight: theme.fonts.bold
+  },
+  logoutBtn: {
+    backgroundColor: theme.colors.roseLight,
+    padding: 6,
+    borderRadius: theme.radius.md,
+    position: "absolute",
+    right: 0
+  },
+  infoContainer: {
+    marginVertical: hp(5),
+    alignItems: "center",
+    gap: 10
   },
   avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 16,
+    width: hp(15),
+    height: hp(12),
+    marginTop: hp(2)
   },
-  name: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#2C3542",
-    marginBottom: 4,
+  username: {
+    fontSize: hp(4),
+    fontWeight: theme.fonts.bold,
   },
   email: {
-    fontSize: 14,
-    color: "#8B95A1",
+    color: theme.colors.textLight
   },
-  section: {
-    backgroundColor: "white",
-    padding: 16,
-    borderRadius: 16,
-    marginBottom: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#2C3542",
-    marginBottom: 12,
-  },
-  infoRow: {
+  info: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: "#E8ECF0",
+    gap: 10
   },
-  label: {
-    fontSize: 14,
-    color: "#8B95A1",
-    flex: 1,
+  infoTxt: {
+    color: theme.colors.roseLight
   },
-  value: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#2C3542",
-    flex: 2,
-    textAlign: "right",
-  },
-  optionButton: {
-    backgroundColor: "#2C3542",
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 10,
-    alignItems: "center",
-    marginBottom: 12,
-  },
-  optionText: {
-    color: "white",
-    fontSize: 14,
-  },
-  logoutButton: {
-    backgroundColor: "#E53E3E",
-  },
-  logoutText: {
-    color: "white",
-    fontSize: 14,
-  },
-});
+  shadowStyle: {
+    shadowColor: theme.colors.primaryDark,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 8,
+    elevation: 8
+  }
+})

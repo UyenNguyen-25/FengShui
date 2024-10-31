@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-import { suggestionsByMenh } from '@/constants/Menh';
+import { suggestionsByMenh } from '@/constants/elements';
 import { getMenh } from '@/components/MenhCalculator';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -312,11 +312,9 @@ export default function CheckSuitability() {
 
 const styles = StyleSheet.create({
     container: {
-        padding: wp(3),
-        alignItems: 'center',
-        backgroundColor: '#f5f5f5',
-        marginBottom: hp(7),
-
+        flex: 1,
+        alignItems: "center",
+        marginBottom: hp(8)
     },
     form: {
         width: "100%",

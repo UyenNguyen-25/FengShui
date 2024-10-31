@@ -8,24 +8,21 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
-import { useRouter } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
 const images = [
-  require("../assets/images/carousel_1.jpg"),
-  require("../assets/images/carousel_2.jpg"),
-  require("../assets/images/carousel_3.jpg"),
-  require("../assets/images/carousel_4.jpg"),
-  require("../assets/images/carousel_5.jpg"),
+  require("@/assets/images/carousel_1.jpg"),
+  require("@/assets/images/carousel_2.jpg"),
+  require("@/assets/images/carousel_3.jpg"),
+  require("@/assets/images/carousel_4.jpg"),
+  require("@/assets/images/carousel_5.jpg"),
 ];
 
 const MenuIcons = ({ navigation }) => {
-  console.log(navigation);
-  const router = useRouter();
-  const goToPond = () => {
-    router.push("screen/pond");
-  };
+
+  const goToPond = () => navigation.navigate("pond-screen")
   return (
     <View>
       <Text style={styles.welcome}>Chào bạn, Nguyen Van An</Text>
@@ -37,13 +34,13 @@ const MenuIcons = ({ navigation }) => {
           width={viewportWidth}
           height={viewportWidth / 2}
           autoPlay={true}
-          data={images} 
+          data={images}
           scrollAnimationDuration={1000}
           onSnapToItem={(index) => console.log("current index:", index)}
           renderItem={({ item }) => (
             <View style={styles.articleItem}>
               <Image
-                source={item} 
+                source={item}
                 style={styles.articleImage}
                 resizeMode="cover"
               />
@@ -56,11 +53,11 @@ const MenuIcons = ({ navigation }) => {
       <View style={styles.menuContainer}>
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => router.push("/home")}
+          onPress={() => navigation.navigate("home")}
         >
           <View style={styles.menuIcon}>
             <Image
-              source={require("../assets/images/layout.png")}
+              source={require("@/assets/images/layout.png")}
               style={[styles.menuImage, { width: 30, height: 30 }]}
               resizeMode="contain"
             />
@@ -74,7 +71,7 @@ const MenuIcons = ({ navigation }) => {
         >
           <View style={styles.menuIcon}>
             <Image
-              source={require("../assets/images/pond.png")}
+              source={require("@/assets/images/pond.png")}
               style={styles.menuImage}
               resizeMode="contain"
             />
@@ -84,11 +81,11 @@ const MenuIcons = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigation.navigate("PhongThuy")}
+          onPress={() => navigation.navigate("lookup")}
         >
           <View style={styles.menuIcon}>
             <Image
-              source={require("../assets/images/fengshui.png")}
+              source={require("@/assets/images/fengshui.png")}
               style={styles.menuImage}
               resizeMode="contain"
             />
@@ -98,11 +95,11 @@ const MenuIcons = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigation.navigate("ChamSoc")}
+          onPress={() => navigation.navigate("home")}
         >
           <View style={styles.menuIcon}>
             <Image
-              source={require("../assets/images/sea-life.png")}
+              source={require("@/assets/images/sea-life.png")}
               style={styles.menuImage}
               resizeMode="contain"
             />
@@ -128,7 +125,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   carouselContainer: {
-    marginVertical: 16,
+    marginVertical: 2,
   },
   articleItem: {
     width: viewportWidth * 0.8,
@@ -147,8 +144,7 @@ const styles = StyleSheet.create({
   menuContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingVertical: 24,
-    marginTop: 130,
+    paddingBottom: 12,
   },
   menuItem: {
     alignItems: "center",

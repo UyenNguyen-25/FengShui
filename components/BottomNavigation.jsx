@@ -1,43 +1,38 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {
-  faHouse,
-  faMagnifyingGlass,
-} from "@fortawesome/free-solid-svg-icons";
-import { useNavigation } from "@react-navigation/native";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-const BottomNavigation = () => {
-  const navigation = useNavigation();
+const BottomNavigation = ({ state, descriptors, navigation }) => {
 
   return (
     <View style={styles.bottomNavContainer}>
       <View style={styles.bottomNav}>
         <TouchableOpacity
           style={styles.navItem}
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => navigation.navigate("home")}
         >
-          <FontAwesomeIcon icon={faHouse} size={24} color="black" />
+          <FontAwesome name="home" size={24} color="black" />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.navItem}>
-          <FontAwesomeIcon icon={faMagnifyingGlass} size={24} color="black" />
+          <FontAwesome name="search" size={24} color="black" />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.navItem}
-          onPress={() => navigation.navigate("SocialScreen")}
+          onPress={() => navigation.navigate("social-screen")}
         >
           <Image
-            source={require("../assets/images/more.png")}
+            source={require("@/assets/images/more.png")}
             style={[styles.menuImage]}
             resizeMode="contain"
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity style={styles.navItem}
+        >
           <Image
-            source={require("../assets/images/koi-fish.png")}
+            source={require("@/assets/images/koi-fish.png")}
             style={[styles.menuImage, { width: 30, height: 24 }]}
             resizeMode="contain"
           />
@@ -49,10 +44,6 @@ const BottomNavigation = () => {
 
 const styles = StyleSheet.create({
   bottomNavContainer: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
     zIndex: 1,
   },
   bottomNav: {
