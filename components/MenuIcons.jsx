@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import { useNavigation } from "@react-navigation/native";
+import { hp } from "@/helper/common";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -35,7 +36,7 @@ const MenuIcons = ({ navigation }) => {
           autoPlay={true}
           data={images}
           scrollAnimationDuration={1000}
-          onSnapToItem={(index) => console.log("current index:", index)}
+          // onSnapToItem={(index) => console.log("current index:", index)}
           renderItem={({ item }) => (
             <View style={styles.articleItem}>
               <Image
@@ -121,16 +122,14 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   carouselContainer: {
-    marginVertical: 2,
-    marginTop: 20,
-    marginBottom: -20,
-    alignItems: "center", 
-    justifyContent: "center", 
+    marginTop: 2,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white"
   },
   articleItem: {
     width: viewportWidth * 0.8,
     marginHorizontal: viewportWidth * 0.1,
-    backgroundColor: "white",
     borderRadius: 8,
     padding: 16,
     alignItems: "center",
@@ -138,13 +137,13 @@ const styles = StyleSheet.create({
   },
   articleImage: {
     width: "100%",
-    height: 120,
+    height: hp(25),
     borderRadius: 8,
   },
   menuContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingBottom: 12,
+    paddingVertical: 12,
   },
   menuItem: {
     alignItems: "center",
