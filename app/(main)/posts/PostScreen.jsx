@@ -6,6 +6,7 @@ import { pondsService } from '../../../services/elements/pondsService';
 import { koiFishService } from '../../../services/elements/koiFishService';
 import { postService } from '../../../services/post/postService';
 import { useAuth } from '@/hooks/useAuth'
+import { userService } from '@/services/users/userService';
 
 export default function PostScreen() {
     const [description, setDescription] = useState('');
@@ -57,10 +58,15 @@ export default function PostScreen() {
             koi_id: koi,
             pond_id: pond,
         };
-
+    
         const response = await postService.insertPost(newPostData, user.id);
-
+    
         if (response.success) {
+            const updateResponse = await userService.updateTotalPosts(user.id);
+            if (!updateResponse.success) {
+                Alert.alert("Error", updateResponse.msg || "Could not update total posts. Please try again.");
+            }
+            
             Alert.alert("Success", "Your post has been created!");
             setTitle('');
             setDescription('');
@@ -72,6 +78,8 @@ export default function PostScreen() {
             Alert.alert("Error", response.msg || "Could not create post. Please try again.");
         }
     };
+    
+    
 
     const openImageLibrary = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
