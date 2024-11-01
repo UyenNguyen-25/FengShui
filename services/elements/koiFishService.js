@@ -43,6 +43,25 @@ const getById = async (id) => {
   }
 };
 
+const getListByElement = async (element) => {
+  try {
+    const { data, error } = await supabase
+      .from("koiFish")
+      .select("*")
+      .eq("suit_element", element);
+
+    if (error) {
+      console.log("Get All from KoiFish fail: ", error);
+      return { success: false, msg: error.message };
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.log("got error: ", error);
+    return { success: false, msg: error.message };
+  }
+};
+
 const insertKoiFish = async (newData) => {
   try {
     const { name, origin, suit_element, color, quantity } = newData;
@@ -100,6 +119,7 @@ const deleteKoiFish = async (id) => {
 export const koiFishService = {
   getAll,
   getById,
+  getListByElement,
   insertKoiFish,
   updateKoiFish,
   deleteKoiFish,

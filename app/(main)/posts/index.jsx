@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { SCREEN } from "@/constants/screen";
 
 const SocialScreen = () => {
   const [text, setText] = useState("");
@@ -64,7 +65,7 @@ const SocialScreen = () => {
       </View>
       <TouchableOpacity
         style={styles.imageUploadButton}
-        onPress={() => navigation.navigate("CreatePost")}
+        onPress={() => navigation.navigate(SCREEN.POST_SCREEN)}
       >
         <AntDesign name="pluscircleo" size={24} color="red" />
       </TouchableOpacity>

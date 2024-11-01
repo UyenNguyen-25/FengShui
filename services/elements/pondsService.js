@@ -43,6 +43,25 @@ const getById = async (id) => {
   }
 };
 
+const getListByElement = async (element) => {
+  try {
+    const { data, error } = await supabase
+      .from("ponds")
+      .select("*")
+      .eq("suit_element", element);
+
+    if (error) {
+      console.log("Get All from ponds fail: ", error);
+      return { success: false, msg: error.message };
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.log("got error: ", error);
+    return { success: false, msg: error.message };
+  }
+};
+
 const insertPond = async (newData) => {
   try {
     const { pond_shape, pond_direction, pond_location, suit_element } = newData;
@@ -100,6 +119,7 @@ const deletePond = async (id) => {
 export const pondsService = {
   getAll,
   getById,
+  getListByElement,
   insertPond,
   updatePond,
   deletePond,

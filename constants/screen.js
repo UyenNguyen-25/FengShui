@@ -8,4 +8,5 @@ export const SCREEN = {
   POND_SCREEN: "pond-screen",
   SOCIAL_SCREEN: "social-screen",
   FENGSHUI_SCREEN: "fengshui-screen",
+  POST_SCREEN: "post-screen",
 };

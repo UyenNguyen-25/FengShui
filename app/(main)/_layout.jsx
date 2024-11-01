@@ -22,7 +22,7 @@ import SocialScreen from './posts';
 import BottomNavigation from '@/components/BottomNavigation';
 import PostScreen from './posts/PostScreen';
 import FengShuiScreen from './fengshui';
-import NotificationScreen from './(notifications)/index';
+import NotificationScreen from "./(notifications)";
 
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -110,9 +110,9 @@ export default function CustomerLayout() {
       <Drawer.Screen name={'Main'} component={BottomTab} />
       <Drawer.Screen name={SCREEN.PROFILE} component={Profile} options={{ headerShown: false }} />
       <Drawer.Screen name={SCREEN.EDIT_PROFILE} component={EditProfile} options={{ headerShown: false }} />
+      <Drawer.Screen name={SCREEN.POST_SCREEN} component={PostScreen} options={{ headerShown: true }} />
       <Drawer.Screen name={SCREEN.POND_SCREEN} component={PondScreen} />
       <Drawer.Screen name={SCREEN.LOOKUP} component={LookupTab} />
-      <Drawer.Screen name={SCREEN.POST_SCREEN} component={PostScreen} options={{ headerShown: true }} />
     </Drawer.Navigator>
   );
 }
