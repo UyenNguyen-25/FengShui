@@ -23,6 +23,7 @@ import BottomNavigation from '@/components/BottomNavigation';
 import PostScreen from './posts/PostScreen';
 import FengShuiScreen from './fengshui';
 import NotificationScreen from "./(notifications)";
+import PackageScreen from "./package";
 
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -100,6 +101,9 @@ export default function CustomerLayout() {
       screenOptions={{
         headerTitle: () => <View style={styles.header}><Image style={styles.logoImage} resizeMode='contain' source={require('@/assets/images/logo-ca-Koi.png')} /></View>,
         headerRight: () => session && <View style={styles.icons}>
+            <Pressable onPress={() => navigation.navigate(SCREEN.PACKAGE_SCREEN)}>
+                  <AntDesign name="gift" size={hp(3.2)} color={theme.colors.text} />
+                </Pressable>
           <Pressable onPress={() => navigation.navigate('profile')}>
             <AntDesign name="user" size={hp(3.2)} color={theme.colors.text} />
           </Pressable>
@@ -113,6 +117,7 @@ export default function CustomerLayout() {
       <Drawer.Screen name={SCREEN.POST_SCREEN} component={PostScreen} options={{ headerShown: true }} />
       <Drawer.Screen name={SCREEN.POND_SCREEN} component={PondScreen} />
       <Drawer.Screen name={SCREEN.LOOKUP} component={LookupTab} />
+      <Drawer.Screen name={SCREEN.PACKAGE_SCREEN} component={PackageScreen} />
     </Drawer.Navigator>
   );
 }
@@ -139,6 +144,8 @@ const styles = StyleSheet.create({
     width: wp(15),
   },
   icons: {
-    paddingRight: wp(2)
+    paddingRight: wp(2),
+    flexDirection: 'row',
+    gap: 15
   },
 });

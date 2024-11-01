@@ -10,6 +10,7 @@ import {
 import Carousel from "react-native-reanimated-carousel";
 import { useNavigation } from "@react-navigation/native";
 import { hp } from "@/helper/common";
+import { useAuth } from "@/hooks/useAuth";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -23,9 +24,10 @@ const images = [
 
 const MenuIcons = ({ navigation }) => {
   const goToPond = () => navigation.navigate("pond-screen");
+  const {user} = useAuth();
   return (
     <View>
-      <Text style={styles.welcome}>Chào bạn, Nguyen Van An</Text>
+      <Text style={styles.welcome}>Chào bạn, {user?.name}</Text>
       <Text style={styles.subWelcome}>Hôm nay bạn muốn xem gì?</Text>
 
       <View style={styles.carouselContainer}>

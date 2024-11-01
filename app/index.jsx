@@ -15,6 +15,8 @@ const Welcome = () => {
         return router.push(action)
     }
 
+    console.log('gggggggggg',user?.role)
+
     return (
         <ScreenWrapper>
             <StatusBar style='dark' />
