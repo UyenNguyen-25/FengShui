@@ -21,8 +21,14 @@ const images = [
 ];
 
 const MenuIcons = ({ navigation }) => {
+<<<<<<< Updated upstream
 
   const goToPond = () => navigation.navigate("pond-screen")
+=======
+  const goToPond = () => navigation.navigate("pond-screen");
+  const goToCare = () => navigation.navigate("fishcare");
+  const {user} = useAuth();
+>>>>>>> Stashed changes
   return (
     <View>
       <Text style={styles.welcome}>Chào bạn, Nguyen Van An</Text>
@@ -95,7 +101,8 @@ const MenuIcons = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigation.navigate("home")}
+          // onPress={() => navigation.navigate(SCREEN.FISHCARE)}
+          onPress={goToCare}
         >
           <View style={styles.menuIcon}>
             <Image

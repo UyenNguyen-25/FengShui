@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     View,
     Text,
@@ -11,35 +11,44 @@ import {
 import { StatusBar } from "expo-status-bar";
 import BottomNavigation from "@/components/BottomNavigation";
 import MenuIcons from "@/components/MenuIcons";
+import { getAll } from '@/services/elements/koiFishService';
 
 const Home = ({ navigation }) => {
+<<<<<<< Updated upstream
+=======
+    const [blogPosts, setBlogPosts] = useState([]);
+
+    useEffect(() => {
+        const fetchBlogPosts = async () => {
+            try {
+                const result = await getAll();
+                if (result.success) {
+                    setBlogPosts(result.data);
+                } else {
+                    console.error("Error fetching blog posts: ", result.msg);
+                }
+            } catch (error) {
+                console.error("Error fetching blog posts: ", error);
+            }
+        };
+
+        fetchBlogPosts();
+    }, []);
+
+>>>>>>> Stashed changes
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style="dark" />
-            {/* Blog Posts */}
             <ScrollView style={styles.blogContainer}>
-                {/* Menu Icons */}
                 <MenuIcons navigation={navigation} />
-                <BlogPost
-                    title="Cá Koi đem lại may mắn"
-                    subtitle="Tìm hiểu về ý nghĩa phong thủy của từng loại cá Koi"
-                    category="Phong thủy"
-                />
-                <BlogPost
-                    title="Cách bố trí hồ cá hợp phong thủy"
-                    subtitle="Hướng dẫn chi tiết cách đặt hồ cá trong nhà và sân vườn"
-                    category="Hồ cá"
-                />
-                <BlogPost
-                    title="Top 10 giống cá Koi đẹp nhất"
-                    subtitle="Khám phá những giống cá Koi được ưa chuộng nhất"
-                    category="Giống cá"
-                />
-                <BlogPost
-                    title="Chăm sóc cá Koi hiệu quả"
-                    subtitle="Những mẹo chăm sóc cá Koi để chúng luôn khỏe mạnh"
-                    category="Chăm sóc"
-                />
+                {blogPosts.map((post, index) => (
+                    <BlogPost
+                        key={index}
+                        title={post.title}
+                        subtitle={post.subtitle}
+                        category={post.category}
+                    />
+                ))}
             </ScrollView>
         </SafeAreaView>
     );

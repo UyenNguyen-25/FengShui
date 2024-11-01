@@ -17,7 +17,14 @@ import PondScreen from './pond/pond';
 import SocialScreen from './posts';
 import BottomNavigation from '@/components/BottomNavigation';
 import FengShuiScreen from './fengshui';
+<<<<<<< Updated upstream
 import NotificationScreen from './(notifications)/index';
+=======
+import NotificationScreen from "./(notifications)";
+import PackageScreen from "./package";
+import PondDetail from "./pond/pond-detail";
+import FishCare from './FishCare';
+>>>>>>> Stashed changes
 
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator()
@@ -113,6 +120,7 @@ export default function CustomerLayout() {
 }
 
 function BottomTab() {
+<<<<<<< Updated upstream
     return <Tab.Navigator initialRouteName={SCREEN.HOME}
         tabBar={props => <BottomNavigation {...props} />}
         screenOptions={{
@@ -125,6 +133,25 @@ function BottomTab() {
         <Tab.Screen name={SCREEN.FENGSHUI_SCREEN} component={FengShuiScreen} />
 
     </Tab.Navigator>
+=======
+  return <Tab.Navigator initialRouteName={SCREEN.HOME}
+    tabBar={props => <BottomNavigation {...props} />}
+    screenOptions={{
+      headerShown: false,
+      tabBarShowLabel: false,
+    }}>
+    <Tab.Screen name={SCREEN.HOME} component={Home} />
+    <Tab.Screen name={SCREEN.NOTIFICATION_SCREEN} component={NotificationScreen} />
+    <Tab.Screen name={SCREEN.SOCIAL_SCREEN} component={SocialScreen} />
+    <Tab.Screen name={SCREEN.FENGSHUI_SCREEN} component={FengShuiScreen} />
+    <Tab.Screen name={SCREEN.POND_SCREEN} component={PondScreen} />
+    <Tab.Screen name={SCREEN.POND_DETAIL} component={PondDetail} />
+    <Tab.Screen name={SCREEN.POST_SCREEN} component={PostScreen} />
+    <Tab.Screen name={SCREEN.LOOKUP} component={LookupTab} />
+    <Tab.Screen name={SCREEN.PACKAGE_SCREEN} component={PackageScreen} />
+    <Tab.Screen name={SCREEN.FISHCARE} component={FishCare} />
+  </Tab.Navigator>
+>>>>>>> Stashed changes
 }
 
 const styles = StyleSheet.create({

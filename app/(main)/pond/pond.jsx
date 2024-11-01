@@ -44,6 +44,11 @@ const PondScreen = ({ navigation }) => {
               title={pond.pond_shape}
               subtitle={pond.pond_location}
               category={pond.suit_element}
+<<<<<<< Updated upstream
+=======
+              navigation={navigation}
+              id={pond.id}
+>>>>>>> Stashed changes
             />
           ))
         )}
@@ -53,7 +58,11 @@ const PondScreen = ({ navigation }) => {
   );
 };
 
+<<<<<<< Updated upstream
 const BlogPost = ({ title, subtitle, category }) => (
+=======
+const BlogPost = ({ title, subtitle, category, navigation, id }) => (
+>>>>>>> Stashed changes
   <View style={styles.blogPost}>
     <View style={styles.blogContent}>
       <View style={styles.categoryBadge}>
@@ -61,7 +70,14 @@ const BlogPost = ({ title, subtitle, category }) => (
       </View>
       <Text style={styles.blogTitle}>{title}</Text>
       <Text style={styles.blogSubtitle}>{subtitle}</Text>
+<<<<<<< Updated upstream
       <TouchableOpacity style={styles.readButton}>
+=======
+      <TouchableOpacity
+        style={styles.readButton}
+        onPress={() => navigation.navigate(SCREEN.POND_DETAIL, { pondid: id })}
+      >
+>>>>>>> Stashed changes
         <Text style={styles.readButtonText}>Đọc thêm</Text>
       </TouchableOpacity>
     </View>
