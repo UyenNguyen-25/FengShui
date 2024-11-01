@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
 import { pondsService } from '../../../services/elements/pondsService';
 import { koiFishService } from '../../../services/elements/koiFishService';
 import { postService } from '../../../services/post/postService';
+import { useAuth } from '@/hooks/useAuth'
 
 export default function PostScreen() {
     const [description, setDescription] = useState('');
@@ -15,6 +16,7 @@ export default function PostScreen() {
     const [fileUri, setFileUri] = useState(null);
     const [ponds, setPonds] = useState([]);
     const [kois, setKois] = useState([]);
+    const {user} = useAuth();
 
     useEffect(() => {
         const fetchPonds = async () => {
@@ -34,17 +36,29 @@ export default function PostScreen() {
         fetchKois();
     }, []);
 
+    useEffect(() => {
+        if (element) {
+            const fetchKoisByElement = async () => {
+                const response = await koiFishService.getListByElement(element);
+                if (response.success) setKois(response.data);
+            };
+            fetchKoisByElement();
+        } else {
+            setKois([]);
+        }
+    }, [element]);
+
     const handlePost = async () => {
         const newPostData = {
             title,
             description,
-            file: fileUri,
+            file: [fileUri],
             element,
             koi_id: koi,
             pond_id: pond,
         };
 
-        const response = await postService.insertPost(newPostData, "user_id_placeholder");
+        const response = await postService.insertPost(newPostData, user.id);
 
         if (response.success) {
             Alert.alert("Success", "Your post has been created!");
@@ -79,6 +93,7 @@ export default function PostScreen() {
     };
 
     return (
+        <ScrollView>
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerTitle}>Tạo bài viết</Text>
@@ -161,6 +176,7 @@ export default function PostScreen() {
                 />
             )}
         </View>
+        </ScrollView>
     );
 }
 
