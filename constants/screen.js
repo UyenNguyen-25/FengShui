@@ -7,4 +7,5 @@ export const SCREEN = {
   NOTIFICATIONS: "notifications",
   POND_SCREEN: "pond-screen",
   SOCIAL_SCREEN: "social-screen",
+  POST_SCREEN: "post-screen"
 };
