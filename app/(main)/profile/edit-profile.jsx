@@ -149,7 +149,7 @@ const EditProfile = () => {
                                 textColor: 'red'
                             }}
                             negativeButton={{
-                                label: "Hủy",
+                                label: "Đóng",
                                 textColor: theme.colors.textLight
                             }}
                             on
@@ -174,12 +174,12 @@ const EditProfile = () => {
                                 setNewData({ ...newData, element: enSelectedItem })
                             }}
                             renderButton={(isOpened) => {
-                                const enSelectedItem = viElement[newData.element]
+                                const viSelectedItem = viElement[newData.element]
 
                                 return (
                                     <View style={styles.dropdownButtonStyle}>
                                         <Text style={styles.dropdownButtonTxtStyle}>
-                                            {(enSelectedItem) || 'Vui lòng chọn mệnh'}
+                                            {(viSelectedItem) || 'Vui lòng chọn mệnh'}
                                         </Text>
                                         <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={styles.dropdownButtonArrowStyle} />
                                     </View>

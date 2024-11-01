@@ -15,8 +15,8 @@ const LookupTab = () => {
                 tabBarIconStyle: { display: "none" },
             }}
             tabBar={props => <CustomTabBar {...props} />}>
-            <Tab.Screen name='Tra cứu' component={Lookup} />
-            <Tab.Screen name="Kiểm tra" component={CheckSuitability} />
+            <Tab.Screen name='Tư vấn' component={Lookup} />
+            <Tab.Screen name="Tra cứu" component={CheckSuitability} />
         </Tab.Navigator>
     )
 }

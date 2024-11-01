@@ -38,11 +38,11 @@ export default function CustomerLayout() {
     {
       text: "Đăng xuất",
       onPress: async () => {
-        const result = await signOut();
-        if (result.success) {
-          router.push("/(auth)/login");
+        const { success, error } = await signOut();
+        if (success) {
+          router.navigate("/")
         } else {
-          console.log(result.error);
+          console.log(error);
 
           Alert.alert("Đã xảy ra lỗi trong quá trình xử lý");
         }
@@ -62,7 +62,7 @@ export default function CustomerLayout() {
         const focused = routeNames[index];
 
         return (
-          <DrawerContentScrollView {...props} >
+          <DrawerContentScrollView {...props}>
             <DrawerItem
               label={'Trang chủ'}
               onPress={() => props.navigation.navigate(SCREEN.HOME)}
@@ -83,12 +83,14 @@ export default function CustomerLayout() {
               inactiveBackgroundColor={theme.colors.roseLight}
               inactiveTintColor={theme.colors.rose}
               labelStyle={{ textAlign: "center" }}
+              style={{ marginTop: 50 }}
             /> : <DrawerItem
               label={'ĐĂNG NHẬP'}
               onPress={() => router.navigate('/(auth)/login')}
               inactiveBackgroundColor={theme.colors.roseLight}
               inactiveTintColor={theme.colors.rose}
               labelStyle={{ textAlign: "center" }}
+              style={{ marginTop: 50 }}
             />}
           </DrawerContentScrollView>
         )
@@ -102,17 +104,15 @@ export default function CustomerLayout() {
         </View>,
 
       }}
-        >
-            <Drawer.Screen name={'Main'} component={BottomTab} />
-            <Drawer.Screen name={SCREEN.PROFILE} component={Profile} options={{ headerShown: false }} />
-            <Drawer.Screen name={SCREEN.EDIT_PROFILE} component={EditProfile} options={{ headerShown: false }} />
-            <Drawer.Screen name={SCREEN.POND_SCREEN} component={PondScreen} />
-            <Drawer.Screen name={SCREEN.LOOKUP} component={LookupTab} />
-            <Drawer.Screen name={SCREEN.POST_SCREEN} component={PostScreen} options={{ headerShown: true }} />
-            {/* <Drawer.Screen name={SCREEN.NOTIFICATIONS} component={Notifications} /> */}
-            {/* <Drawer.Screen name={SCREEN.SOCIAL_SCREEN} component={SocialScreen} /> */}
-        </Drawer.Navigator>
-    );
+    >
+      <Drawer.Screen name={'Main'} component={BottomTab} />
+      <Drawer.Screen name={SCREEN.PROFILE} component={Profile} options={{ headerShown: false }} />
+      <Drawer.Screen name={SCREEN.EDIT_PROFILE} component={EditProfile} options={{ headerShown: false }} />
+      <Drawer.Screen name={SCREEN.POND_SCREEN} component={PondScreen} />
+      <Drawer.Screen name={SCREEN.LOOKUP} component={LookupTab} />
+      <Drawer.Screen name={SCREEN.POST_SCREEN} component={PostScreen} options={{ headerShown: true }} />
+    </Drawer.Navigator>
+  );
 }
 
 function BottomTab() {
