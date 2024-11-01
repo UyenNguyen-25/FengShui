@@ -24,6 +24,7 @@ import PostScreen from './posts/PostScreen';
 import FengShuiScreen from './fengshui';
 import NotificationScreen from "./(notifications)";
 import PackageScreen from "./package";
+import PondDetail from "./pond/pond-detail";
 
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -101,9 +102,9 @@ export default function CustomerLayout() {
       screenOptions={{
         headerTitle: () => <View style={styles.header}><Image style={styles.logoImage} resizeMode='contain' source={require('@/assets/images/logo-ca-Koi.png')} /></View>,
         headerRight: () => session && <View style={styles.icons}>
-            <Pressable onPress={() => navigation.navigate(SCREEN.PACKAGE_SCREEN)}>
-                  <AntDesign name="gift" size={hp(3.2)} color={theme.colors.text} />
-                </Pressable>
+          <Pressable onPress={() => navigation.navigate(SCREEN.PACKAGE_SCREEN)}>
+            <AntDesign name="gift" size={hp(3.2)} color={theme.colors.text} />
+          </Pressable>
           <Pressable onPress={() => navigation.navigate('profile')}>
             <AntDesign name="user" size={hp(3.2)} color={theme.colors.text} />
           </Pressable>
@@ -114,10 +115,7 @@ export default function CustomerLayout() {
       <Drawer.Screen name={'Main'} component={BottomTab} />
       <Drawer.Screen name={SCREEN.PROFILE} component={Profile} options={{ headerShown: false }} />
       <Drawer.Screen name={SCREEN.EDIT_PROFILE} component={EditProfile} options={{ headerShown: false }} />
-      <Drawer.Screen name={SCREEN.POST_SCREEN} component={PostScreen} options={{ headerShown: true }} />
-      <Drawer.Screen name={SCREEN.POND_SCREEN} component={PondScreen} />
-      <Drawer.Screen name={SCREEN.LOOKUP} component={LookupTab} />
-      <Drawer.Screen name={SCREEN.PACKAGE_SCREEN} component={PackageScreen} />
+
     </Drawer.Navigator>
   );
 }
@@ -133,6 +131,11 @@ function BottomTab() {
     <Tab.Screen name={SCREEN.NOTIFICATION_SCREEN} component={NotificationScreen} />
     <Tab.Screen name={SCREEN.SOCIAL_SCREEN} component={SocialScreen} />
     <Tab.Screen name={SCREEN.FENGSHUI_SCREEN} component={FengShuiScreen} />
+    <Tab.Screen name={SCREEN.POND_SCREEN} component={PondScreen} />
+    <Tab.Screen name={SCREEN.POND_DETAIL} component={PondDetail} />
+    <Tab.Screen name={SCREEN.POST_SCREEN} component={PostScreen} />
+    <Tab.Screen name={SCREEN.LOOKUP} component={LookupTab} />
+    <Tab.Screen name={SCREEN.PACKAGE_SCREEN} component={PackageScreen} />
   </Tab.Navigator>
 }
 

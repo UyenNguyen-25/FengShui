@@ -9,5 +9,7 @@ export const SCREEN = {
   SOCIAL_SCREEN: "social-screen",
   FENGSHUI_SCREEN: "fengshui-screen",
   POST_SCREEN: "post-screen",
-  PACKAGE_SCREEN: "package-screen"
+  POND_DETAIL: "pond-detail",
+  POND_LAYOUT: "pond-layout",
+  PACKAGE_SCREEN: "package-screen",
 };
