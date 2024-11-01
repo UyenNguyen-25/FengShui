@@ -64,10 +64,10 @@ const Profile = () => {
               <Image style={styles.avatar} source={require('@/assets/images/avatar.png')} />
             </View>
             <Pressable
-              style={[styles.shadowStyle, { position: 'absolute', right: 0, bottom: 0, backgroundColor: 'white', borderRadius: 50, padding: 3 }]}
+              style={[styles.shadowStyle, { position: 'absolute', right: 0, bottom: 0, backgroundColor: 'white', borderRadius: 50, padding: 4 }]}
               onPress={() => navigation.navigate('edit-profile')}
             >
-              <Feather name="edit-3" size={18} color="black" />
+              <Feather name="edit-3" size={18} color={theme.colors.textLight} />
             </Pressable>
           </View>
           {/* username, email */}
@@ -76,29 +76,22 @@ const Profile = () => {
             <Text style={styles.email}>{user?.email}</Text>
           </View>
 
-          {/* phone */}
-          {user && user.phone &&
-            <View style={styles.info}>
-              <AntDesign name="phone" size={24} color={theme.colors.textLight} />
-              <Text style={styles.infoTxt}>{user.phone}</Text>
-            </View>}
-
           {/* date of birth*/}
           {user && user.date_of_birth &&
             <View style={styles.info}>
               <AntDesign name="calendar" size={24} color={theme.colors.textLight} />
-              <Text style={styles.infoTxt}>{user.phone}</Text>
+              <Text style={styles.infoTxt}>{user.date_of_birth}</Text>
             </View>}
 
           {/* element*/}
           {user && user.element &&
             <View style={styles.info}>
-              {user.element === "Hỏa" ? <Fontisto name="fire" size={24} color={theme.colors.textLight} />
-                : user.element === "Thủy" ? <Entypo name="water" size={24} color={theme.colors.textLight} />
-                  : user.element === 'Thổ' ? <FontAwesome5 name="mountain" size={24} color={theme.colors.textLight} />
-                    : user.element === "Mộc" ? <Entypo name="tree" size={24} color={theme.colors.textLight} />
+              {user.element === "fire" ? <Fontisto name="fire" size={24} color={theme.colors.textLight} />
+                : user.element === "water" ? <Entypo name="water" size={24} color={theme.colors.textLight} />
+                  : user.element === 'earth' ? <FontAwesome5 name="mountain" size={24} color={theme.colors.textLight} />
+                    : user.element === "wood" ? <Entypo name="tree" size={24} color={theme.colors.textLight} />
                       : <MaterialCommunityIcons name="gold" size={24} color={theme.colors.textLight} />}
-              <Text style={styles.infoTxt}>{user.menh}</Text>
+              <Text style={styles.infoTxt}>{user.element}</Text>
             </View>}
         </View>
       </View>

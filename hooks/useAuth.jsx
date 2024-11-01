@@ -1,6 +1,5 @@
-import { getUser } from "@/services/users/userService"
+import { userService } from "@/services/users/userService"
 import { supabase } from "@/utils/supabase"
-import { router } from "expo-router"
 import { createContext, useContext, useEffect, useState } from "react"
 
 export const AuthContext = createContext({
@@ -18,14 +17,14 @@ export default function AuthProvider({ children }) {
         const fetchSession = async () => {
             const { data: { session } } = await supabase.auth.getSession()
 
-            setSession(session)
-
             if (session) {
-                const { user } = async () => getUser(session);
-                if (user) {
+                const { success, user } = await userService.getUser(session)
+                if (success) {
                     setUser(user)
                 }
             }
+
+            setSession(session)
         }
 
         fetchSession()

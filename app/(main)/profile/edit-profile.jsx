@@ -1,42 +1,56 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
-import ScreenWrapper from '@/components/ScreenWrapper'
-import BackButton from '@/components/BackButton'
+import { Alert, Platform, Pressable, StyleSheet, Text, View } from 'react-native'
 import { hp } from '@/helper/common'
 import { theme } from '@/constants/theme'
-import Input from '@/components/Input'
-import { updateUser } from '@/services/users/userService'
 import { useAuth } from '@/hooks/useAuth'
+import React, { useState } from 'react'
+import { userService } from '@/services/users/userService'
+import { elements, gender } from '@/constants/enWords'
+import { RadioButton } from 'react-native-paper'
+import ScreenWrapper from '@/components/ScreenWrapper'
+import BackButton from '@/components/BackButton'
+import Input from '@/components/Input'
 import AntDesign from '@expo/vector-icons/AntDesign'
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Button from '@/components/Button'
 import SelectDropdown from 'react-native-select-dropdown'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from "moment"
 
 const EditProfile = () => {
     const { user } = useAuth()
     const [loading, setLoading] = useState(false)
     const [newData, setNewData] = useState({
-        name: "",
-        gender: "",
-        date_of_birth: "",
-        element_id: "",
+        name: user.name,
+        gender: user.gender || 0,
+        date_of_birth: new Date(),
+        element: user.element,
+        total_post: user.total_post
     })
+    const [open, setOpen] = useState(false);
 
     const handleSubmit = async () => {
         let userData = { ...newData }
-        let { name, gender, date_of_birth, element_id } = userData
-        if (!name || !gender || !date_of_birth || !element_id) {
+        let { name, date_of_birth, element } = userData
+
+        console.log(user?.id);
+        if (!name || !date_of_birth || !element) {
             Alert.alert("Thông tin tài khoản", "Vui lòng không bỏ trống")
             return
         }
         setLoading(true)
 
-        const res = await updateUser(user?.id, userData)
+        const res = await userService.updateUser(user?.id, userData)
         setLoading(false)
 
         console.log('update user result: ', res);
+    }
+
+    const onChange = ({ type }, selectedData) => {
+        // console.log(type);
+        if (type === "set") {
+            const currentDate = selectedData
+            setNewData({ ...newData, date_of_birth: currentDate })
+        } else setOpen(false)
     }
 
     return (
@@ -46,48 +60,110 @@ const EditProfile = () => {
                     <View style={styles.backBtn}>
                         <BackButton size={hp(4)} />
                     </View>
-                    <View>
-                        <Text style={[styles.title]}>Chỉnh sửa thông tin</Text>
-                    </View>
+                    <Text style={styles.title}>Chỉnh sửa thông tin</Text>
                 </View>
                 <View style={styles.form}>
                     <View
                         style={styles.inputContainer}
                     >
-                        <Text>Họ và tên</Text>
+                        <Text style={styles.labelText}>Họ và tên</Text>
                         <Input
                             icon={<AntDesign name='user' size={20} color={theme.colors.textLight} />}
                             placeholder='Họ và tên'
+                            onChangeText={(e) => setNewData({ ...newData, name: e })
+                            }
                         />
                     </View>
                     <View
                         style={styles.inputContainer}
                     >
-                        <Text>Giới tính</Text>
-                        <Input
-                            icon={<FontAwesome name="transgender" size={20} color={theme.colors.textLight} />}
-                            placeholder='Giới tính'
-                        />
+                        <Text style={styles.labelText}>Giới tính</Text>
+                        <RadioButton.Group
+                            onValueChange={newValue => {
+                                const enValue = gender[newValue]
+                                console.log(enValue);
+
+                                setNewData({ ...newData, gender: enValue })
+                            }}
+                            value={newData.gender === 0 ? "Khác"
+                                : newData.gender === 1 ? "Nam" : "Nữ"}
+
+                        >
+                            <View style={{ flexDirection: "row", gap: 20 }}>
+                                <View style={styles.radioItem}>
+                                    <RadioButton value="Nam" color='red' />
+                                    <Text>Nam</Text>
+                                </View>
+                                <View style={styles.radioItem}>
+                                    <RadioButton value="Nữ" color='red' />
+                                    <Text>Nữ</Text>
+                                </View>
+                                <View style={styles.radioItem}>
+                                    <RadioButton value="Khác" color='red' />
+                                    <Text>Khác</Text>
+                                </View>
+
+
+                            </View>
+                        </RadioButton.Group>
                     </View>
                     <View
                         style={styles.inputContainer}
                     >
-                        <Text>Ngày sinh</Text>
-                        <Input
-                            icon={<AntDesign name='calendar' size={20} color={theme.colors.textLight} />}
-                            placeholder='Ngày sinh'
-                        />
+                        <Text style={styles.labelText}>Ngày sinh</Text>
+                        <Pressable onPress={() => { setOpen(!open) }}>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    flexDirection: "row",
+                                    height: hp(6.5),
+                                    alignItems: "center",
+                                    borderWidth: 0.4,
+                                    borderColor: theme.colors.text,
+                                    borderRadius: theme.radius.xxl,
+                                    borderCurve: "continuous",
+                                    paddingHorizontal: 18,
+                                    gap: 12,
+                                }}
+                            >
+                                <AntDesign name='calendar' size={20} color={theme.colors.textLight} />
+                                <Text>{moment(newData.date_of_birth).format("DD/MM/YYYY")}</Text>
+                            </View>
+                        </Pressable>
+                        {open && <DateTimePicker
+                            mode='date'
+                            display='spinner'
+                            value={newData.date_of_birth}
+                            maximumDate={new Date()}
+                            onChange={onChange}
+                            positiveButton={{
+                                label: "xác nhận",
+                                textColor: 'red'
+                            }}
+                            negativeButton={{
+                                label: "Hủy",
+                                textColor: theme.colors.textLight
+                            }}
+                            on
+                        />}
                     </View>
                     <View
                         style={styles.inputContainer}
                     >
+                        <Text style={styles.labelText}>Mệnh</Text>
+
                         <SelectDropdown
                             data={[
-
+                                "Kim",
+                                "Mộc",
+                                "Thủy",
+                                "Hỏa",
+                                "Thổ"
                             ]}
                             onSelect={(selectedItem) => {
-                                console.log(selectedItem.toLowerCase());
-                                setNewData({ ...newData, element_id: selectedItem })
+                                const enSelectedItem = elements[selectedItem]
+                                console.log(enSelectedItem);
+                                setNewData({ ...newData, element: enSelectedItem })
                             }}
                             renderButton={(selectedItem, isOpened) => {
                                 return (
@@ -114,7 +190,7 @@ const EditProfile = () => {
                     <Button
                         title='Lưu thay đổi'
                         buttonStyle={styles.btn}
-                        textStyle={styles.title}
+                        textStyle={styles.btnTxt}
                         onPress={handleSubmit}
                         loading={loading} />
                 </View>
@@ -129,6 +205,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: hp(3),
+        paddingBottom: hp(10)
     },
     header: {
         height: hp(5),
@@ -141,9 +218,7 @@ const styles = StyleSheet.create({
         left: 0
     },
     title: {
-        color: theme.colors.text,
         fontSize: hp(3),
-        textAlign: 'center',
         fontWeight: theme.fonts.bold
     },
     form: {
@@ -195,15 +270,24 @@ const styles = StyleSheet.create({
         gap: 10
     },
     footer: {},
-    title: {
-        color: "white",
-        fontSize: hp(2.5),
-        textAlign: 'center',
-        fontWeight: theme.fonts.semibold
-    },
     btn: {
         backgroundColor: "red",
-        paddingVertical: hp(1),
+        paddingVertical: hp(2),
         borderRadius: 15
     },
+    btnTxt: {
+        fontSize: hp(2.5),
+        fontWeight: theme.fonts.semibold,
+        color: "white",
+        textAlign: "center"
+    },
+    radioItem: {
+        alignItems: "center",
+        flexDirection: "row",
+        gap: 2
+    },
+    labelText: {
+        fontSize: hp(2.5),
+        fontWeight: theme.fonts.bold
+    }
 })

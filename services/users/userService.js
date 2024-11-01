@@ -13,8 +13,10 @@ import { supabase } from "@/utils/supabase";
 //    total_of_post
 // )
 
-export const getUser = async (session) => {
+const getUser = async (session) => {
   try {
+    console.log(session.user.id);
+
     const { data: user, error } = await supabase
       .from("users")
       .select("*")
@@ -24,27 +26,29 @@ export const getUser = async (session) => {
       console.log("get user from db fail: ", error);
       return { success: false, msg: error.message };
     }
-    return { success: false, user };
+    return { success: true, user };
   } catch (error) {
     console.log("got error: ", error);
     return { success: false, msg: error.message };
   }
 };
 
-export const updateUser = async (userId, data) => {
+const updateUser = async (id, data) => {
   try {
-    const { error } = await supabase
-      .from("users")
-      .update(data)
-      .eq("id", userId);
+    console.log("userId: ", id);
+    console.log("data: ", data);
+
+    const { error } = await supabase.from("users").update(data).eq("id", id);
 
     if (error) {
       console.log("update user from db fail: ", error);
-      return { success: true, msg: error.message };
+      return { success: false, msg: error.message };
     }
-    return { success: false, data };
+    return { success: true, data };
   } catch (error) {
     console.log("got error: ", error);
     return { success: false, msg: error.message };
   }
 };
+
+export const userService = { getUser, updateUser };

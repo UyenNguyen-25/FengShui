@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks/useAuth'
 import Loading from '@/components/Loading'
 
 const Welcome = () => {
-    const { session, mounting } = useAuth()
+    const { session, user, mounting } = useAuth()
 
     const handlePress = (action) => {
         return router.push(action)
@@ -34,8 +34,9 @@ const Welcome = () => {
                                     <Pressable onPress={() => handlePress('/(main)')}><Text style={[styles.txt, { color: theme.colors.textLight, textDecorationLine: "underline" }]}>Tham gia mà không cần tài khoản</Text></Pressable>
                                 </View>
                             </View>
-                        </> :
-                        <Redirect href={"/(main)"} />}
+                        </> : user?.role === "admin" ?
+                            <Redirect href={"/(admin)"} />
+                            : <Redirect href={'/(main)'} />}
                 </View>
             </View>
         </ScreenWrapper>

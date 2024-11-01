@@ -9,10 +9,10 @@ import {
     ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import BottomNavigation from "@/components/BottomNavigation";
 import MenuIcons from "@/components/MenuIcons";
 
 const Home = ({ navigation }) => {
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style="dark" />

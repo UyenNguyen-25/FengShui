@@ -9,7 +9,6 @@ import { signOut } from '@/services/auth/authService';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
 import Home from '.';
-import Notifications from './notifications';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import LookupTab from './(lookup)/_layout';
 import Profile from './profile';
@@ -91,9 +90,6 @@ export default function CustomerLayout() {
             screenOptions={{
                 headerTitle: () => <View style={styles.header}><Image style={styles.logoImage} resizeMode='contain' source={require('@/assets/images/logo-ca-Koi.png')} /></View>,
                 headerRight: () => session && <View style={styles.icons}>
-                    <Pressable onPress={() => navigation.navigate("notifications")}>
-                        <AntDesign name="hearto" size={hp(3.2)} color={theme.colors.text} />
-                    </Pressable>
                     <Pressable onPress={() => navigation.navigate('profile')}>
                         <AntDesign name="user" size={hp(3.2)} color={theme.colors.text} />
                     </Pressable>
@@ -106,7 +102,6 @@ export default function CustomerLayout() {
             <Drawer.Screen name={SCREEN.EDIT_PROFILE} component={EditProfile} options={{ headerShown: false }} />
             <Drawer.Screen name={SCREEN.POND_SCREEN} component={PondScreen} />
             <Drawer.Screen name={SCREEN.LOOKUP} component={LookupTab} />
-            {/* <Drawer.Screen name={SCREEN.NOTIFICATIONS} component={Notifications} /> */}
             {/* <Drawer.Screen name={SCREEN.SOCIAL_SCREEN} component={SocialScreen} /> */}
         </Drawer.Navigator>
     );
@@ -120,7 +115,6 @@ function BottomTab() {
             tabBarShowLabel: false,
         }}>
         <Tab.Screen name={SCREEN.HOME} component={Home} />
-        <Tab.Screen name={SCREEN.NOTIFICATIONS} component={Notifications} />
         <Tab.Screen name={SCREEN.SOCIAL_SCREEN} component={SocialScreen} />
 
     </Tab.Navigator>
