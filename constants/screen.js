@@ -6,4 +6,5 @@ export const SCREEN = {
   EDIT_PROFILE: "edit-profile",
   POND_SCREEN: "pond-screen",
   SOCIAL_SCREEN: "social-screen",
+  POST_SCREEN: "post-screen"
 };

@@ -20,6 +20,7 @@ import EditProfile from './profile/edit-profile';
 import PondScreen from './pond/pond';
 import SocialScreen from './posts';
 import BottomNavigation from '@/components/BottomNavigation';
+import PostScreen from './posts/PostScreen';
 
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -101,15 +102,17 @@ export default function CustomerLayout() {
         </View>,
 
       }}
-    >
-      <Drawer.Screen name={'Main'} component={BottomTab} />
-      <Drawer.Screen name={SCREEN.PROFILE} component={Profile} options={{ headerShown: false }} />
-      <Drawer.Screen name={SCREEN.EDIT_PROFILE} component={EditProfile} options={{ headerShown: false }} />
-      <Drawer.Screen name={SCREEN.POND_SCREEN} component={PondScreen} />
-      <Drawer.Screen name={SCREEN.LOOKUP} component={LookupTab} />
-      {/* <Drawer.Screen name={SCREEN.SOCIAL_SCREEN} component={SocialScreen} /> */}
-    </Drawer.Navigator>
-  );
+        >
+            <Drawer.Screen name={'Main'} component={BottomTab} />
+            <Drawer.Screen name={SCREEN.PROFILE} component={Profile} options={{ headerShown: false }} />
+            <Drawer.Screen name={SCREEN.EDIT_PROFILE} component={EditProfile} options={{ headerShown: false }} />
+            <Drawer.Screen name={SCREEN.POND_SCREEN} component={PondScreen} />
+            <Drawer.Screen name={SCREEN.LOOKUP} component={LookupTab} />
+            <Drawer.Screen name={SCREEN.POST_SCREEN} component={PostScreen} options={{ headerShown: true }} />
+            {/* <Drawer.Screen name={SCREEN.NOTIFICATIONS} component={Notifications} /> */}
+            {/* <Drawer.Screen name={SCREEN.SOCIAL_SCREEN} component={SocialScreen} /> */}
+        </Drawer.Navigator>
+    );
 }
 
 function BottomTab() {

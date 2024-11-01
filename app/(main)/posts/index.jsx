@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const SocialScreen = () => {
+const SocialScreen = ({ navigation }) => {
     const cardData = [
         {
             id: 1,
@@ -31,7 +31,7 @@ const SocialScreen = () => {
                         placeholder="Bạn đang nghĩ gì?"
                         placeholderTextColor="#999"
                     />
-                    <TouchableOpacity style={styles.addButton}>
+                    <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('post-screen')}>
                         <Text style={styles.addButtonText}>+</Text>
                     </TouchableOpacity>
                 </View>
