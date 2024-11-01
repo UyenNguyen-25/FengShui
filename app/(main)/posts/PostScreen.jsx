@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
+import { pondsService } from '../../../services/elements/pondsService';
+import { koiFishService } from '../../../services/elements/koiFishService';
+import { postService } from '../../../services/post/postService';
 
 export default function PostScreen() {
     const [description, setDescription] = useState('');
@@ -10,22 +13,55 @@ export default function PostScreen() {
     const [pond, setPond] = useState(null);
     const [koi, setKoi] = useState(null);
     const [fileUri, setFileUri] = useState(null);
+    const [ponds, setPonds] = useState([]);
+    const [kois, setKois] = useState([]);
 
-    const handlePost = () => {
-        console.log({
-            userId: "user_id_placeholder",
+    useEffect(() => {
+        const fetchPonds = async () => {
+            const response = await pondsService.getAll();
+            console.log('pond', response.data)
+            if (response.success) setPonds(response.data);
+        };
+
+        const fetchKois = async () => {
+            const response = await koiFishService.getAll();
+            console.log('koi', response.data)
+            if (response.success) setKois(response.data);
+        };
+        
+
+        fetchPonds();
+        fetchKois();
+    }, []);
+
+    const handlePost = async () => {
+        const newPostData = {
+            title,
             description,
-            title: "New Post",
+            file: fileUri,
             element,
-            pond,
-            koi,
-            fileUri
-        });
+            koi_id: koi,
+            pond_id: pond,
+        };
+
+        const response = await postService.insertPost(newPostData, "user_id_placeholder");
+
+        if (response.success) {
+            Alert.alert("Success", "Your post has been created!");
+            setTitle('');
+            setDescription('');
+            setFileUri(null);
+            setElement(null);
+            setPond(null);
+            setKoi(null);
+        } else {
+            Alert.alert("Error", response.msg || "Could not create post. Please try again.");
+        }
     };
 
-    const launchImageLibrary = async () => {
+    const openImageLibrary = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (permissionResult.granted === false) {
+        if (!permissionResult.granted) {
             alert("Permission to access media library is required!");
             return;
         }
@@ -38,7 +74,7 @@ export default function PostScreen() {
         });
 
         if (!result.canceled) {
-            setFileUri(result.assets[0].uri); 
+            setFileUri(result.assets[0].uri);
         }
     };
 
@@ -60,7 +96,7 @@ export default function PostScreen() {
                     onValueChange={(itemValue) => setElement(itemValue)}
                     style={styles.picker}
                 >
-                    <Picker.Item label="Chọn Ngũ hành" value={null} />
+                    <Picker.Item label="Chọn Mệnh" value={null} />
                     <Picker.Item label="Kim" value="metal" />
                     <Picker.Item label="Mộc" value="wood" />
                     <Picker.Item label="Thủy" value="water" />
@@ -74,8 +110,13 @@ export default function PostScreen() {
                     style={styles.picker}
                 >
                     <Picker.Item label="Chọn Hồ cá" value={null} />
-                    <Picker.Item label="Pond 1" value="pond1" />
-                    <Picker.Item label="Pond 2" value="pond2" />
+                    {ponds.map((pond) => (
+                        <Picker.Item 
+                            key={pond.id} 
+                            label={`${pond.pond_shape} - ${pond.suit_element}`}
+                            value={pond.id} 
+                        />
+                    ))}
                 </Picker>
 
                 <Picker
@@ -84,8 +125,13 @@ export default function PostScreen() {
                     style={styles.picker}
                 >
                     <Picker.Item label="Chọn Cá Koi" value={null} />
-                    <Picker.Item label="Koi 1" value="koi1" />
-                    <Picker.Item label="Koi 2" value="koi2" />
+                    {kois.map((koi) => (
+                        <Picker.Item 
+                            key={koi.id} 
+                            label={`${koi.name} - ${koi.suit_element}`} 
+                            value={koi.id} 
+                        />
+                    ))}
                 </Picker>
             </View>
 
@@ -104,7 +150,7 @@ export default function PostScreen() {
                 multiline
             />
 
-            <TouchableOpacity style={styles.imageButton} onPress={launchImageLibrary}>
+            <TouchableOpacity style={styles.imageButton} onPress={openImageLibrary}>
                 <Text>Ảnh/Video</Text>
             </TouchableOpacity>
 
@@ -166,13 +212,13 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     pickerContainer: {
-        flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 20
+        marginBottom: 20,
+        gap: 10
     },
     picker: {
-        width: '30%',
+        width: '100%',
         backgroundColor: '#72A9E6'
     },
     imageButton: {
