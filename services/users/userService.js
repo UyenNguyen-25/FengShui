@@ -33,6 +33,25 @@ const getUser = async (session) => {
   }
 };
 
+const getUserById = async (userId) => {
+  try {
+    const { data: user, error } = await supabase
+      .from("users")
+      .select("name")
+      .eq("id", userId)
+      .single();
+
+    if (error) {
+      console.log("get user by id from db fail: ", error);
+      return { success: false, msg: error.message };
+    }
+    return { success: true, user };
+  } catch (error) {
+    console.log("got error: ", error);
+    return { success: false, msg: error.message };
+  }
+};
+
 const updateUser = async (id, data) => {
   try {
     console.log("data: ", data);
@@ -50,4 +69,4 @@ const updateUser = async (id, data) => {
   }
 };
 
-export const userService = { getUser, updateUser };
+export const userService = { getUser, updateUser, getUserById };
