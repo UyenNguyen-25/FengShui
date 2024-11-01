@@ -21,6 +21,8 @@ import PondScreen from './pond/pond';
 import SocialScreen from './posts';
 import BottomNavigation from '@/components/BottomNavigation';
 import PostScreen from './posts/PostScreen';
+import FengShuiScreen from './fengshui';
+import NotificationScreen from './(notifications)/index';
 
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -123,10 +125,10 @@ function BottomTab() {
       tabBarShowLabel: false,
     }}>
     <Tab.Screen name={SCREEN.HOME} component={Home} />
+    <Tab.Screen name={SCREEN.NOTIFICATION_SCREEN} component={NotificationScreen} />
     <Tab.Screen name={SCREEN.SOCIAL_SCREEN} component={SocialScreen} />
-
+    <Tab.Screen name={SCREEN.FENGSHUI_SCREEN} component={FengShuiScreen} />
   </Tab.Navigator>
-
 }
 
 const styles = StyleSheet.create({
