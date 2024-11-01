@@ -19,24 +19,32 @@ const Login = () => {
         password: "",
     })
 
-
     const emailRef = useRef("")
     const passwordRef = useRef("")
 
     async function signInWithEmail(email, password) {
         setIsLoading(true)
-        const { data: { session }, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
+        try {
+            console.log("sign in ne");
+            console.log("email: ", email);
+            console.log("password: ", password);
 
-        })
+            const { data: { session }, error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
 
-        if (error) { console.log(error.message) }
-        setIsLoading(false)
-        if (session) {
-            console.log(session);
+            })
 
-            router.push('/(main)')
+            if (error) { console.log(error.message) }
+            if (session) {
+                console.log(session);
+
+                router.push('/(main)')
+            }
+        } catch (error) {
+            console.log('got error at login screen: ', error);
+        } finally {
+            setIsLoading(false)
         }
     }
 
