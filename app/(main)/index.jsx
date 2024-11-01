@@ -9,13 +9,10 @@ import {
     ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import BottomNavigation from "@/components/BottomNavigation";
 import MenuIcons from "@/components/MenuIcons";
 import { getAll } from '@/services/elements/koiFishService';
 
 const Home = ({ navigation }) => {
-<<<<<<< Updated upstream
-=======
     const [blogPosts, setBlogPosts] = useState([]);
 
     useEffect(() => {
@@ -35,7 +32,6 @@ const Home = ({ navigation }) => {
         fetchBlogPosts();
     }, []);
 
->>>>>>> Stashed changes
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style="dark" />

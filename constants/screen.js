@@ -8,12 +8,14 @@ export const SCREEN = {
   POND_SCREEN: "pond-screen",
   SOCIAL_SCREEN: "social-screen",
   FENGSHUI_SCREEN: "fengshui-screen",
-<<<<<<< Updated upstream
-=======
   POST_SCREEN: "post-screen",
   POND_DETAIL: "pond-detail",
   POND_LAYOUT: "pond-layout",
   PACKAGE_SCREEN: "package-screen",
   FISHCARE: "fishcare",
->>>>>>> Stashed changes
+  DASHBOARD: "dashboard",
+  KOI_MANAGEMENT: "koi-management",
+  POND_MANAGEMENT: "pond-management",
+  PACKAGE_MANAGEMENT: "package-management",
+  USER_MANAGEMENT: "user-management",
 };

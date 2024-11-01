@@ -9,12 +9,15 @@ import {
   ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import BottomNavigation from "@/components/BottomNavigation";
 import { pondsService } from "@/services/elements/pondsService";
+import { useNavigation } from "@react-navigation/native";
+import { SCREEN } from "@/constants/screen";
 
-const PondScreen = ({ navigation }) => {
+const PondScreen = () => {
   const [ponds, setPonds] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const navigation = useNavigation()
 
   useEffect(() => {
     const fetchPonds = async () => {
@@ -30,6 +33,9 @@ const PondScreen = ({ navigation }) => {
     fetchPonds();
   }, []);
 
+  console.log(navigation);
+
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
@@ -44,25 +50,17 @@ const PondScreen = ({ navigation }) => {
               title={pond.pond_shape}
               subtitle={pond.pond_location}
               category={pond.suit_element}
-<<<<<<< Updated upstream
-=======
               navigation={navigation}
               id={pond.id}
->>>>>>> Stashed changes
             />
           ))
         )}
       </ScrollView>
-      <BottomNavigation />
     </SafeAreaView>
   );
 };
 
-<<<<<<< Updated upstream
-const BlogPost = ({ title, subtitle, category }) => (
-=======
 const BlogPost = ({ title, subtitle, category, navigation, id }) => (
->>>>>>> Stashed changes
   <View style={styles.blogPost}>
     <View style={styles.blogContent}>
       <View style={styles.categoryBadge}>
@@ -70,14 +68,7 @@ const BlogPost = ({ title, subtitle, category, navigation, id }) => (
       </View>
       <Text style={styles.blogTitle}>{title}</Text>
       <Text style={styles.blogSubtitle}>{subtitle}</Text>
-<<<<<<< Updated upstream
-      <TouchableOpacity style={styles.readButton}>
-=======
-      <TouchableOpacity
-        style={styles.readButton}
-        onPress={() => navigation.navigate(SCREEN.POND_DETAIL, { pondid: id })}
-      >
->>>>>>> Stashed changes
+      <TouchableOpacity style={styles.readButton} onPress={() => navigation.navigate(SCREEN.POND_DETAIL)}>
         <Text style={styles.readButtonText}>Đọc thêm</Text>
       </TouchableOpacity>
     </View>

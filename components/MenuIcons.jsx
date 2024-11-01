@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import { useNavigation } from "@react-navigation/native";
+import { hp } from "@/helper/common";
+import { useAuth } from "@/hooks/useAuth";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -21,17 +23,12 @@ const images = [
 ];
 
 const MenuIcons = ({ navigation }) => {
-<<<<<<< Updated upstream
-
-  const goToPond = () => navigation.navigate("pond-screen")
-=======
   const goToPond = () => navigation.navigate("pond-screen");
   const goToCare = () => navigation.navigate("fishcare");
   const {user} = useAuth();
->>>>>>> Stashed changes
   return (
     <View>
-      <Text style={styles.welcome}>Chào bạn, Nguyen Van An</Text>
+      <Text style={styles.welcome}>Chào bạn, {user?.name}</Text>
       <Text style={styles.subWelcome}>Hôm nay bạn muốn xem gì?</Text>
 
       <View style={styles.carouselContainer}>
@@ -42,7 +39,7 @@ const MenuIcons = ({ navigation }) => {
           autoPlay={true}
           data={images}
           scrollAnimationDuration={1000}
-          onSnapToItem={(index) => console.log("current index:", index)}
+          // onSnapToItem={(index) => console.log("current index:", index)}
           renderItem={({ item }) => (
             <View style={styles.articleItem}>
               <Image
@@ -71,10 +68,7 @@ const MenuIcons = ({ navigation }) => {
           <Text style={styles.menuText}>Tổng quan</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.menuItem}
-          onPress={goToPond}
-        >
+        <TouchableOpacity style={styles.menuItem} onPress={goToPond}>
           <View style={styles.menuIcon}>
             <Image
               source={require("@/assets/images/pond.png")}
@@ -132,12 +126,14 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   carouselContainer: {
-    marginVertical: 2,
+    marginTop: 2,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white"
   },
   articleItem: {
     width: viewportWidth * 0.8,
     marginHorizontal: viewportWidth * 0.1,
-    backgroundColor: "white",
     borderRadius: 8,
     padding: 16,
     alignItems: "center",
@@ -145,13 +141,13 @@ const styles = StyleSheet.create({
   },
   articleImage: {
     width: "100%",
-    height: 120,
+    height: hp(25),
     borderRadius: 8,
   },
   menuContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingBottom: 12,
+    paddingVertical: 12,
   },
   menuItem: {
     alignItems: "center",

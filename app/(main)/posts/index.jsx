@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,40 +12,40 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { SCREEN } from "@/constants/screen";
+import { postService } from "../../../services/post/postService";
+import { userService } from "../../../services/users/userService";
 
 const SocialScreen = () => {
   const [text, setText] = useState("");
+  const [posts, setPosts] = useState([]);
+  const [users, setUsers] = useState({});
   const navigation = useNavigation();
 
-  const posts = [
-    {
-      id: 1,
-      username: "kohaku_lover",
-      userAvatar: require("@/assets/images/social_1.jpeg"),
-      image: require("@/assets/images/social_1.jpeg"),
-      likes: "1,234",
-      caption: "Beautiful Kohaku Koi #koi #japan",
-      comments: "123",
-    },
-    {
-      id: 2,
-      username: "showa_master",
-      userAvatar: require("@/assets/images/social_2.png"),
-      image: require("@/assets/images/social_2.png"),
-      likes: "2,567",
-      caption: "Showa Koi in perfect condition",
-      comments: "234",
-    },
-    {
-      id: 3,
-      username: "taisho_sanke",
-      userAvatar: require("@/assets/images/social_3.png"),
-      image: require("@/assets/images/social_3.png"),
-      likes: "3,891",
-      caption: "Taisho Sanke showing great pattern",
-      comments: "345",
-    },
-  ];
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const response = await postService.getAll();
+      console.log('post', response.data);
+      if (response.success) {
+        setPosts(response.data);
+        const userPromises = response.data.map(post =>
+          userService.getUserById(post.userId)
+        );
+        const userResults = await Promise.all(userPromises);
+        const userMap = userResults.reduce((acc, result, index) => {
+          if (result.success) {
+            acc[response.data[index].userId] = result.user.name;
+          }
+          return acc;
+        }, {});
+        setUsers(userMap);
+      } else {
+        console.log("Failed to fetch posts:", response.msg);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   const CreatePostHeader = () => (
     <View style={styles.createPostHeader}>
@@ -64,7 +64,7 @@ const SocialScreen = () => {
       </View>
       <TouchableOpacity
         style={styles.imageUploadButton}
-        onPress={() => navigation.navigate("CreatePost")}
+        onPress={() => navigation.navigate(SCREEN.POST_SCREEN)}
       >
         <AntDesign name="pluscircleo" size={24} color="red" />
       </TouchableOpacity>
@@ -75,14 +75,14 @@ const SocialScreen = () => {
     <View style={styles.post}>
       <View style={styles.postHeader}>
         <View style={styles.userInfo}>
-          <Image source={item.userAvatar} style={styles.userAvatar} />
-          <Text style={styles.username}>{item.username}</Text>
+          <Image source={{ uri: item.file[0] }} style={styles.userAvatar} />
+          <Text style={styles.username}>{users[item.userId] || item.userId}</Text>
         </View>
         <TouchableOpacity>
           <FontAwesome name="ellipsis-h" size={20} color="#262626" />
         </TouchableOpacity>
       </View>
-      <Image source={item.image} style={styles.postImage} />
+      <Image source={{ uri: item.file[0] }} style={styles.postImage} />
       <View style={styles.postActions}>
         <View style={styles.leftActions}>
           <TouchableOpacity style={styles.actionButton}>
@@ -94,12 +94,12 @@ const SocialScreen = () => {
         </View>
       </View>
       <View style={styles.postDetails}>
-        <Text style={styles.likes}>{item.likes} likes</Text>
+        <Text style={styles.likes}>0 likes</Text>
         <View style={styles.captionContainer}>
-          <Text style={styles.username}>{item.username}</Text>
-          <Text style={styles.caption}> {item.caption}</Text>
+          <Text style={styles.title}> {item.title}</Text>
+          <Text style={styles.caption}> {item.description}</Text>
         </View>
-        <Text style={styles.comments}>View all {item.comments} comments</Text>
+        <Text style={styles.comments}>View all comments</Text>
       </View>
     </View>
   );
@@ -110,7 +110,7 @@ const SocialScreen = () => {
       <FlatList
         data={posts}
         renderItem={renderPost}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
@@ -197,11 +197,15 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   captionContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
     marginBottom: 6,
   },
   caption: {
     color: "#262626",
+  },
+  title: {
+    fontWeight: '600',
+    fontStyle: 'italic'
   },
   comments: {
     color: "#8e8e8e",

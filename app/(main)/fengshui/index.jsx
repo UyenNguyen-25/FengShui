@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { SCREEN } from '@/constants/screen';
 
 const FengShuiScreen = () => {
+  const navigation = useNavigation()
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -16,10 +19,6 @@ const FengShuiScreen = () => {
               </Text>
             </View>
           </View>
-<<<<<<< Updated upstream
-          
-=======
->>>>>>> Stashed changes
           <View style={styles.cardContent}>
             <View style={styles.iconContainer}>
               <FontAwesome5 name="yin-yang" size={50} color="#333" />
@@ -42,16 +41,11 @@ const FengShuiScreen = () => {
                 <FontAwesome5 name="star" size={8} color="#333" solid style={styles.star} />
               </View>
             </View>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(SCREEN.LOOKUP)}>
               <Text style={styles.buttonText}>Tư vấn</Text>
             </TouchableOpacity>
-<<<<<<< Updated upstream
-          </View>
-{/* 
-=======
           </View> */}
           {/* 
->>>>>>> Stashed changes
           <View style={styles.cardFooter}>
             <View style={styles.pointContainer}>
               <Text style={styles.pointText}>50</Text>
@@ -73,7 +67,7 @@ const FengShuiScreen = () => {
               </Text>
             </View>
           </View>
-          
+
           <View style={styles.cardContent}>
             <View style={styles.iconContainer}>
               <FontAwesome5 name="yin-yang" size={50} color="#333" />
@@ -83,16 +77,11 @@ const FengShuiScreen = () => {
                 <FontAwesome5 name="star" size={8} color="#333" solid style={styles.star} />
               </View>
             </View>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(SCREEN.CHECK_SUIT)}>
               <Text style={styles.buttonText}>Tra cứu</Text>
             </TouchableOpacity>
-<<<<<<< Updated upstream
-          </View>
-{/* 
-=======
           </View> */}
           {/* 
->>>>>>> Stashed changes
           <View style={styles.cardFooter}>
             <View style={styles.pointContainer}>
               <Text style={styles.pointText}>50</Text>
@@ -180,21 +169,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-//   cardFooter: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//     alignItems: 'center',
-//   },
-//   pointContainer: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     gap: 4,
-//   },
-//   pointText: {
-//     fontSize: 18,
-//     fontWeight: 'bold',
-//     color: '#333',
-//   },
+  //   cardFooter: {
+  //     flexDirection: 'row',
+  //     justifyContent: 'space-between',
+  //     alignItems: 'center',
+  //   },
+  //   pointContainer: {
+  //     flexDirection: 'row',
+  //     alignItems: 'center',
+  //     gap: 4,
+  //   },
+  //   pointText: {
+  //     fontSize: 18,
+  //     fontWeight: 'bold',
+  //     color: '#333',
+  //   },
 });
 
 export default FengShuiScreen;
