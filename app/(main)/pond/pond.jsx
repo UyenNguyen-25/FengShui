@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,42 +10,43 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import BottomNavigation from "@/components/BottomNavigation";
+import { pondsService } from "@/services/elements/pondsService";
 
 const PondScreen = ({ navigation }) => {
+  const [ponds, setPonds] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPonds = async () => {
+      const response = await pondsService.getAll();
+      if (response.success) {
+        setPonds(response.data);
+      } else {
+        console.log("Error fetching ponds: ", response.msg);
+      }
+      setLoading(false);
+    };
+
+    fetchPonds();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
 
-      {/* Menu Icons - đã bao gồm Carousel và các nút */}
-      {/* <MenuIcons navigation={navigation} /> */}
-
-      {/* <Text style={styles.blogHeader}>Blog Posts</Text> */}
       <ScrollView style={styles.blogContainer}>
-        <BlogPost
-          title="Cách bố trí hồ cá hợp phong thủy"
-          subtitle="Hướng dẫn chi tiết cách đặt hồ cá trong nhà và sân vườn"
-          category="Hồ cá"
-        />
-        <BlogPost
-          title="Ý nghĩa phong thủy của hồ cá"
-          subtitle="Tìm hiểu về ý nghĩa phong thủy khi đặt hồ cá trong nhà"
-          category="Hồ cá"
-        />
-        <BlogPost
-          title="Hướng dẫn chọn cá phong thủy"
-          subtitle="Những loại cá mang lại may mắn và tài lộc"
-          category="Hồ cá"
-        />
-        <BlogPost
-          title="Vị trí đặt hồ cá theo phong thủy"
-          subtitle="Các vị trí tốt nhất để đặt hồ cá trong nhà"
-          category="Hồ cá"
-        />
-        <BlogPost
-          title="Phong thủy nước trong hồ cá"
-          subtitle="Tầm quan trọng của nước trong phong thủy hồ cá"
-          category="Hồ cá"
-        />
+        {loading ? (
+          <Text>Loading...</Text>
+        ) : (
+          ponds.map((pond) => (
+            <BlogPost
+              key={pond.id}
+              title={pond.pond_shape}
+              subtitle={pond.pond_location}
+              category={pond.suit_element}
+            />
+          ))
+        )}
       </ScrollView>
       <BottomNavigation />
     </SafeAreaView>
