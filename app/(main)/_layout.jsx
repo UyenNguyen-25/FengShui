@@ -21,6 +21,8 @@ import PondScreen from './pond/pond';
 import SocialScreen from './posts';
 import BottomNavigation from '@/components/BottomNavigation';
 import PostScreen from './posts/PostScreen';
+import FengShuiScreen from './fengshui';
+import NotificationScreen from './(notifications)/index';
 
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -107,8 +109,6 @@ export default function CustomerLayout() {
             <Drawer.Screen name={SCREEN.PROFILE} component={Profile} options={{ headerShown: false }} />
             <Drawer.Screen name={SCREEN.EDIT_PROFILE} component={EditProfile} options={{ headerShown: false }} />
             <Drawer.Screen name={SCREEN.POND_SCREEN} component={PondScreen} />
-            <Drawer.Screen name={SCREEN.LOOKUP} component={LookupTab} />
-            <Drawer.Screen name={SCREEN.POST_SCREEN} component={PostScreen} options={{ headerShown: true }} />
             {/* <Drawer.Screen name={SCREEN.NOTIFICATIONS} component={Notifications} /> */}
             {/* <Drawer.Screen name={SCREEN.SOCIAL_SCREEN} component={SocialScreen} /> */}
         </Drawer.Navigator>
@@ -116,17 +116,17 @@ export default function CustomerLayout() {
 }
 
 function BottomTab() {
-  return <Tab.Navigator initialRouteName={SCREEN.HOME}
+    return <Tab.Navigator initialRouteName={SCREEN.HOME}
     tabBar={props => <BottomNavigation {...props} />}
     screenOptions={{
-      headerShown: false,
-      tabBarShowLabel: false,
+        headerShown: false,
+        tabBarShowLabel: false,
     }}>
     <Tab.Screen name={SCREEN.HOME} component={Home} />
+    <Tab.Screen name={SCREEN.NOTIFICATION_SCREEN} component={NotificationScreen} />
     <Tab.Screen name={SCREEN.SOCIAL_SCREEN} component={SocialScreen} />
-
-  </Tab.Navigator>
-
+    <Tab.Screen name={SCREEN.FENGSHUI_SCREEN} component={FengShuiScreen} />
+</Tab.Navigator>
 }
 
 const styles = StyleSheet.create({
