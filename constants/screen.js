@@ -12,4 +12,9 @@ export const SCREEN = {
   POND_DETAIL: "pond-detail",
   POND_LAYOUT: "pond-layout",
   PACKAGE_SCREEN: "package-screen",
+  DASHBOARD: "dashboard",
+  KOI_MANAGEMENT: "koi-management",
+  POND_MANAGEMENT: "pond-management",
+  PACKAGE_MANAGEMENT: "package-management",
+  USER_MANAGEMENT: "user-management",
 };

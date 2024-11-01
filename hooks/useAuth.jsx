@@ -19,10 +19,7 @@ export default function AuthProvider({ children }) {
             const { data: { session } } = await supabase.auth.getSession()
 
             if (session) {
-                const { success, user } = await userService.getUser(session)
-                if (success) {
-                    setUser(user)
-                }
+                await refreshAuthUser()
             }
 
             setSession(session)
@@ -36,11 +33,9 @@ export default function AuthProvider({ children }) {
     }, [])
 
     const refreshAuthUser = async () => {
-        if (session) {
-            const { success, user } = await userService.getUser(session)
-            if (success) {
-                setUser(user)
-            }
+        const { success, user } = await userService.getUser(session)
+        if (success) {
+            setUser(user)
         }
     }
 

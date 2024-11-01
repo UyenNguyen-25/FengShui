@@ -1,4 +1,4 @@
-// post(
+// blog(
 //   id,
 //   userId,
 //   title, //varchar,
@@ -13,13 +13,13 @@
 
 import { supabase } from "@/utils/supabase";
 
-export const postService = {
+export const blogService = {
   getAll: async () => {
     try {
-      const { data, error } = await supabase.from("post").select("*");
+      const { data, error } = await supabase.from("blog").select("*");
 
       if (error) {
-        console.log("Get All Post error: ", error);
+        console.log("Get All Blog error: ", error);
         return { success: false, msg: error.message };
       }
 
@@ -32,12 +32,12 @@ export const postService = {
   getById: async (id) => {
     try {
       const { data, error } = await supabase
-        .from("post")
+        .from("blog")
         .select("*")
         .eq("id", id)
         .single();
       if (error) {
-        console.log("get post by id from db fail: ", error);
+        console.log("get blog by id from db fail: ", error);
         return { success: false, msg: error.message };
       }
       return { success: true, data };
@@ -46,16 +46,16 @@ export const postService = {
       return { success: false, msg: error.message };
     }
   },
-  insertPost: async (newData, userId) => {
+  insertBlog: async (newData, userId) => {
     try {
-      const { status, type_product, suit_element, image } = newData;
+      const { title, description, file, element, koi_id, pond_id } = newData;
 
       const { error } = await supabase
-        .from("post")
-        .insert({ userId, status, type_product, suit_element, image });
+        .from("blog")
+        .insert({ userId, title, description, file, element, koi_id, pond_id });
 
       if (error) {
-        console.log("insert post to db fail: ", error);
+        console.log("insert blog to db fail: ", error);
         return { success: false, msg: error.message };
       }
       return { success: true, newData };
@@ -64,22 +64,24 @@ export const postService = {
       return { success: false, msg: error.message };
     }
   },
-  updatePost: async (id, newData) => {
+  updateBlog: async (id, newData) => {
     try {
-      const { status, type_product, suit_element, image } = newData;
+      const { title, description, file, element, koi_id, pond_id } = newData;
 
       const { error } = await supabase
-        .from("post")
+        .from("blog")
         .update({
-          status,
-          type_product,
-          suit_element,
-          image,
+          title,
+          description,
+          file,
+          element,
+          koi_id,
+          pond_id,
         })
         .eq("id", id);
 
       if (error) {
-        console.log("update post to db fail: ", error);
+        console.log("update blog to db fail: ", error);
         return { success: false, msg: error.message };
       }
       return { success: true, newData };
@@ -88,12 +90,12 @@ export const postService = {
       return { success: false, msg: error.message };
     }
   },
-  deletePost: async (id) => {
+  deleteBlog: async (id) => {
     try {
-      const response = await supabase.from("post").delete().eq("id", id);
+      const response = await supabase.from("blog").delete().eq("id", id);
 
       if (response.error) {
-        console.log("delete post to db fail: ", response.error);
+        console.log("delete blog to db fail: ", response.error);
         return { success: false, msg: response.error.message };
       }
       return { success: true, data: response.data };
