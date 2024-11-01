@@ -9,7 +9,6 @@ import { signOut } from '@/services/auth/authService';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
 import Home from '.';
-import Notifications from './notifications';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import LookupTab from './(lookup)/_layout';
 import Profile from './profile';
@@ -17,6 +16,8 @@ import EditProfile from './profile/edit-profile';
 import PondScreen from './pond/pond';
 import SocialScreen from './posts';
 import BottomNavigation from '@/components/BottomNavigation';
+import FengShuiScreen from './fengshui';
+import NotificationScreen from './(notifications)/index';
 
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator()
@@ -105,7 +106,6 @@ export default function CustomerLayout() {
             <Drawer.Screen name={SCREEN.PROFILE} component={Profile} options={{ headerShown: false }} />
             <Drawer.Screen name={SCREEN.EDIT_PROFILE} component={EditProfile} options={{ headerShown: false }} />
             <Drawer.Screen name={SCREEN.POND_SCREEN} component={PondScreen} />
-            <Drawer.Screen name={SCREEN.LOOKUP} component={LookupTab} />
             {/* <Drawer.Screen name={SCREEN.NOTIFICATIONS} component={Notifications} /> */}
             {/* <Drawer.Screen name={SCREEN.SOCIAL_SCREEN} component={SocialScreen} /> */}
         </Drawer.Navigator>
@@ -120,8 +120,9 @@ function BottomTab() {
             tabBarShowLabel: false,
         }}>
         <Tab.Screen name={SCREEN.HOME} component={Home} />
-        <Tab.Screen name={SCREEN.NOTIFICATIONS} component={Notifications} />
+        <Tab.Screen name={SCREEN.NOTIFICATION_SCREEN} component={NotificationScreen} />
         <Tab.Screen name={SCREEN.SOCIAL_SCREEN} component={SocialScreen} />
+        <Tab.Screen name={SCREEN.FENGSHUI_SCREEN} component={FengShuiScreen} />
 
     </Tab.Navigator>
 }

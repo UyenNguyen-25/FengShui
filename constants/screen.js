@@ -4,7 +4,8 @@ export const SCREEN = {
   CHECK_SUIT: "check-suitability",
   PROFILE: "profile",
   EDIT_PROFILE: "edit-profile",
-  NOTIFICATIONS: "notifications",
+  NOTIFICATION_SCREEN: "notification-screen",
   POND_SCREEN: "pond-screen",
   SOCIAL_SCREEN: "social-screen",
+  FENGSHUI_SCREEN: "fengshui-screen",
 };

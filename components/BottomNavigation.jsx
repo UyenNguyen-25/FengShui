@@ -1,9 +1,9 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 const BottomNavigation = ({ state, descriptors, navigation }) => {
-
   return (
     <View style={styles.bottomNavContainer}>
       <View style={styles.bottomNav}>
@@ -11,25 +11,26 @@ const BottomNavigation = ({ state, descriptors, navigation }) => {
           style={styles.navItem}
           onPress={() => navigation.navigate("home")}
         >
-          <FontAwesome name="home" size={24} color="black" />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.navItem}>
-          <FontAwesome name="search" size={24} color="black" />
+          <FontAwesome name="home" size={26} color="black" />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.navItem}
           onPress={() => navigation.navigate("social-screen")}
         >
-          <Image
-            source={require("@/assets/images/more.png")}
-            style={[styles.menuImage]}
-            resizeMode="contain"
-          />
+          <MaterialCommunityIcons name="post-outline" size={26} color="black" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.navItem}
+        <TouchableOpacity
+          style={styles.navItem}
+          onPress={() => navigation.navigate("notification-screen")}
+        >
+          <FontAwesome name="bell" size={24} color="black" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.navItem}
+          onPress={() => navigation.navigate("fengshui-screen")}
         >
           <Image
             source={require("@/assets/images/koi-fish.png")}
