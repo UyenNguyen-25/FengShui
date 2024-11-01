@@ -35,7 +35,6 @@ const getUser = async (session) => {
 
 const updateUser = async (id, data) => {
   try {
-    console.log("userId: ", id);
     console.log("data: ", data);
 
     const { error } = await supabase.from("users").update(data).eq("id", id);

@@ -3,6 +3,9 @@ import { hp } from '@/helper/common'
 import { theme } from '@/constants/theme'
 import { useAuth } from '@/hooks/useAuth'
 import { signOut } from '@/services/auth/authService'
+import { router, useNavigation } from 'expo-router'
+import { viElement, viGender } from '@/constants/viLocale'
+import { useEffect } from 'react'
 import ScreenWrapper from '@/components/ScreenWrapper'
 import BackButton from '@/components/BackButton'
 import AntDesign from '@expo/vector-icons/AntDesign'
@@ -11,7 +14,8 @@ import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Feather from '@expo/vector-icons/Feather';
-import { router, useNavigation } from 'expo-router'
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import moment from 'moment'
 
 const Profile = () => {
   const navigation = useNavigation()
@@ -55,11 +59,11 @@ const Profile = () => {
             <AntDesign name="logout" size={hp(2.5)} color={theme.colors.rose} />
           </Pressable>
         </View>
+
         {/* User Information */}
         <View style={styles.infoContainer}>
-
           {/* Avatar */}
-          <View >
+          <View style={{ alignSelf: "center" }}>
             <View style={{ borderWidth: 1, borderRadius: theme.radius.xl, borderColor: theme.colors.textLight, marginHorizontal: 6, marginBottom: 6 }}>
               <Image style={styles.avatar} source={require('@/assets/images/avatar.png')} />
             </View>
@@ -76,11 +80,18 @@ const Profile = () => {
             <Text style={styles.email}>{user?.email}</Text>
           </View>
 
+          {/* gender*/}
+          {user &&
+            <View style={styles.info}>
+              <FontAwesome name="transgender" size={24} color={theme.colors.textLight} />
+              <Text style={styles.infoTxt}>{viGender[user.gender]}</Text>
+            </View>}
+
           {/* date of birth*/}
           {user && user.date_of_birth &&
             <View style={styles.info}>
               <AntDesign name="calendar" size={24} color={theme.colors.textLight} />
-              <Text style={styles.infoTxt}>{user.date_of_birth}</Text>
+              <Text style={styles.infoTxt}>{moment(user.date_of_birth).format('DD/MM/YYYY')}</Text>
             </View>}
 
           {/* element*/}
@@ -91,7 +102,7 @@ const Profile = () => {
                   : user.element === 'earth' ? <FontAwesome5 name="mountain" size={24} color={theme.colors.textLight} />
                     : user.element === "wood" ? <Entypo name="tree" size={24} color={theme.colors.textLight} />
                       : <MaterialCommunityIcons name="gold" size={24} color={theme.colors.textLight} />}
-              <Text style={styles.infoTxt}>{user.element}</Text>
+              <Text style={styles.infoTxt}>{viElement[user.element]}</Text>
             </View>}
         </View>
       </View>
@@ -131,7 +142,6 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     marginVertical: hp(5),
-    alignItems: "center",
     gap: 10
   },
   avatar: {
@@ -147,12 +157,14 @@ const styles = StyleSheet.create({
     color: theme.colors.textLight
   },
   info: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    gap: 10
+    gap: 10,
+    marginTop: hp(3)
   },
   infoTxt: {
-    color: theme.colors.roseLight
+    color: theme.colors.textLight
   },
   shadowStyle: {
     shadowColor: theme.colors.primaryDark,

@@ -1,10 +1,10 @@
-import { Alert, Platform, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native'
 import { hp } from '@/helper/common'
 import { theme } from '@/constants/theme'
 import { useAuth } from '@/hooks/useAuth'
 import React, { useState } from 'react'
 import { userService } from '@/services/users/userService'
-import { elements, gender } from '@/constants/enWords'
+import { elements, gender } from '@/constants/enLocale'
 import { RadioButton } from 'react-native-paper'
 import ScreenWrapper from '@/components/ScreenWrapper'
 import BackButton from '@/components/BackButton'
@@ -15,14 +15,17 @@ import SelectDropdown from 'react-native-select-dropdown'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment"
+import { viElement, viGender } from '@/constants/viLocale'
+import { useNavigation } from '@react-navigation/native'
 
 const EditProfile = () => {
-    const { user } = useAuth()
+    const { user, refreshAuthUser } = useAuth()
+    const navigation = useNavigation()
     const [loading, setLoading] = useState(false)
     const [newData, setNewData] = useState({
         name: user.name,
         gender: user.gender || 0,
-        date_of_birth: new Date(),
+        date_of_birth: new Date(user.date_of_birth),
         element: user.element,
         total_post: user.total_post
     })
@@ -32,17 +35,23 @@ const EditProfile = () => {
         let userData = { ...newData }
         let { name, date_of_birth, element } = userData
 
-        console.log(user?.id);
+        // console.log(user?.id);
         if (!name || !date_of_birth || !element) {
             Alert.alert("Thông tin tài khoản", "Vui lòng không bỏ trống")
             return
         }
         setLoading(true)
 
-        const res = await userService.updateUser(user?.id, userData)
+        const { success, data } = await userService.updateUser(user?.id, userData)
+
+        if (success) {
+            await refreshAuthUser()
+            navigation.navigate("profile")
+        }
+
         setLoading(false)
 
-        console.log('update user result: ', res);
+        console.log('update user result: ', data);
     }
 
     const onChange = ({ type }, selectedData) => {
@@ -70,8 +79,8 @@ const EditProfile = () => {
                         <Input
                             icon={<AntDesign name='user' size={20} color={theme.colors.textLight} />}
                             placeholder='Họ và tên'
-                            onChangeText={(e) => setNewData({ ...newData, name: e })
-                            }
+                            onChangeText={(e) => setNewData({ ...newData, name: e })}
+                            value={newData.name}
                         />
                     </View>
                     <View
@@ -85,8 +94,7 @@ const EditProfile = () => {
 
                                 setNewData({ ...newData, gender: enValue })
                             }}
-                            value={newData.gender === 0 ? "Khác"
-                                : newData.gender === 1 ? "Nam" : "Nữ"}
+                            value={viGender[newData.gender]}
 
                         >
                             <View style={{ flexDirection: "row", gap: 20 }}>
@@ -165,11 +173,13 @@ const EditProfile = () => {
                                 console.log(enSelectedItem);
                                 setNewData({ ...newData, element: enSelectedItem })
                             }}
-                            renderButton={(selectedItem, isOpened) => {
+                            renderButton={(isOpened) => {
+                                const enSelectedItem = viElement[newData.element]
+
                                 return (
                                     <View style={styles.dropdownButtonStyle}>
                                         <Text style={styles.dropdownButtonTxtStyle}>
-                                            {(selectedItem) || 'Vui lòng chọn mệnh'}
+                                            {(enSelectedItem) || 'Vui lòng chọn mệnh'}
                                         </Text>
                                         <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={styles.dropdownButtonArrowStyle} />
                                     </View>

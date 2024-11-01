@@ -21,7 +21,7 @@ const Welcome = () => {
             <View style={styles.container}>
                 <Image style={styles.logoImage} resizeMode='contain' source={require('../assets/images/logo-ca-Koi.png')} />
                 <View style={styles.footer}>
-                    {mounting ? <Loading color='red' /> : !session ?
+                    {mounting ? <Loading /> : !session ?
                         <>
                             <Button title='Khám Phá Ngay !' buttonStyle={styles.btn} textStyle={styles.title} onPress={() => handlePress('signUp')} />
                             <View style={{ alignItems: "center", gap: 2 }}>

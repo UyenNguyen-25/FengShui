@@ -5,7 +5,8 @@ import { createContext, useContext, useEffect, useState } from "react"
 export const AuthContext = createContext({
     session: null,
     user: null,
-    mounting: true
+    mounting: true,
+    refreshAuthUser: () => { }
 })
 
 export default function AuthProvider({ children }) {
@@ -34,7 +35,16 @@ export default function AuthProvider({ children }) {
         setMounting(false)
     }, [])
 
-    return <AuthContext.Provider value={{ session, user, mounting }}>{children}</AuthContext.Provider>
+    const refreshAuthUser = async () => {
+        if (session) {
+            const { success, user } = await userService.getUser(session)
+            if (success) {
+                setUser(user)
+            }
+        }
+    }
+
+    return <AuthContext.Provider value={{ session, user, mounting, refreshAuthUser }}>{children}</AuthContext.Provider>
 }
 
 export const useAuth = () => useContext(AuthContext)

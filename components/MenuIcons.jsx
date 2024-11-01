@@ -22,8 +22,7 @@ const images = [
 ];
 
 const MenuIcons = ({ navigation }) => {
-
-  const goToPond = () => navigation.navigate("pond-screen")
+  const goToPond = () => navigation.navigate("pond-screen");
   return (
     <View>
       <Text style={styles.welcome}>Chào bạn, Nguyen Van An</Text>
@@ -66,10 +65,7 @@ const MenuIcons = ({ navigation }) => {
           <Text style={styles.menuText}>Tổng quan</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.menuItem}
-          onPress={goToPond}
-        >
+        <TouchableOpacity style={styles.menuItem} onPress={goToPond}>
           <View style={styles.menuIcon}>
             <Image
               source={require("@/assets/images/pond.png")}
