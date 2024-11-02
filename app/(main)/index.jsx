@@ -20,7 +20,11 @@ const Home = ({ navigation }) => {
             try {
                 const result = await getAll();
                 if (result.success) {
-                    setBlogPosts(result.data);
+                    setBlogPosts(result.data.map(item => ({
+                        title: item.name,
+                        subtitle: item.origin,
+                        category: item.suit_element
+                    })));
                 } else {
                     console.error("Error fetching blog posts: ", result.msg);
                 }
