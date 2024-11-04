@@ -7,13 +7,18 @@ import Button from '@/components/Button'
 import { Redirect, router } from 'expo-router'
 import { useAuth } from '@/hooks/useAuth'
 import Loading from '@/components/Loading'
+import { useEffect } from 'react'
 
 const Welcome = () => {
     const { session, user, mounting } = useAuth()
 
-    const handlePress = (action) => {
+    const handlePress = async (action) => {
         return router.push(action)
     }
+
+    useEffect(() => {
+        console.log("welcome screen:  ", user);
+    }, [])
 
     return (
         <ScreenWrapper>
@@ -21,13 +26,13 @@ const Welcome = () => {
             <View style={styles.container}>
                 <Image style={styles.logoImage} resizeMode='contain' source={require('../assets/images/logo-ca-Koi.png')} />
                 <View style={styles.footer}>
-                    {mounting ? <Loading /> : !session ?
+                    {mounting ? <Loading /> : !session || !user ?
                         <>
                             <Button title='Khám Phá Ngay !' buttonStyle={styles.btn} textStyle={styles.title} onPress={() => handlePress('signUp')} />
                             <View style={{ alignItems: "center", gap: 2 }}>
                                 <View style={styles.bottomTextFooter}>
                                     <Text style={styles.txt}>Đã có tài khoản!</Text>
-                                    <Pressable onPress={() => handlePress('login')}><Text style={[styles.txt, styles.loginText]}>Đăng nhập</Text></Pressable>
+                                    <Pressable onPress={() => handlePress('/(auth)/login')}><Text style={[styles.txt, styles.loginText]}>Đăng nhập</Text></Pressable>
                                 </View>
                                 <Text style={styles.txt}>hoặc</Text>
                                 <View style={styles.bottomTextFooter}>
@@ -36,7 +41,8 @@ const Welcome = () => {
                             </View>
                         </> : user?.role === "admin" ?
                             <Redirect href={"/(admin)"} />
-                            : <Redirect href={'/(main)'} />}
+                            : <Redirect href={"/(main)"} />
+                    }
                 </View>
             </View>
         </ScreenWrapper>

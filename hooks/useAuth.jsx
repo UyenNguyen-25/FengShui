@@ -1,12 +1,13 @@
+import { signOut } from "@/services/auth/authService"
 import { userService } from "@/services/users/userService"
 import { supabase } from "@/utils/supabase"
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useState } from "react"
 
 export const AuthContext = createContext({
     session: null,
     user: null,
     mounting: true,
-    refreshAuthUser: () => { }
+    refreshAuthUser: () => { },
 })
 
 export default function AuthProvider({ children }) {
@@ -14,32 +15,51 @@ export default function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
     const [mounting, setMounting] = useState(true)
 
+    const refreshAuthUser = useCallback(async () => {
+        if (session) {
+            const { success, msg, user } = await userService.getUser(session)
+            if (success) {
+                setUser(user)
+            } else {
+                console.log(msg)
+            }
+        } else {
+            setUser(null)
+        }
+    }, [session])
+
     useEffect(() => {
         const fetchSession = async () => {
             const { data: { session } } = await supabase.auth.getSession()
-
+            setSession(session)
             if (session) {
                 await refreshAuthUser()
             }
-
-            setSession(session)
+            setMounting(false)
         }
 
         fetchSession()
-        supabase.auth.onAuthStateChange((_event, session) => {
+
+        const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session)
         })
-        setMounting(false)
+
+        return () => {
+            if (authListener?.subscription) {
+                authListener.subscription.unsubscribe()
+            }
+        }
     }, [])
 
-    const refreshAuthUser = async () => {
-        const { success, user } = await userService.getUser(session)
-        if (success) {
-            setUser(user)
-        }
-    }
+    useEffect(() => {
+        refreshAuthUser()
+    }, [session, refreshAuthUser])
 
-    return <AuthContext.Provider value={{ session, user, mounting, refreshAuthUser }}>{children}</AuthContext.Provider>
+    return (
+        <AuthContext.Provider value={{ session, user, mounting, refreshAuthUser }}>
+            {children}
+        </AuthContext.Provider>
+    )
 }
 
 export const useAuth = () => useContext(AuthContext)

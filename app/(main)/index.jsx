@@ -15,7 +15,7 @@ const Home = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar style="dark" />
+            {/* <StatusBar style="dark" /> */}
             {/* Blog Posts */}
             <ScrollView style={styles.blogContainer}>
                 {/* Menu Icons */}

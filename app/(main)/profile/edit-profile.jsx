@@ -19,7 +19,7 @@ import { viElement, viGender } from '@/constants/viLocale'
 import { useNavigation } from '@react-navigation/native'
 
 const EditProfile = () => {
-    const { user, refreshAuthUser } = useAuth()
+    const { session, user, refreshAuthUser } = useAuth()
     const navigation = useNavigation()
     const [loading, setLoading] = useState(false)
     const [newData, setNewData] = useState({
@@ -45,7 +45,7 @@ const EditProfile = () => {
         const { success, data } = await userService.updateUser(user?.id, userData)
 
         if (success) {
-            await refreshAuthUser()
+            refreshAuthUser()
             navigation.navigate("profile")
         }
 

@@ -11,6 +11,7 @@ import Input from '@/components/Input';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Button from '@/components/Button';
+import { useAuth } from '@/hooks/useAuth';
 
 const Login = () => {
     const [isLoading, setIsLoading] = useState(false)
@@ -37,9 +38,8 @@ const Login = () => {
 
             if (error) { console.log(error.message) }
             if (session) {
-                console.log(session);
-
-                router.push('/(main)')
+                console.log("session in login: ", session);
+                router.push('/')
             }
         } catch (error) {
             console.log('got error at login screen: ', error);
