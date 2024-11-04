@@ -12,15 +12,27 @@ const FengShuiScreen = () => {
         {/* Card 1 - Tư vấn cá Koi */}
         <View style={styles.card}>
           <View style={styles.cardHeader}>
-            <Text style={styles.title}>Tư vấn cá Koi theo mệnh</Text>
+            <Text style={styles.title}>Tư vấn & Tra cứu cá Koi theo mệnh</Text>
             <View style={styles.subtitle}>
               <Text style={styles.subtitleText}>
                 Chọn cá Koi phù hợp với mệnh của bạn
               </Text>
             </View>
           </View>
-
           <View style={styles.cardContent}>
+            <View style={styles.iconContainer}>
+              <FontAwesome5 name="yin-yang" size={50} color="#333" />
+              <View style={styles.starContainer}>
+                <FontAwesome5 name="star" size={8} color="#333" solid style={styles.star} />
+                <FontAwesome5 name="star" size={12} color="#333" solid style={styles.star} />
+                <FontAwesome5 name="star" size={8} color="#333" solid style={styles.star} />
+              </View>
+            </View>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(SCREEN.LOOKUP)}>
+              <Text style={styles.buttonText}>Bắt đầu</Text>
+            </TouchableOpacity>
+          </View>
+          {/* <View style={styles.cardContent}>
             <View style={styles.iconContainer}>
               <FontAwesome5 name="koi" size={50} color="#333" />
               <View style={styles.starContainer}>
@@ -32,7 +44,7 @@ const FengShuiScreen = () => {
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(SCREEN.LOOKUP)}>
               <Text style={styles.buttonText}>Tư vấn</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
           {/* 
           <View style={styles.cardFooter}>
             <View style={styles.pointContainer}>
@@ -46,7 +58,7 @@ const FengShuiScreen = () => {
         </View>
 
         {/* Card 2 - Tra cứu độ phù hợp */}
-        <View style={styles.card}>
+        {/* <View style={styles.card}>
           <View style={styles.cardHeader}>
             <Text style={styles.title}>Tra cứu độ phù hợp</Text>
             <View style={styles.subtitle}>
@@ -68,7 +80,7 @@ const FengShuiScreen = () => {
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(SCREEN.CHECK_SUIT)}>
               <Text style={styles.buttonText}>Tra cứu</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
           {/* 
           <View style={styles.cardFooter}>
             <View style={styles.pointContainer}>
@@ -79,7 +91,7 @@ const FengShuiScreen = () => {
               <FontAwesome5 name="info-circle" size={24} color="#333" />
             </TouchableOpacity>
           </View> */}
-        </View>
+        {/* </View> */}
       </View>
     </SafeAreaView>
   );
@@ -119,6 +131,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 8,
+    textAlign: 'center',
   },
   subtitle: {
     marginBottom: 8,
@@ -126,6 +139,7 @@ const styles = StyleSheet.create({
   subtitleText: {
     fontSize: 16,
     color: '#666',
+    textAlign: 'center',
   },
   cardContent: {
     alignItems: 'center',

@@ -27,6 +27,7 @@ import PackageScreen from "./package";
 import PondDetail from "./pond/pond-detail";
 import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
+import FishCare from './FishCare';
 
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
@@ -146,6 +147,7 @@ function BottomTab() {
     <Tab.Screen name={SCREEN.POND_DETAIL} component={PondDetail} />
     <Tab.Screen name={SCREEN.POST_SCREEN} component={PostScreen} />
     <Tab.Screen name={SCREEN.PACKAGE_SCREEN} component={PackageScreen} />
+    <Tab.Screen name={SCREEN.FISHCARE} component={FishCare} />
   </Tab.Navigator>
 }
 

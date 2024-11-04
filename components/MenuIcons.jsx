@@ -24,6 +24,7 @@ const images = [
 
 const MenuIcons = ({ navigation }) => {
   const goToPond = () => navigation.navigate("pond-screen");
+  const goToCare = () => navigation.navigate("fishcare");
   const {user} = useAuth();
   return (
     <View>
@@ -94,7 +95,8 @@ const MenuIcons = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => navigation.navigate("home")}
+          // onPress={() => navigation.navigate(SCREEN.FISHCARE)}
+          onPress={goToCare}
         >
           <View style={styles.menuIcon}>
             <Image

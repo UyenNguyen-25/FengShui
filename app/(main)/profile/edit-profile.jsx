@@ -17,6 +17,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment"
 import { viElement, viGender } from '@/constants/viLocale'
 import { useNavigation } from '@react-navigation/native'
+import { getMenh } from '@/components/MenhCalculator'
+import { Platform } from 'react-native'
 
 const EditProfile = () => {
     const { session, user, refreshAuthUser } = useAuth()
@@ -56,10 +58,19 @@ const EditProfile = () => {
 
     const onChange = ({ type }, selectedData) => {
         // console.log(type);
-        if (type === "set") {
-            const currentDate = selectedData
-            setNewData({ ...newData, date_of_birth: currentDate })
-        } else setOpen(false)
+        if (type === 'dismissed') {
+            setOpen(false)
+            return
+        }
+
+        const currentData = selectedData
+        const element = getMenh(parseInt(moment(currentData).format("YYYY")))
+        if (element) setNewData({ ...newData, element: elements[element], date_of_birth: currentData })
+
+        if (Platform.OS === 'android') {
+            // Đóng picker trên Android sau khi chọn
+            setOpen(false);
+        }
     }
 
     return (
@@ -135,12 +146,14 @@ const EditProfile = () => {
                                 }}
                             >
                                 <AntDesign name='calendar' size={20} color={theme.colors.textLight} />
-                                <Text>{moment(newData.date_of_birth).format("DD/MM/YYYY")}</Text>
+                                <Text>
+                                    {moment(newData.date_of_birth).format("DD/MM/YYYY")}
+                                </Text>
                             </View>
                         </Pressable>
                         {open && <DateTimePicker
                             mode='date'
-                            display='spinner'
+                            display={Platform.OS !== 'ios' ? 'spinner' : 'calendar'}
                             value={newData.date_of_birth}
                             maximumDate={new Date()}
                             onChange={onChange}
@@ -152,48 +165,17 @@ const EditProfile = () => {
                                 label: "Đóng",
                                 textColor: theme.colors.textLight
                             }}
-                            on
                         />}
                     </View>
                     <View
-                        style={styles.inputContainer}
+                        style={[styles.inputContainer, { flexDirection: "row", alignItems: "baseline", gap: hp(3) }]}
                     >
                         <Text style={styles.labelText}>Mệnh</Text>
-
-                        <SelectDropdown
-                            data={[
-                                "Kim",
-                                "Mộc",
-                                "Thủy",
-                                "Hỏa",
-                                "Thổ"
-                            ]}
-                            onSelect={(selectedItem) => {
-                                const enSelectedItem = elements[selectedItem]
-                                console.log(enSelectedItem);
-                                setNewData({ ...newData, element: enSelectedItem })
-                            }}
-                            renderButton={(isOpened) => {
-                                const viSelectedItem = viElement[newData.element]
-
-                                return (
-                                    <View style={styles.dropdownButtonStyle}>
-                                        <Text style={styles.dropdownButtonTxtStyle}>
-                                            {(viSelectedItem) || 'Vui lòng chọn mệnh'}
-                                        </Text>
-                                        <Icon name={isOpened ? 'chevron-up' : 'chevron-down'} style={styles.dropdownButtonArrowStyle} />
-                                    </View>
-                                );
-                            }}
-                            renderItem={(item, index, isSelected) => {
-                                return (
-                                    <View key={index} style={{ ...styles.dropdownItemStyle, ...(isSelected && { backgroundColor: '#D2D9DF' }) }}>
-                                        <Text style={styles.dropdownItemTxtStyle}>{item}</Text>
-                                    </View>
-                                );
-                            }}
-                            dropdownStyle={styles.dropdownMenuStyle}
-                        />
+                        <Text>
+                            {
+                                !newData.element ? viElement[user.element] : viElement[newData.element]
+                            }
+                        </Text>
                     </View>
                 </View>
                 <View style={styles.footer}>
@@ -279,7 +261,9 @@ const styles = StyleSheet.create({
         width: "100%",
         gap: 10
     },
-    footer: {},
+    footer: {
+        marginTop: hp(5)
+    },
     btn: {
         backgroundColor: "red",
         paddingVertical: hp(2),

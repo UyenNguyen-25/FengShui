@@ -51,6 +51,7 @@ const PondScreen = () => {
               subtitle={pond.pond_location}
               category={pond.suit_element}
               navigation={navigation}
+              id={pond.id}
             />
           ))
         )}
@@ -59,7 +60,7 @@ const PondScreen = () => {
   );
 };
 
-const BlogPost = ({ title, subtitle, category, navigation }) => (
+const BlogPost = ({ title, subtitle, category, navigation, id }) => (
   <View style={styles.blogPost}>
     <View style={styles.blogContent}>
       <View style={styles.categoryBadge}>
