@@ -1,10 +1,11 @@
-import { FontAwesome5 } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, ActivityIndicator, Modal, TextInput, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { packageService } from '../../../services/package/packageService';
 import { useAuth } from '@/hooks/useAuth'
 import { userService } from '../../../services/users/userService';
+import { hp } from '@/helper/common';
 
 const PackageScreen = ({ navigation }) => {
   const [packages, setPackages] = useState([]);
@@ -12,7 +13,7 @@ const PackageScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [selectedPackage, setSelectedPackage] = useState(null);
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -43,12 +44,12 @@ const PackageScreen = ({ navigation }) => {
       alert('Vui lòng nhập 11 chữ số.');
       return;
     }
-  
+
     const userId = user.id; // Get the user's ID
-  
+
     // Use the number of posts from the selected package for the increment
     const incrementBy = selectedPackage.num_of_post;
-  
+
     // Update the user's total_of_post
     const result = await userService.updateNumOfPost(userId, incrementBy); // Pass incrementBy
     console.log('result', result);
@@ -57,12 +58,12 @@ const PackageScreen = ({ navigation }) => {
     } else {
       alert('Cập nhật số bài viết thất bại: ' + result.msg);
     }
-  
+
     // After updating, close the modal
     setModalVisible(false);
     setInputValue('');
   };
-  
+
 
   if (loading) {
     return (
@@ -78,7 +79,7 @@ const PackageScreen = ({ navigation }) => {
         {packages.map((pkg) => (
           <View key={pkg.id} style={styles.card}>
             <View style={styles.cardHeader}>
-              <Text style={styles.title}>{pkg.name}</Text>
+              <Text style={styles.title}>{pkg.name === "Normal" ? "Gói thường" : "Gói VIP"}</Text>
               <View style={styles.subtitle}>
                 <Text style={styles.subtitleText}>
                   Giá: {pkg.price} VND - Số bài viết: {pkg.num_of_post}
@@ -88,12 +89,12 @@ const PackageScreen = ({ navigation }) => {
 
             <View style={styles.cardContent}>
               <View style={styles.iconContainer}>
-                <FontAwesome5 name="koi" size={50} color="#333" />
-                <View style={styles.starContainer}>
+                <MaterialIcons name="post-add" size={hp(6)} color="black" />
+                {/* <View style={styles.starContainer}>
                   <FontAwesome5 name="star" size={8} color="#333" solid style={styles.star} />
                   <FontAwesome5 name="star" size={12} color="#333" solid style={styles.star} />
                   <FontAwesome5 name="star" size={8} color="#333" solid style={styles.star} />
-                </View>
+                </View> */}
               </View>
               <TouchableOpacity style={styles.button} onPress={() => handlePurchase(pkg)}>
                 <Text style={styles.buttonText}>Mua ngay</Text>
@@ -104,28 +105,28 @@ const PackageScreen = ({ navigation }) => {
 
         {/* Modal for entering 11-digit number */}
         <Modal
-  animationType="slide"
-  transparent={true}
-  visible={modalVisible}
-  onRequestClose={() => setModalVisible(false)}
->
-  <View style={styles.overlay}>
-    <View style={styles.modalView}>
-      <Text style={styles.modalText}>Nhập 11 chữ số:</Text>
-      <TextInput
-        style={styles.input}
-        value={inputValue}
-        onChangeText={handleInputChange}
-        keyboardType="numeric"
-        maxLength={11}
-      />
-      <View style={styles.buttonContainer}>
-        <Button title="Xác nhận" onPress={handleSubmit} color="#ff4040" />
-        <Button title="Hủy" onPress={() => setModalVisible(false)} color="gray" />
-      </View>
-    </View>
-  </View>
-</Modal>
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.overlay}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Nhập 11 chữ số:</Text>
+              <TextInput
+                style={styles.input}
+                value={inputValue}
+                onChangeText={handleInputChange}
+                keyboardType="numeric"
+                maxLength={11}
+              />
+              <View style={styles.buttonContainer}>
+                <Button title="Xác nhận" onPress={handleSubmit} color="#ff4040" />
+                <Button title="Hủy" onPress={() => setModalVisible(false)} color="gray" />
+              </View>
+            </View>
+          </View>
+        </Modal>
 
       </View>
     </SafeAreaView>
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 16,
+    paddingHorizontal: 16,
     justifyContent: 'center',
     gap: 16,
   },
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   title: {
-    fontSize: 24,
+    fontSize: hp(3),
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 8,
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   subtitleText: {
-    fontSize: 16,
+    fontSize: hp(2),
     color: '#666',
   },
   cardContent: {
@@ -193,13 +194,13 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#ff4040',
-    paddingHorizontal: 32,
-    paddingVertical: 12,
+    paddingHorizontal: 18,
+    paddingVertical: 8,
     borderRadius: 25,
   },
   buttonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: hp(2),
     fontWeight: 'bold',
   },
   overlay: {

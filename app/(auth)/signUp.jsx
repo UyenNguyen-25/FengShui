@@ -42,23 +42,22 @@ const SignUp = () => {
       },
     });
 
-    console.log("sign up", session);
+    // console.log("sign up", session);
+
+    if (session) {
+      setIsLoading(false);
+      return router.push("/congratulation");
+    }
 
     if (error) {
-      console.log("====================================");
       console.log(error.message);
-      console.log("====================================");
       Alert.alert("Đã có lỗi trong quá trình xử lý");
       setIsLoading(false);
       return;
     }
-
-    router.push("/congratulation");
-
-    setIsLoading(false);
   }
 
-  const handlePress = (action) => {
+  const handlePress = async (action) => {
     const fullName = fullNameRef.current.trim();
     const email = emailRef.current.trim();
     const password = passwordRef.current.trim();
@@ -67,7 +66,9 @@ const SignUp = () => {
     if (action === "signUp") {
       if (!fullName || !email || !password || password !== passwordAgain) {
         Alert.alert("Oops", "Vui lòng kiểm tra lại thông tin");
-      } else signUpWithEmail(fullName, email, password);
+      } else {
+        await signUpWithEmail(fullName, email, password)
+      };
     } else router.push(action);
   };
 
@@ -94,9 +95,9 @@ const SignUp = () => {
               onEndEditing={() => {
                 !fullNameRef.current
                   ? setMessage({
-                      ...message,
-                      fullName: "Họ và tên không được để trống",
-                    })
+                    ...message,
+                    fullName: "Họ và tên không được để trống",
+                  })
                   : setMessage({ ...message, fullName: "" });
               }}
             />
@@ -123,9 +124,9 @@ const SignUp = () => {
               onEndEditing={() => {
                 !emailRef.current
                   ? setMessage({
-                      ...message,
-                      email: "Email không được để trống",
-                    })
+                    ...message,
+                    email: "Email không được để trống",
+                  })
                   : setMessage({ ...message, email: "" });
               }}
             />
@@ -153,9 +154,9 @@ const SignUp = () => {
               onEndEditing={() => {
                 !passwordRef.current
                   ? setMessage({
-                      ...message,
-                      password: "Password không được để trống",
-                    })
+                    ...message,
+                    password: "Password không được để trống",
+                  })
                   : setMessage({ ...message, password: "" });
               }}
             />
@@ -182,17 +183,17 @@ const SignUp = () => {
               onChangeText={(value) => (passwordAgainRef.current = value)}
               onEndEditing={() => {
                 !passwordAgainRef.current ||
-                passwordAgainRef.current.length === 0
+                  passwordAgainRef.current.length === 0
                   ? setMessage({
-                      ...message,
-                      passwordAgain: "Vui lòng nhập lại mật khẩu phía trên",
-                    })
+                    ...message,
+                    passwordAgain: "Vui lòng nhập lại mật khẩu phía trên",
+                  })
                   : passwordAgainRef.current !== passwordRef.current
-                  ? setMessage({
+                    ? setMessage({
                       ...message,
                       passwordAgain: "Mật khẩu nhập lại không khớp",
                     })
-                  : setMessage({ ...message, passwordAgain: "" });
+                    : setMessage({ ...message, passwordAgain: "" });
               }}
             />
             <Text

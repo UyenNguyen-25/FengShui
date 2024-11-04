@@ -8,7 +8,7 @@
 
 import { supabase } from "@/utils/supabase";
 
-export const getAll = async () => {
+const getAll = async () => {
   try {
     const { data, error } = await supabase.from("koiFish").select("*");
 

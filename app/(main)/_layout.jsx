@@ -7,7 +7,7 @@ import { Alert, Image, Pressable, StyleSheet, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { hp, wp } from "@/helper/common";
 import { SCREEN } from "@/constants/screen";
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { theme } from '@/constants/theme';
 import { signOut } from '@/services/auth/authService';
 import { useAuth } from '@/hooks/useAuth';
@@ -25,6 +25,8 @@ import FengShuiScreen from './fengshui';
 import NotificationScreen from "./(notifications)";
 import PackageScreen from "./package";
 import PondDetail from "./pond/pond-detail";
+import { useEffect } from "react";
+import { StatusBar } from "expo-status-bar";
 import FishCare from './FishCare';
 
 const Drawer = createDrawerNavigator();
@@ -32,7 +34,13 @@ const Tab = createBottomTabNavigator();
 
 export default function CustomerLayout() {
   const navigation = useNavigation();
-  const { session } = useAuth();
+  const { session, user } = useAuth();
+
+  useEffect(() => {
+    if (user && user.role === "admin") {
+      return <Redirect href={"/(admin)"} />
+    }
+  }, [])
 
   const alertButtons = [
     {
@@ -45,7 +53,7 @@ export default function CustomerLayout() {
       onPress: async () => {
         const { success, error } = await signOut();
         if (success) {
-          router.navigate("/")
+          router.navigate('/(auth)/login')
         } else {
           console.log(error);
 
@@ -60,64 +68,67 @@ export default function CustomerLayout() {
     Alert.alert("Xác nhận", "Bạn chắc chắn muốn đăng xuất?", alertButtons);
 
   return (
-    <Drawer.Navigator
-      initialRouteName={SCREEN.HOME}
-      drawerContent={(props) => {
-        const { routeNames, index } = props.state;
-        const focused = routeNames[index];
+    <>
+      <StatusBar style="dark" />
+      <Drawer.Navigator
+        initialRouteName={SCREEN.HOME}
+        drawerContent={(props) => {
+          const { routeNames, index } = props.state;
+          const focused = routeNames[index];
 
-        return (
-          <DrawerContentScrollView {...props}>
-            <DrawerItem
-              label={'Trang chủ'}
-              onPress={() => props.navigation.navigate(SCREEN.HOME)}
-              focused={focused === SCREEN.HOME}
-              activeBackgroundColor='red'
-              activeTintColor='white'
-            />
-            <DrawerItem
-              label={'Tư vấn và Tra cứu độ phù hợp'}
-              onPress={() => props.navigation.navigate(SCREEN.LOOKUP)}
-              focused={focused === SCREEN.LOOKUP}
-              activeBackgroundColor='red'
-              activeTintColor='white'
-            />
-            {session ? <DrawerItem
-              label={'ĐĂNG XUẤT'}
-              onPress={handleLogout}
-              inactiveBackgroundColor={theme.colors.roseLight}
-              inactiveTintColor={theme.colors.rose}
-              labelStyle={{ textAlign: "center" }}
-              style={{ marginTop: 50 }}
-            /> : <DrawerItem
-              label={'ĐĂNG NHẬP'}
-              onPress={() => router.navigate('/(auth)/login')}
-              inactiveBackgroundColor={theme.colors.roseLight}
-              inactiveTintColor={theme.colors.rose}
-              labelStyle={{ textAlign: "center" }}
-              style={{ marginTop: 50 }}
-            />}
-          </DrawerContentScrollView>
-        )
-      }}
-      screenOptions={{
-        headerTitle: () => <View style={styles.header}><Image style={styles.logoImage} resizeMode='contain' source={require('@/assets/images/logo-ca-Koi.png')} /></View>,
-        headerRight: () => session && <View style={styles.icons}>
-          <Pressable onPress={() => navigation.navigate(SCREEN.PACKAGE_SCREEN)}>
-            <AntDesign name="gift" size={hp(3.2)} color={theme.colors.text} />
-          </Pressable>
-          <Pressable onPress={() => navigation.navigate('profile')}>
-            <AntDesign name="user" size={hp(3.2)} color={theme.colors.text} />
-          </Pressable>
-        </View>,
+          return (
+            <DrawerContentScrollView {...props}>
+              <DrawerItem
+                label={'Trang chủ'}
+                onPress={() => props.navigation.navigate(SCREEN.HOME)}
+                focused={focused === SCREEN.HOME}
+                activeBackgroundColor='red'
+                activeTintColor='white'
+              />
+              <DrawerItem
+                label={'Tư vấn và Tra cứu độ phù hợp'}
+                onPress={() => props.navigation.navigate(SCREEN.LOOKUP)}
+                focused={focused === SCREEN.LOOKUP}
+                activeBackgroundColor='red'
+                activeTintColor='white'
+              />
+              {session ? <DrawerItem
+                label={'ĐĂNG XUẤT'}
+                onPress={handleLogout}
+                inactiveBackgroundColor={theme.colors.roseLight}
+                inactiveTintColor={theme.colors.rose}
+                labelStyle={{ textAlign: "center" }}
+                style={{ marginTop: 50 }}
+              /> : <DrawerItem
+                label={'ĐĂNG NHẬP'}
+                onPress={() => router.navigate('/(auth)/login')}
+                inactiveBackgroundColor={theme.colors.roseLight}
+                inactiveTintColor={theme.colors.rose}
+                labelStyle={{ textAlign: "center" }}
+                style={{ marginTop: 50 }}
+              />}
+            </DrawerContentScrollView>
+          )
+        }}
+        screenOptions={{
+          headerTitle: () => <View style={styles.header}><Image style={styles.logoImage} resizeMode='contain' source={require('@/assets/images/logo-ca-Koi.png')} /></View>,
+          headerRight: () => session && <View style={styles.icons}>
+            <Pressable onPress={() => navigation.navigate(SCREEN.PACKAGE_SCREEN)}>
+              <AntDesign name="gift" size={hp(3.2)} color={theme.colors.text} />
+            </Pressable>
+            <Pressable onPress={() => navigation.navigate('profile')}>
+              <AntDesign name="user" size={hp(3.2)} color={theme.colors.text} />
+            </Pressable>
+          </View>,
 
-      }}
-    >
-      <Drawer.Screen name={'Main'} component={BottomTab} />
-      <Drawer.Screen name={SCREEN.PROFILE} component={Profile} options={{ headerShown: false }} />
-      <Drawer.Screen name={SCREEN.EDIT_PROFILE} component={EditProfile} options={{ headerShown: false }} />
-
-    </Drawer.Navigator>
+        }}
+      >
+        <Drawer.Screen name={'Main'} component={BottomTab} />
+        <Drawer.Screen name={SCREEN.PROFILE} component={Profile} options={{ headerShown: false }} />
+        <Drawer.Screen name={SCREEN.EDIT_PROFILE} component={EditProfile} options={{ headerShown: false }} />
+        <Drawer.Screen name={SCREEN.LOOKUP} component={LookupTab} />
+      </Drawer.Navigator>
+    </>
   );
 }
 
@@ -135,7 +146,6 @@ function BottomTab() {
     <Tab.Screen name={SCREEN.POND_SCREEN} component={PondScreen} />
     <Tab.Screen name={SCREEN.POND_DETAIL} component={PondDetail} />
     <Tab.Screen name={SCREEN.POST_SCREEN} component={PostScreen} />
-    <Tab.Screen name={SCREEN.LOOKUP} component={LookupTab} />
     <Tab.Screen name={SCREEN.PACKAGE_SCREEN} component={PackageScreen} />
     <Tab.Screen name={SCREEN.FISHCARE} component={FishCare} />
   </Tab.Navigator>
@@ -143,10 +153,11 @@ function BottomTab() {
 
 const styles = StyleSheet.create({
   header: {
-    marginLeft: "50%"
+    flex: 1,
+    alignItems: "center"
   },
   logoImage: {
-    width: wp(15),
+    flex: 1
   },
   icons: {
     paddingRight: wp(2),

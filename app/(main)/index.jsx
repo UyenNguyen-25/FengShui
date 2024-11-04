@@ -10,7 +10,8 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import MenuIcons from "@/components/MenuIcons";
-import { getAll } from '@/services/elements/koiFishService';
+import { koiFishService } from "@/services/elements/koiFishService";
+import { viElement } from "@/constants/viLocale";
 
 const Home = ({ navigation }) => {
     const [blogPosts, setBlogPosts] = useState([]);
@@ -18,7 +19,7 @@ const Home = ({ navigation }) => {
     useEffect(() => {
         const fetchBlogPosts = async () => {
             try {
-                const result = await getAll();
+                const result = await koiFishService.getAll();
                 if (result.success) {
                     setBlogPosts(result.data.map(item => ({
                         title: item.name,
@@ -38,7 +39,8 @@ const Home = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar style="dark" />
+            {/* <StatusBar style="dark" /> */}
+            {/* Blog Posts */}
             <ScrollView style={styles.blogContainer}>
                 <MenuIcons navigation={navigation} />
                 {blogPosts.map((post, index) => (
@@ -58,7 +60,7 @@ const BlogPost = ({ title, subtitle, category }) => (
     <View style={styles.blogPost}>
         <View style={styles.blogContent}>
             <View style={styles.categoryBadge}>
-                <Text style={styles.categoryText}>{category}</Text>
+                <Text style={styles.categoryText}>{viElement[category]}</Text>
             </View>
             <Text style={styles.blogTitle}>{title}</Text>
             <Text style={styles.blogSubtitle}>{subtitle}</Text>
