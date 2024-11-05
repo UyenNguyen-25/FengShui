@@ -18,4 +18,6 @@ export const SCREEN = {
   POND_MANAGEMENT: "pond-management",
   PACKAGE_MANAGEMENT: "package-management",
   USER_MANAGEMENT: "user-management",
+  BLOG_DETAIL: "blog-detail",
+  MANAGER_BLOG: "manager-blog",
 };
