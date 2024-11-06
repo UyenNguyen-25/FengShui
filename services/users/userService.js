@@ -10,7 +10,7 @@ import { supabase } from "@/utils/supabase";
 //   role ('admin' | 'customer'),
 //   gender (0 | 1 | 2),
 //   suit_element: enum('fire','water','wood','earth','metal')
-//    total_of_post
+//    total_post
 // )
 
 const getUser = async (session) => {
@@ -88,7 +88,7 @@ const updateTotalPosts = async (userId, decrementBy = 1) => {
   try {
     const { data: userData, error: fetchError } = await supabase
       .from("users")
-      .select("total_of_post")
+      .select("total_post")
       .eq("id", userId)
       .single();
 
@@ -97,20 +97,20 @@ const updateTotalPosts = async (userId, decrementBy = 1) => {
       return { success: false, msg: fetchError.message };
     }
 
-    const newTotalOfPost = (userData.total_of_post || 0) - decrementBy;
+    const newTotalOfPost = (userData.total_post || 0) - decrementBy;
 
-    // Kiểm tra xem total_of_post có đủ để trừ hay không
+    // Kiểm tra xem total_post có đủ để trừ hay không
     if (newTotalOfPost < 0) {
       return { success: false, msg: "Không đủ bài viết để giảm." };
     }
 
     const { error } = await supabase
       .from("users")
-      .update({ total_of_post: newTotalOfPost })
+      .update({ total_post: newTotalOfPost })
       .eq("id", userId);
 
     if (error) {
-      console.log("Cập nhật total_of_post thất bại: ", error);
+      console.log("Cập nhật total_post thất bại: ", error);
       return { success: false, msg: error.message };
     }
 
@@ -121,6 +121,32 @@ const updateTotalPosts = async (userId, decrementBy = 1) => {
   }
 };
 
+const checkTotalPosts = async (userId) => {
+  try {
+    // Fetch user data to get the total_post
+    const { data: userData, error } = await supabase
+      .from("users")
+      .select("total_post")
+      .eq("id", userId)
+      .single();
+
+    if (error) {
+      console.log("Lỗi khi lấy thông tin người dùng: ", error);
+      return { success: false, msg: "Không thể lấy thông tin người dùng." };
+    }
+
+    // Check if user has remaining posts
+    if (userData.total_post <= 0) {
+      return { success: false, msg: "Bạn không còn bài viết để đăng." };
+    }
+
+    // If there are remaining posts, return success
+    return { success: true, msg: "Có thể đăng bài." };
+  } catch (error) {
+    console.log("Lỗi xảy ra khi kiểm tra total_post: ", error);
+    return { success: false, msg: error.message };
+  }
+};
 
 const updateUser = async (id, data) => {
   try {
@@ -139,4 +165,4 @@ const updateUser = async (id, data) => {
   }
 };
 
-export const userService = { getUser, updateUser, getUserById, updateNumOfPost, updateTotalPosts };
+export const userService = { getUser, updateUser, getUserById, updateNumOfPost, updateTotalPosts, checkTotalPosts };

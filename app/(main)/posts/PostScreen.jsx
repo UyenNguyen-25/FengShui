@@ -1,85 +1,85 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
-import { pondsService } from '../../../services/elements/pondsService';
-import { koiFishService } from '../../../services/elements/koiFishService';
 import { postService } from '../../../services/post/postService';
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/useAuth';
 import { userService } from '@/services/users/userService';
 
-export default function PostScreen() {
+export default function PostScreen({ route, navigation }) {
+    const { fetchPosts } = route.params;
     const [description, setDescription] = useState('');
     const [title, setTitle] = useState('');
     const [element, setElement] = useState(null);
-    const [pond, setPond] = useState(null);
-    const [koi, setKoi] = useState(null);
+    const [type, setType] = useState(null);
     const [fileUri, setFileUri] = useState(null);
-    const [ponds, setPonds] = useState([]);
-    const [kois, setKois] = useState([]);
-    const {user} = useAuth();
+    const { user } = useAuth();
 
-    useEffect(() => {
-        const fetchPonds = async () => {
-            const response = await pondsService.getAll();
-            console.log('pond', response.data)
-            if (response.success) setPonds(response.data);
-        };
+    // const handlePost = async () => {
+    //     const newPostData = {
+    //         title,
+    //         description,
+    //         file: [fileUri],
+    //         element,
+    //         type,
+    //     };
 
-        const fetchKois = async () => {
-            const response = await koiFishService.getAll();
-            console.log('koi', response.data)
-            if (response.success) setKois(response.data);
-        };
-        
+    //     const response = await postService.insertPost(newPostData, user.id);
 
-        fetchPonds();
-        fetchKois();
-    }, []);
+    //     if (response.success) {
+    //         const updateResponse = await userService.updateTotalPosts(user.id);
+    //         if (!updateResponse.success) {
+    //             Alert.alert("Error", updateResponse.msg || "Could not update total posts. Please try again.");
+    //         }
 
-    useEffect(() => {
-        if (element) {
-            const fetchKoisByElement = async () => {
-                const response = await koiFishService.getListByElement(element);
-                if (response.success) setKois(response.data);
-            };
-            fetchKoisByElement();
-        } else {
-            setKois([]);
-        }
-    }, [element]);
+    //         Alert.alert("Success", "Your post has been created!");
+    //         setTitle('');
+    //         setDescription('');
+    //         setFileUri(null);
+    //         setElement(null);
+    //         setType(null);
+    //     } else {
+    //         Alert.alert("Error", response.msg || "Could not create post. Please try again.");
+    //     }
+    // };
 
     const handlePost = async () => {
+        const { success, msg } = await userService.checkTotalPosts(user.id);
+        if (!success) {
+            Alert.alert("Error", msg || "Không đủ bài viết để đăng. Vui lòng kiểm tra lại.");
+            return;
+        }
+
         const newPostData = {
             title,
             description,
             file: [fileUri],
             element,
-            koi_id: koi,
-            pond_id: pond,
+            type,
         };
-    
+
         const response = await postService.insertPost(newPostData, user.id);
-    
+
         if (response.success) {
             const updateResponse = await userService.updateTotalPosts(user.id);
-            if (!updateResponse.success) {
-                Alert.alert("Error", updateResponse.msg || "Could not update total posts. Please try again.");
+
+            if (updateResponse.success) {
+                Alert.alert("Success", "Bài viết của bạn đã được tạo!");
+                setTitle('');
+                setDescription('');
+                setFileUri(null);
+                setElement(null);
+                setType(null);
+
+                fetchPosts();
+            } else {
+                Alert.alert("Error", updateResponse.msg || "Không thể cập nhật số lượng bài viết.");
             }
-            
-            Alert.alert("Success", "Your post has been created!");
-            setTitle('');
-            setDescription('');
-            setFileUri(null);
-            setElement(null);
-            setPond(null);
-            setKoi(null);
         } else {
-            Alert.alert("Error", response.msg || "Could not create post. Please try again.");
+            Alert.alert("Error", response.msg || "Không thể tạo bài viết. Vui lòng thử lại.");
         }
     };
-    
-    
+
 
     const openImageLibrary = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -102,88 +102,68 @@ export default function PostScreen() {
 
     return (
         <ScrollView>
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.headerTitle}>Tạo bài viết</Text>
-                <Button title="Đăng" onPress={handlePost} />
-            </View>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text style={styles.headerTitle}>Tạo bài viết</Text>
+                    <Button title="Đăng" onPress={handlePost} />
+                </View>
 
-            <View style={styles.userSection}>
-                <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/512/147/147144.png' }} style={styles.avatar} />
-                <Text style={styles.username}>Lưu Ái Giao</Text>
-            </View>
+                <View style={styles.userSection}>
+                    <Image source={{ uri: 'https://cdn-icons-png.flaticon.com/512/147/147144.png' }} style={styles.avatar} />
+                    <Text style={styles.username}>Lưu Ái Giao</Text>
+                </View>
 
-            <View style={styles.pickerContainer}>
-                <Picker
-                    selectedValue={element}
-                    onValueChange={(itemValue) => setElement(itemValue)}
-                    style={styles.picker}
-                >
-                    <Picker.Item label="Chọn Mệnh" value={null} />
-                    <Picker.Item label="Kim" value="metal" />
-                    <Picker.Item label="Mộc" value="wood" />
-                    <Picker.Item label="Thủy" value="water" />
-                    <Picker.Item label="Hỏa" value="fire" />
-                    <Picker.Item label="Thổ" value="earth" />
-                </Picker>
+                <View style={styles.pickerContainer}>
+                    <Picker
+                        selectedValue={element}
+                        onValueChange={(itemValue) => setElement(itemValue)}
+                        style={styles.picker}
+                    >
+                        <Picker.Item label="Chọn Mệnh" value={null} />
+                        <Picker.Item label="Kim" value="metal" />
+                        <Picker.Item label="Mộc" value="wood" />
+                        <Picker.Item label="Thủy" value="water" />
+                        <Picker.Item label="Hỏa" value="fire" />
+                        <Picker.Item label="Thổ" value="earth" />
+                    </Picker>
 
-                <Picker
-                    selectedValue={pond}
-                    onValueChange={(itemValue) => setPond(itemValue)}
-                    style={styles.picker}
-                >
-                    <Picker.Item label="Chọn Hồ cá" value={null} />
-                    {ponds.map((pond) => (
-                        <Picker.Item 
-                            key={pond.id} 
-                            label={`${pond.pond_shape} - ${pond.suit_element}`}
-                            value={pond.id} 
-                        />
-                    ))}
-                </Picker>
+                    <Picker
+                        selectedValue={type}
+                        onValueChange={(itemValue) => setType(itemValue)}
+                        style={styles.picker}
+                    >
+                        <Picker.Item label="Chọn Loại" value={null} />
+                        <Picker.Item label="Hồ cá" value="pond" />
+                        <Picker.Item label="Cá Koi" value="koiFish" />
+                    </Picker>
+                </View>
 
-                <Picker
-                    selectedValue={koi}
-                    onValueChange={(itemValue) => setKoi(itemValue)}
-                    style={styles.picker}
-                >
-                    <Picker.Item label="Chọn Cá Koi" value={null} />
-                    {kois.map((koi) => (
-                        <Picker.Item 
-                            key={koi.id} 
-                            label={`${koi.name} - ${koi.suit_element}`} 
-                            value={koi.id} 
-                        />
-                    ))}
-                </Picker>
-            </View>
-
-            <TextInput
-                style={styles.input1}
-                placeholder='Tiêu đề'
-                value={title}
-                onChangeText={setTitle}
-            />
-
-            <TextInput
-                style={styles.input}
-                placeholder="Bạn đang nghĩ gì?"
-                value={description}
-                onChangeText={setDescription}
-                multiline
-            />
-
-            <TouchableOpacity style={styles.imageButton} onPress={openImageLibrary}>
-                <Text>Ảnh/Video</Text>
-            </TouchableOpacity>
-
-            {fileUri && (
-                <Image
-                    source={{ uri: fileUri }}
-                    style={styles.selectedImage}
+                <TextInput
+                    style={styles.input1}
+                    placeholder='Tiêu đề'
+                    value={title}
+                    onChangeText={setTitle}
                 />
-            )}
-        </View>
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="Bạn đang nghĩ gì?"
+                    value={description}
+                    onChangeText={setDescription}
+                    multiline
+                />
+
+                <TouchableOpacity style={styles.imageButton} onPress={openImageLibrary}>
+                    <Text>Ảnh/Video</Text>
+                </TouchableOpacity>
+
+                {fileUri && (
+                    <Image
+                        source={{ uri: fileUri }}
+                        style={styles.selectedImage}
+                    />
+                )}
+            </View>
         </ScrollView>
     );
 }

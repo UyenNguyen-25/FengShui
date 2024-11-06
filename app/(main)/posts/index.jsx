@@ -22,27 +22,29 @@ const SocialScreen = () => {
   const [users, setUsers] = useState({});
   const navigation = useNavigation();
 
+  const fetchPosts = async () => {
+    const response = await postService.getAll();
+    console.log('post', response.data);
+    if (response.success) {
+      setPosts(response.data);
+      const userPromises = response.data.map(post =>
+        userService.getUserById(post.userId)
+      );
+      const userResults = await Promise.all(userPromises);
+      const userMap = userResults.reduce((acc, result, index) => {
+        if (result.success) {
+          acc[response.data[index].userId] = result.user.name;
+        }
+        return acc;
+      }, {});
+      setUsers(userMap);
+    } else {
+      console.log("Failed to fetch posts:", response.msg);
+    }
+  };
+
   useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await postService.getAll();
-      console.log('post', response.data);
-      if (response.success) {
-        setPosts(response.data);
-        const userPromises = response.data.map(post =>
-          userService.getUserById(post.userId)
-        );
-        const userResults = await Promise.all(userPromises);
-        const userMap = userResults.reduce((acc, result, index) => {
-          if (result.success) {
-            acc[response.data[index].userId] = result.user.name;
-          }
-          return acc;
-        }, {});
-        setUsers(userMap);
-      } else {
-        console.log("Failed to fetch posts:", response.msg);
-      }
-    };
+    
 
     fetchPosts();
   }, []);
@@ -64,25 +66,29 @@ const SocialScreen = () => {
       </View>
       <TouchableOpacity
         style={styles.imageUploadButton}
-        onPress={() => navigation.navigate(SCREEN.POST_SCREEN)}
+        onPress={() => navigation.navigate(SCREEN.POST_SCREEN, { fetchPosts })}
       >
         <AntDesign name="pluscircleo" size={24} color="red" />
       </TouchableOpacity>
     </View>
   );
 
-  const renderPost = ({ item }) => (
+  const renderPost = ({ item }) => {
+  // Parse the file URI string into an array if it's stored as a string
+  const fileUri = JSON.parse(item.file)[0];  // Access the first URI from the array
+
+  return (
     <View style={styles.post}>
       <View style={styles.postHeader}>
         <View style={styles.userInfo}>
-          <Image source={{ uri: item.file[0] }} style={styles.userAvatar} />
+          <Image source={{ uri: fileUri }} style={styles.userAvatar} />
           <Text style={styles.username}>{users[item.userId] || item.userId}</Text>
         </View>
         <TouchableOpacity>
           <FontAwesome name="ellipsis-h" size={20} color="#262626" />
         </TouchableOpacity>
       </View>
-      <Image source={{ uri: item.file[0] }} style={styles.postImage} />
+      <Image source={{ uri: fileUri }} style={styles.postImage} />
       <View style={styles.postActions}>
         <View style={styles.leftActions}>
           <TouchableOpacity style={styles.actionButton}>
@@ -103,6 +109,8 @@ const SocialScreen = () => {
       </View>
     </View>
   );
+};
+
 
   return (
     <SafeAreaView style={styles.container}>
