@@ -11,7 +11,6 @@ import Input from '@/components/Input';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Button from '@/components/Button';
-import { useAuth } from '@/hooks/useAuth';
 
 const Login = () => {
     const [isLoading, setIsLoading] = useState(false)

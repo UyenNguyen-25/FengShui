@@ -6,25 +6,20 @@ import {
     DrawerItem,
 } from "@react-navigation/drawer";
 import { SCREEN } from '@/constants/screen';
-import Dashboard from '.';
-import KoiManagement from './koi-management';
-import PondManagement from './pond-management';
-import UserManagement from './user-management';
-import PackageScreen from '../(main)/package';
-import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '@/hooks/useAuth';
 import { router } from 'expo-router';
 import { signOut } from '@/services/auth/authService';
 import { theme } from '@/constants/theme';
 import { hp } from '@/helper/common';
 import { StatusBar } from 'expo-status-bar';
+import Dashboard from '.';
+import KoiManagement from './koi-management';
+import PondManagement from './pond-management';
+import UserManagement from './user-management';
+import PackageManagement from './package-management';
 
 const Drawer = createDrawerNavigator();
 
 const AdminLayout = () => {
-    const navigation = useNavigation();
-    const { session } = useAuth();
-
     const alertButtons = [
         {
             text: "Hủy",
@@ -120,7 +115,7 @@ const AdminLayout = () => {
                     options={{ headerTitle: "Pond Management" }} />
                 <Drawer.Screen name={SCREEN.USER_MANAGEMENT} component={UserManagement}
                     options={{ headerTitle: "User Management" }} />
-                <Drawer.Screen name={SCREEN.PACKAGE_MANAGEMENT} component={PackageScreen}
+                <Drawer.Screen name={SCREEN.PACKAGE_MANAGEMENT} component={PackageManagement}
                     options={{ headerTitle: "Package Management" }} />
 
             </Drawer.Navigator>

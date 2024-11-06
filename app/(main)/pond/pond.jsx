@@ -12,6 +12,7 @@ import { StatusBar } from "expo-status-bar";
 import { pondsService } from "@/services/elements/pondsService";
 import { useNavigation } from "@react-navigation/native";
 import { SCREEN } from "@/constants/screen";
+import { viElement } from "@/constants/viLocale";
 
 const PondScreen = () => {
   const [ponds, setPonds] = useState([]);
@@ -49,7 +50,7 @@ const PondScreen = () => {
               key={pond.id}
               title={pond.pond_shape}
               subtitle={pond.pond_location}
-              category={pond.suit_element}
+              category={viElement[pond.suit_element]}
               navigation={navigation}
               id={pond.id}
             />

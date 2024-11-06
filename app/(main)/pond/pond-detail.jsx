@@ -37,11 +37,11 @@ const PondDetail = ({ navigation }) => {
           }}
           style={styles.mainImage}
         /> */}
-          <Image
-              source={require("@/assets/images/BlogPond.jpg")}
-              style={styles.mainImage}
-              resizeMode="contain"
-            />
+        <Image
+          source={require("@/assets/images/BlogPond.jpg")}
+          style={styles.mainImage}
+          resizeMode="contain"
+        />
 
         {/* Author Info */}
         <View style={styles.authorContainer}>
@@ -92,6 +92,9 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 8,
+    position: "absolute",
+    top: "50%",
+    zIndex: 50
   },
   bookmarkButton: {
     padding: 8,

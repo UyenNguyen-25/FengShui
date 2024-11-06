@@ -53,6 +53,7 @@ export default function AuthProvider({ children }) {
 
     useEffect(() => {
         refreshAuthUser()
+        setMounting(false)
     }, [session, refreshAuthUser])
 
     return (
