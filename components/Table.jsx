@@ -39,9 +39,11 @@ const Table = ({
                             </DataTable.Cell>
                         )}
                         <DataTable.Cell>
-                            {user && !item.role || item.id !== user.id && <Pressable onPress={() => showModal(item)}>
-                                <Entypo name="dots-three-horizontal" size={20} color="black" />
-                            </Pressable>}
+                            {user && item.role === "admin" && item.id === user.id ?
+                                <></>
+                                : <Pressable onPress={() => showModal(item)}>
+                                    <Entypo name="dots-three-horizontal" size={20} color="black" />
+                                </Pressable>}
                         </DataTable.Cell>
                     </DataTable.Row>
                 ))}

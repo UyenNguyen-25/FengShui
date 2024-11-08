@@ -11,8 +11,10 @@ import Table from '@/components/Table';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import { hp } from '@/helper/common';
 import { MaterialIcons } from '@expo/vector-icons';
+import SearchFilter from '@/components/SearchFilter';
 
 const KoiManagement = () => {
+    const [list, setList] = useState([])
     const [items, setItems] = useState([])
     const [page, setPage] = useState(0);
     const [numberOfItemsPerPageList] = useState([5, 10, 20]);
@@ -36,6 +38,7 @@ const KoiManagement = () => {
         const { success, data } = await koiFishService.getAll()
 
         if (success) {
+            setList(data)
             setItems(data)
         }
 
@@ -153,9 +156,6 @@ const KoiManagement = () => {
                     selectText='Choose some colors...'
                     searchPlaceholderText='Search color...'
                     styles={{
-                        modalWrapper: {
-                            padding: hp(10),
-                        },
                         button: {
                             backgroundColor: "white",
                             borderColor: "red",
@@ -221,20 +221,43 @@ const KoiManagement = () => {
                     </ScrollView>
                 </Modal>
             </Portal>
-            <View style={styles.headerContainer}>
+            <ScrollView style={styles.scrollViewStyle}>
+                <View style={styles.headerContainer}>
+                    <SearchFilter
+                        data={list}
+                        onFilter={setItems}
+                        searchFields={['name']}
+                        filterFields={[
+                            {
+                                label: "Origin",
+                                key: "origin",
+                                options: ["Japan", "China", "Vietnam"],
+                            },
+                            {
+                                label: "Element",
+                                key: "suit_element",
+                                options: ["metal", "wood", "water", "fire", "earth"],
+                            },
+                            {
+                                label: "Color",
+                                key: "color",
+                                options: ["white", "silver", "black", "yellow", "red", "brown", "green", "blue", "gray"],
+                            },
+                        ]}
+                    />
+                </View>
 
-            </View>
-
-            <Table
-                headers={headers}
-                items={items}
-                page={page}
-                itemsPerPage={itemsPerPage}
-                setPage={setPage}
-                numberOfItemsPerPageList={numberOfItemsPerPageList}
-                onItemsPerPageChange={(newItemsPerPage) => setItemsPerPage(newItemsPerPage)}
-                showModal={showModal}
-            />
+                <Table
+                    headers={headers}
+                    items={items}
+                    page={page}
+                    itemsPerPage={itemsPerPage}
+                    setPage={setPage}
+                    numberOfItemsPerPageList={numberOfItemsPerPageList}
+                    onItemsPerPageChange={(newItemsPerPage) => setItemsPerPage(newItemsPerPage)}
+                    showModal={showModal}
+                />
+            </ScrollView>
 
         </SafeAreaView>
     )
@@ -246,6 +269,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "white",
+    },
+    scrollViewStyle: {
+        flex: 1,
         paddingHorizontal: hp(5)
     },
     containerStyle: {

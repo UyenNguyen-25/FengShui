@@ -13,8 +13,10 @@ import { getMenh } from '@/components/MenhCalculator';
 import moment from 'moment';
 import Table from '@/components/Table';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import SearchFilter from '@/components/SearchFilter';
 
 const UserManagement = () => {
+    const [list, setList] = useState([])
     const [items, setItems] = useState([])
     const [page, setPage] = useState(0);
     const [numberOfItemsPerPageList] = useState([5, 10, 20]);
@@ -40,6 +42,7 @@ const UserManagement = () => {
         const { success, data } = await userService.getAll()
 
         if (success) {
+            setList(data)
             setItems(data)
         }
 
@@ -230,20 +233,40 @@ const UserManagement = () => {
                     </ScrollView>
                 </Modal>
             </Portal>
-            <View style={styles.headerContainer}>
+            <ScrollView style={styles.scrollViewStyle}>
+                <View style={styles.headerContainer}>
+                    <SearchFilter
+                        data={list}
+                        onFilter={setItems}
+                        searchFields={['name']}
+                        filterFields={[
+                            {
+                                label: "Element",
+                                key: "element",
+                                options: ["metal", "wood", "water", "fire", "earth"],
+                            },
+                            {
+                                label: "Gender",
+                                key: 'gender',
+                                options: [0, 1, 2]
+                            }
+                        ]}
+                        dateField={"date_of_birth"}
 
-            </View>
+                    />
+                </View>
 
-            <Table
-                headers={headers}
-                items={items}
-                page={page}
-                itemsPerPage={itemsPerPage}
-                setPage={setPage}
-                numberOfItemsPerPageList={numberOfItemsPerPageList}
-                onItemsPerPageChange={(newItemsPerPage) => setItemsPerPage(newItemsPerPage)}
-                showModal={showModal}
-            />
+                <Table
+                    headers={headers}
+                    items={items}
+                    page={page}
+                    itemsPerPage={itemsPerPage}
+                    setPage={setPage}
+                    numberOfItemsPerPageList={numberOfItemsPerPageList}
+                    onItemsPerPageChange={(newItemsPerPage) => setItemsPerPage(newItemsPerPage)}
+                    showModal={showModal}
+                />
+            </ScrollView>
 
         </SafeAreaView>
     )
@@ -255,6 +278,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "white",
+    },
+    scrollViewStyle: {
+        flex: 1,
         paddingHorizontal: hp(5)
     },
     containerStyle: {

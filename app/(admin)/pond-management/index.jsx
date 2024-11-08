@@ -11,8 +11,10 @@ import Table from '@/components/Table';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import { hp } from '@/helper/common';
 import { MaterialIcons } from '@expo/vector-icons';
+import SearchFilter from '@/components/SearchFilter';
 
 const PondManagement = () => {
+    const [list, setList] = useState([])
     const [items, setItems] = useState([])
     const [page, setPage] = useState(0);
     const [numberOfItemsPerPageList] = useState([5, 10, 20]);
@@ -35,6 +37,7 @@ const PondManagement = () => {
         const { success, data } = await pondsService.getAll()
 
         if (success) {
+            setList(list)
             setItems(data)
         }
 
@@ -195,20 +198,42 @@ const PondManagement = () => {
                     </ScrollView>
                 </Modal>
             </Portal>
-            <View style={styles.headerContainer}>
+            <ScrollView style={styles.scrollViewStyle}>
+                <View style={styles.headerContainer}>
+                    <SearchFilter
+                        data={list}
+                        onFilter={setItems}
+                        filterFields={[
+                            {
+                                label: "Element",
+                                key: "suit_element",
+                                options: ["metal", "wood", "water", "fire", "earth"],
+                            },
+                            {
+                                label: "Pond Shape",
+                                key: "pond_shape",
+                                options: ["rectangle", "round", "triangle", "square", "oval"],
+                            },
+                            {
+                                label: "Pond Direction",
+                                key: "pond_direction",
+                                options: ["North", "Northeast", "Northwest", "South", "Southeast", "Southwest", "West", "East", "Center"],
+                            },
+                        ]}
+                    />
+                </View>
 
-            </View>
-
-            <Table
-                headers={headers}
-                items={items}
-                page={page}
-                itemsPerPage={itemsPerPage}
-                setPage={setPage}
-                numberOfItemsPerPageList={numberOfItemsPerPageList}
-                onItemsPerPageChange={(newItemsPerPage) => setItemsPerPage(newItemsPerPage)}
-                showModal={showModal}
-            />
+                <Table
+                    headers={headers}
+                    items={items}
+                    page={page}
+                    itemsPerPage={itemsPerPage}
+                    setPage={setPage}
+                    numberOfItemsPerPageList={numberOfItemsPerPageList}
+                    onItemsPerPageChange={(newItemsPerPage) => setItemsPerPage(newItemsPerPage)}
+                    showModal={showModal}
+                />
+            </ScrollView>
 
         </SafeAreaView>
     )
@@ -220,6 +245,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "white",
+    },
+    scrollViewStyle: {
+        flex: 1,
+        paddingHorizontal: hp(5)
+    },
+    scrollViewStyle: {
+        flex: 1,
         paddingHorizontal: hp(5)
     },
     containerStyle: {

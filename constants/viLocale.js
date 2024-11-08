@@ -75,6 +75,7 @@ export const viTranslation = {
   ...viPondShape,
   ...viColors,
   ...viOrigin,
+  ...viGender,
 };
 
 export const translate = (array) => {
