@@ -1,18 +1,5 @@
 import { supabase } from "@/utils/supabase";
 
-// users (
-//   id,
-//   email,
-//   name,
-//   date_of_birth,
-//   created_at,
-//   updated_at,
-//   role ('admin' | 'customer'),
-//   gender (0 | 1 | 2),
-//   suit_element: enum('fire','water','wood','earth','metal')
-//    total_of_post
-// )
-
 const getUser = async (session) => {
   try {
     console.log(session.user.id);
@@ -83,7 +70,6 @@ const updateNumOfPost = async (userId, incrementBy) => {
   }
 };
 
-
 const updateTotalPosts = async (userId, decrementBy = 1) => {
   try {
     const { data: userData, error: fetchError } = await supabase
@@ -121,7 +107,6 @@ const updateTotalPosts = async (userId, decrementBy = 1) => {
   }
 };
 
-
 const updateUser = async (id, data) => {
   try {
     console.log("data: ", data);
@@ -139,4 +124,26 @@ const updateUser = async (id, data) => {
   }
 };
 
-export const userService = { getUser, updateUser, getUserById, updateNumOfPost, updateTotalPosts };
+const getAll = async () => {
+  try {
+    const { data, error } = await supabase.from("users").select("*");
+
+    if (error) {
+      console.log("get all users from db fail: ", error);
+      return { success: false, msg: error.message };
+    }
+    return { success: true, data };
+  } catch (error) {
+    console.log("got error: ", error);
+    return { success: false, msg: error.message };
+  }
+};
+
+export const userService = {
+  getUser,
+  updateUser,
+  getUserById,
+  updateNumOfPost,
+  updateTotalPosts,
+  getAll,
+};

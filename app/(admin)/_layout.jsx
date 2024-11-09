@@ -6,25 +6,21 @@ import {
     DrawerItem,
 } from "@react-navigation/drawer";
 import { SCREEN } from '@/constants/screen';
-import Dashboard from '.';
-import KoiManagement from './koi-management';
-import PondManagement from './pond-management';
-import UserManagement from './user-management';
-import PackageScreen from '../(main)/package';
-import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '@/hooks/useAuth';
 import { router } from 'expo-router';
 import { signOut } from '@/services/auth/authService';
 import { theme } from '@/constants/theme';
 import { hp } from '@/helper/common';
 import { StatusBar } from 'expo-status-bar';
+import Dashboard from '.';
+import KoiManagement from './koi-management';
+import PondManagement from './pond-management';
+import UserManagement from './user-management';
+import PackageManagement from './package-management';
+import PostManagement from './post-management';
 
 const Drawer = createDrawerNavigator();
 
 const AdminLayout = () => {
-    const navigation = useNavigation();
-    const { session } = useAuth();
-
     const alertButtons = [
         {
             text: "Hủy",
@@ -97,6 +93,13 @@ const AdminLayout = () => {
                                 activeTintColor='white'
                             />
                             <DrawerItem
+                                label={'Post Management'}
+                                onPress={() => props.navigation.navigate(SCREEN.POST_MANAGEMENT)}
+                                focused={focused === SCREEN.POST_MANAGEMENT}
+                                activeBackgroundColor='red'
+                                activeTintColor='white'
+                            />
+                            <DrawerItem
                                 label={'LOG OUT'}
                                 onPress={handleLogout}
                                 inactiveBackgroundColor={theme.colors.roseLight}
@@ -120,8 +123,10 @@ const AdminLayout = () => {
                     options={{ headerTitle: "Pond Management" }} />
                 <Drawer.Screen name={SCREEN.USER_MANAGEMENT} component={UserManagement}
                     options={{ headerTitle: "User Management" }} />
-                <Drawer.Screen name={SCREEN.PACKAGE_MANAGEMENT} component={PackageScreen}
+                <Drawer.Screen name={SCREEN.PACKAGE_MANAGEMENT} component={PackageManagement}
                     options={{ headerTitle: "Package Management" }} />
+                <Drawer.Screen name={SCREEN.POST_MANAGEMENT} component={PostManagement}
+                    options={{ headerTitle: "Post Management" }} />
 
             </Drawer.Navigator>
         </>

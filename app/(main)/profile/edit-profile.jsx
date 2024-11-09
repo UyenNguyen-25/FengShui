@@ -11,8 +11,6 @@ import BackButton from '@/components/BackButton'
 import Input from '@/components/Input'
 import AntDesign from '@expo/vector-icons/AntDesign'
 import Button from '@/components/Button'
-import SelectDropdown from 'react-native-select-dropdown'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment"
 import { viElement, viGender } from '@/constants/viLocale'
@@ -121,8 +119,6 @@ const EditProfile = () => {
                                     <RadioButton value="Khác" color='red' />
                                     <Text>Khác</Text>
                                 </View>
-
-
                             </View>
                         </RadioButton.Group>
                     </View>

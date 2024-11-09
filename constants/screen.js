@@ -20,4 +20,5 @@ export const SCREEN = {
   USER_MANAGEMENT: "user-management",
   BLOG_DETAIL: "blog-detail",
   MANAGER_BLOG: "manager-blog",
+  POST_MANAGEMENT: "post-management",
 };

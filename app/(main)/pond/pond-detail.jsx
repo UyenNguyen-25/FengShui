@@ -56,7 +56,7 @@ const PondDetail = ({ navigation, route }) => {
         {/* Author Info */}
         <View style={styles.authorContainer}>
           <Text style={styles.byText}>Ngày:</Text>
-          <Text style={styles.authorName}>{blogDetail ? blogDetail.created_at: "Loading..."}</Text>
+          <Text style={styles.authorName}>{blogDetail ? blogDetail.created_at : "Loading..."}</Text>
         </View>
 
         <View style={styles.tagContainer}>
@@ -90,6 +90,9 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 8,
+    position: "absolute",
+    top: "50%",
+    zIndex: 50
   },
   bookmarkButton: {
     padding: 8,

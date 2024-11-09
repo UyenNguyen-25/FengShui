@@ -167,6 +167,9 @@ export default function CustomerLayout() {
           options={{ headerShown: false }}
         />
         <Drawer.Screen name={SCREEN.LOOKUP} component={LookupTab} />
+        <Drawer.Screen name={SCREEN.POND_SCREEN} component={PondScreen} />
+        <Drawer.Screen name={SCREEN.POND_DETAIL} component={PondDetail} options={{ headerShown: false }} />
+        <Drawer.Screen name={SCREEN.POST_SCREEN} component={PostScreen} />
       </Drawer.Navigator>
     </>
   );
@@ -200,7 +203,7 @@ function BottomTab() {
 }
 
 const styles = StyleSheet.create({
-  header: {
+  headerTitleContainer: {
     flex: 1,
     alignItems: "center",
   },
