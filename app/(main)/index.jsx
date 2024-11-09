@@ -12,9 +12,14 @@ import { StatusBar } from "expo-status-bar";
 import MenuIcons from "@/components/MenuIcons";
 import { koiFishService } from "@/services/elements/koiFishService";
 import { viElement } from "@/constants/viLocale";
+import { useNavigation } from "@react-navigation/native";
+import { SCREEN } from "@/constants/screen";
 
-const Home = ({ navigation }) => {
+const Home = () => {
+    const navigation = useNavigation()
     const [blogPosts, setBlogPosts] = useState([]);
+
+    
 
     useEffect(() => {
         const fetchBlogPosts = async () => {
@@ -49,6 +54,7 @@ const Home = ({ navigation }) => {
                         title={post.title}
                         subtitle={post.subtitle}
                         category={post.category}
+                        navigation={navigation}
                     />
                 ))}
             </ScrollView>
@@ -56,7 +62,7 @@ const Home = ({ navigation }) => {
     );
 };
 
-const BlogPost = ({ title, subtitle, category }) => (
+const BlogPost = ({ title, subtitle, category, navigation, id }) => (
     <View style={styles.blogPost}>
         <View style={styles.blogContent}>
             <View style={styles.categoryBadge}>
@@ -64,7 +70,7 @@ const BlogPost = ({ title, subtitle, category }) => (
             </View>
             <Text style={styles.blogTitle}>{title}</Text>
             <Text style={styles.blogSubtitle}>{subtitle}</Text>
-            <TouchableOpacity style={styles.readButton}>
+            <TouchableOpacity style={styles.readButton} onPress={() => navigation.navigate(SCREEN.BLOG_DETAIL)}>
                 <Text style={styles.readButtonText}>Đọc thêm</Text>
             </TouchableOpacity>
         </View>

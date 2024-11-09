@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, ActivityIndicator, Modal, TextInput, Button } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, ActivityIndicator, Modal, TextInput, Button, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { packageService } from '../../../services/package/packageService';
 import { useAuth } from '@/hooks/useAuth'
@@ -89,7 +89,11 @@ const PackageScreen = ({ navigation }) => {
 
             <View style={styles.cardContent}>
               <View style={styles.iconContainer}>
-                <MaterialIcons name="post-add" size={hp(6)} color="black" />
+                <Image
+                  source={pkg.name === "VIP" ? require("@/assets/images/subscription.png") : require("@/assets/images/billing.png")}
+                  style={styles.mainImage}
+                  resizeMode="contain"
+                />
                 {/* <View style={styles.starContainer}>
                   <FontAwesome5 name="star" size={8} color="#333" solid style={styles.star} />
                   <FontAwesome5 name="star" size={12} color="#333" solid style={styles.star} />
@@ -241,6 +245,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
+  },
+  mainImage: {
+    width: 100, // hoặc kích thước mong muốn
+    height: 100, // hoặc kích thước mong muốn
   },
 });
 

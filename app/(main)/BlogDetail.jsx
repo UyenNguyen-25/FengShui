@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -9,28 +9,8 @@ import {
   SafeAreaView,
 } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { getById } from "@/services/blog/blogService";
 
-const PondDetail = ({ navigation, route }) => {
-  const [blogDetail, setBlogDetail] = useState(null);
-  const pondId = route?.params?.pondId; // Sử dụng optional chaining để tránh lỗi
-
-  useEffect(() => {
-    if (pondId) {
-      const fetchBlogDetail = async () => {
-        const response = await getById(pondId);
-        console.log("API Response:", response);
-        if (response.success) {
-          setBlogDetail(response.data);
-        } else {
-          console.log("Failed to fetch blog details: ", response.msg);
-        }
-      };
-
-      fetchBlogDetail();
-    }
-  }, [pondId]);
-
+const BlogDetail = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       {/* Header with back button */}
@@ -42,33 +22,55 @@ const PondDetail = ({ navigation, route }) => {
           <Ionicons name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
 
-        <Text style={styles.headerText}>{blogDetail ? blogDetail.suit_element : "Loading..."}</Text>
+        <Text style={styles.headerText}>Wood</Text>
+
+        {/* <TouchableOpacity style={styles.bookmarkButton}>
+          <FontAwesome name="bookmark-o" size={24} color="#000" />
+        </TouchableOpacity> */}
       </View>
 
       <ScrollView style={styles.content}>
         {/* Main Image */}
-        <Image
-          source={require("@/assets/images/BlogPond.jpg")}
+        {/* <Image
+          source={{
+            uri: "https://sanvuonadong.vn/wp-content/uploads/2020/10/tong-quan-ve-ca-koi-01-san-vuon-a-dong.jpgg",
+          }}
           style={styles.mainImage}
-          resizeMode="contain"
-        />
+        /> */}
+          <Image
+              source={require("@/assets/images/BlogPond.jpg")}
+              style={styles.mainImage}
+              resizeMode="contain"
+            />
 
         {/* Author Info */}
         <View style={styles.authorContainer}>
-          <Text style={styles.byText}>Ngày:</Text>
-          <Text style={styles.authorName}>{blogDetail ? blogDetail.created_at : "Loading..."}</Text>
+          <Text style={styles.byText}>Người viết:</Text>
+          <Text style={styles.authorName}>Nguyễn Văn An</Text>
         </View>
 
         <View style={styles.tagContainer}>
-          <Text style={styles.tagText}>{blogDetail ? blogDetail.suit_element : "Loading..."}</Text>
+          <Text style={styles.tagText}>Phong Thủy</Text>
         </View>
 
         {/* Title */}
-        <Text style={styles.title}>{blogDetail ? blogDetail.title : "Loading..."}</Text>
+        <Text style={styles.title}>Bí quyết thiết kế hồ cá koi phong thủy</Text>
 
         {/* Blog Content */}
         <Text style={styles.contentText}>
-          {blogDetail ? blogDetail.description : "Loading..."}
+          Hồ cá koi không chỉ là một điểm nhấn thẩm mỹ cho ngôi nhà mà còn mang
+          lại sự thịnh vượng và may mắn theo phong thủy.
+        </Text>
+
+        <Text style={styles.contentText}>
+          Dưới đây là 5 nguyên tắc quan trọng khi thiết kế hồ cá koi phong thủy:
+          chọn vị trí phù hợp, hình dáng hồ, số lượng và màu sắc cá, cây cảnh
+          xung quanh, và hệ thống lọc nước.
+        </Text>
+
+        <Text style={styles.contentText}>
+          Một hồ cá koi được thiết kế đúng cách sẽ giúp cân bằng năng lượng, tạo
+          ra không gian sống hài hòa và thu hút tài lộc.
         </Text>
       </ScrollView>
     </SafeAreaView>
@@ -90,9 +92,6 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 8,
-    position: "absolute",
-    top: "50%",
-    zIndex: 50
   },
   bookmarkButton: {
     padding: 8,
@@ -152,4 +151,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PondDetail;
+export default BlogDetail;
