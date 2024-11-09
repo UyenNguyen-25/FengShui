@@ -1,18 +1,5 @@
 import { supabase } from "@/utils/supabase";
 
-// users (
-//   id,
-//   email,
-//   name,
-//   date_of_birth,
-//   created_at,
-//   updated_at,
-//   role ('admin' | 'customer'),
-//   gender (0 | 1 | 2),
-//   suit_element: enum('fire','water','wood','earth','metal')
-//    total_of_post
-// )
-
 const getUser = async (session) => {
   try {
     console.log(session.user.id);

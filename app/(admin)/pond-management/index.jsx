@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 import { pondsService } from '@/services/elements/pondsService';
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -6,7 +6,6 @@ import { Modal, Portal } from 'react-native-paper';
 import { joinArray, translate, viTranslation } from '@/constants/viLocale';
 import { ScrollView } from 'react-native-gesture-handler';
 import { theme } from '@/constants/theme';
-import { SelectList } from 'react-native-dropdown-select-list'
 import Table from '@/components/Table';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import { hp } from '@/helper/common';
@@ -37,7 +36,7 @@ const PondManagement = () => {
         const { success, data } = await pondsService.getAll()
 
         if (success) {
-            setList(list)
+            setList(data)
             setItems(data)
         }
 
@@ -66,12 +65,41 @@ const PondManagement = () => {
             "Are you sure you want to delete this item?",
             [
                 { text: "Cancel", style: "cancel" },
-                { text: "Delete", style: "destructive", onPress: () => { } }
+                {
+                    text: "Delete", style: "destructive", onPress: async () => {
+                        const resetData = {
+                            pond_shape: [], pond_direction: [], pond_location: []
+                        }
+                        const { success, msg } = await pondsService.updatePond(data.id, resetData)
+                        if (success) {
+                            Alert.alert("Delete Pond's information successfully!")
+                            fetchAllData()
+                        } else {
+                            console.log("Delete Pond's information fail: ", msg);
+                        }
+                        setVisible(false)
+                    }
+                }
             ]
         );
     };
-    const handleUpdate = () => {
-        setIsEditing(false);
+
+    const handleUpdate = async () => {
+        if (!newData || !newData.pond_shape || !newData.pond_direction || !newData.pond_location) {
+            Alert.alert("Please fill all the information");
+            return
+        }
+
+        const { success, msg } = await pondsService.updatePond(newData.id, newData)
+
+        if (!success) {
+            console.log("Update Pond's information fail: ", msg);
+            return
+        }
+        fetchAllData()
+        Alert.alert("Update Pond's information successfully!")
+        setIsEditing(false)
+        setVisible(false)
     };
 
     const updateForm = () => {
@@ -109,7 +137,7 @@ const PondManagement = () => {
                     items={listShape}
                     IconRenderer={MaterialIcons}
                     uniqueKey="id"
-                    onSelectedItemsChange={(item) => setNewData({ ...newData, color: item })}
+                    onSelectedItemsChange={(item) => setNewData({ ...newData, pond_shape: item })}
                     selectedItems={newData.pond_shape}
                     selectText='Choose some pond shapes...'
                     searchPlaceholderText='Search shape...'
@@ -131,14 +159,11 @@ const PondManagement = () => {
                     items={listDirection}
                     IconRenderer={MaterialIcons}
                     uniqueKey="id"
-                    onSelectedItemsChange={(item) => setNewData({ ...newData, pond_direction: item, pond_Location: item })}
+                    onSelectedItemsChange={(item) => setNewData({ ...newData, pond_direction: item, pond_location: item })}
                     selectedItems={newData.pond_direction}
                     selectText='Choose some directions...'
                     searchPlaceholderText='Search direction...'
                     styles={{
-                        modalWrapper: {
-                            padding: hp(10),
-                        },
                         button: {
                             backgroundColor: "white",
                             borderColor: "red",
@@ -245,10 +270,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "white",
-    },
-    scrollViewStyle: {
-        flex: 1,
-        paddingHorizontal: hp(5)
     },
     scrollViewStyle: {
         flex: 1,

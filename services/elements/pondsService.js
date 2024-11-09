@@ -1,11 +1,3 @@
-// ponds(
-//     id,
-//     pond_shape,
-//     pond_direction,
-//     pond_location,
-//     suit_element: enum('fire','water','wood','earth','metal')
-// )
-
 import { supabase } from "@/utils/supabase";
 
 const getAll = async () => {
@@ -83,11 +75,11 @@ const insertPond = async (newData) => {
 
 const updatePond = async (id, newData) => {
   try {
-    const { pond_shape, pond_direction, pond_location, suit_element } = newData;
+    const { pond_shape, pond_direction, pond_location } = newData;
 
     const { error } = await supabase
       .from("ponds")
-      .update({ pond_shape, pond_direction, pond_location, suit_element })
+      .update({ pond_shape, pond_direction, pond_location })
       .eq("id", id);
 
     if (error) {

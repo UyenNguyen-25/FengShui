@@ -41,10 +41,11 @@ const KoiManagement = () => {
             setList(data)
             setItems(data)
         }
-
     }, [])
 
-    useEffect(() => { fetchAllData() }, [])
+    useEffect(() => {
+        fetchAllData()
+    }, [])
 
     const showModal = (item) => {
         // console.log(item);
@@ -67,13 +68,38 @@ const KoiManagement = () => {
             "Are you sure you want to delete this item?",
             [
                 { text: "Cancel", style: "cancel" },
-                { text: "Delete", style: "destructive", onPress: () => { } }
+                {
+                    text: "Delete", style: "destructive", onPress: async () => {
+                        const { success, msg } = await koiFishService.deleteKoiFish(data.id)
+                        if (success) {
+                            Alert.alert('Delete Koi fish successfully!')
+                        } else {
+                            console.log("Delete Koi fish fail: ", msg);
+                        }
+                        fetchAllData()
+                        setVisible(false)
+                    }
+                }
             ]
         );
     };
 
-    const handleUpdate = () => {
-        setIsEditing(false);
+    const handleUpdate = async () => {
+        if (!newData || !newData.name || !newData.origin || !newData.suit_element || !newData.color || !newData.quantity) {
+            Alert.alert("Please fill all the information");
+            return
+        }
+
+        const { success, msg } = await koiFishService.updateKoiFish(newData.id, newData)
+
+        if (!success) {
+            console.log("Update Koi's information fail: ", msg);
+            return
+        }
+        fetchAllData()
+        Alert.alert("Update Koi's information successfully!")
+        setIsEditing(false)
+        setVisible(false)
     };
 
     const updateForm = () => {
@@ -206,7 +232,6 @@ const KoiManagement = () => {
             </>
         )
     }
-
 
     return (
         <SafeAreaView style={styles.container}>

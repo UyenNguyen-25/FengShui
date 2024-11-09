@@ -17,7 +17,7 @@ export const vietnameseDays = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
 
 export const viElement = {
   fire: "Hỏa",
-  water: "Nước",
+  water: "Thủy",
   wood: "Mộc",
   earth: "Thổ",
   metal: "Kim",

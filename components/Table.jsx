@@ -31,7 +31,7 @@ const Table = ({
                     <DataTable.Title></DataTable.Title>
                 </DataTable.Header>
 
-                {items.slice(from, to).map((item) => (
+                {items.length ? items.slice(from, to).map((item) => (
                     <DataTable.Row key={item.id}>
                         {headers.map((header, index) =>
                             <DataTable.Cell key={index} textStyle={styles.text}>
@@ -46,7 +46,7 @@ const Table = ({
                                 </Pressable>}
                         </DataTable.Cell>
                     </DataTable.Row>
-                ))}
+                )) : <Text style={{ textAlign: "center", marginVertical: 20 }}>No Data</Text>}
 
                 <DataTable.Pagination
                     page={page}
